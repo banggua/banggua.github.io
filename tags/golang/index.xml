@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/golang/</link>
+    <description>Recent content in golang on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>flag 中的 Go 函数指针</title>
+      <link>https://blog.guagua.tech/2019/01/function-pointer-in-flag/</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/function-pointer-in-flag/</guid>
+      <description>&lt;p&gt;在阅读 flag 包的代码时，看到一处对函数指针的精妙用法。在这里想和大家分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>flag Go 源码解析</title>
+      <link>https://blog.guagua.tech/2019/01/go-standard-library-flag/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-standard-library-flag/</guid>
+      <description>&lt;p&gt;最近看了一下 Go&amp;rsquo;s flag 的源码，在这里分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>go temporary address</title>
+      <link>https://blog.guagua.tech/2019/01/go-temporary-address/</link>
+      <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-temporary-address/</guid>
+      <description>&lt;p&gt;在很久之前遇到过一个很奇怪的问题，最近忆起终得答案，特记录于此。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gRPC Gateway</title>
+      <link>https://blog.guagua.tech/2018/10/grpc-gateway/</link>
+      <pubDate>Thu, 04 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/grpc-gateway/</guid>
+      <description>&lt;p&gt;本文将向你介绍 gRPC Gateway。代码示例：&lt;a href=&#34;https://github.com/lizebang/learning-grpc&#34;&gt;demo&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gRPC in Go</title>
+      <link>https://blog.guagua.tech/2018/09/grpc/</link>
+      <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/grpc/</guid>
+      <description>&lt;p&gt;本文将向你介绍 gRPC 和 protocol buffers。代码示例：&lt;a href=&#34;https://github.com/lizebang/learning-grpc&#34;&gt;demo&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Proto3 语言指南</title>
+      <link>https://blog.guagua.tech/2018/09/proto3-language-guide/</link>
+      <pubDate>Mon, 24 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/proto3-language-guide/</guid>
+      <description>&lt;p&gt;本文介绍了如何使用 protocol buffer 构建 pb 数据 &amp;ndash; 包括 &lt;code&gt;.proto&lt;/code&gt; 语法以及生成数据访问类的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cobra 使用入门</title>
+      <link>https://blog.guagua.tech/2018/06/how-to-use-cobra/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/how-to-use-cobra/</guid>
+      <description>&lt;p&gt;今天我们介绍一个简化构建 CLI 应用程序的库 &amp;ndash; Cobra。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Go Memory Model</title>
+      <link>https://blog.guagua.tech/2018/04/the-go-memory-model/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/04/the-go-memory-model/</guid>
+      <description>&lt;p&gt;Go 内存模型指出，在何时，能确保一个 goroutine 获取到被另一个 goroutine 修改后的同一变量的值。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Golang 定时任务</title>
+      <link>https://blog.guagua.tech/2018/02/golang-cron/</link>
+      <pubDate>Sun, 25 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/golang-cron/</guid>
+      <description>&lt;p&gt;如何在 Golang 中添加或设置定时任务?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>os/exec Go 源码解析</title>
+      <link>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</link>
+      <pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</guid>
+      <description>&lt;p&gt;这一篇是 Go SDK 中 os/exec 包的解析。&lt;/p&gt;
+&lt;p&gt;go version go1.9.2 darwin/amd64&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>怎样使用 glide</title>
+      <link>https://blog.guagua.tech/2017/11/how-to-use-glide/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/how-to-use-glide/</guid>
+      <description>&lt;p&gt;glide 是很常用的 go 包管理工具，让我们看看然后使用它。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>for range 的使用</title>
+      <link>https://blog.guagua.tech/2017/11/how-for-range-works/</link>
+      <pubDate>Sun, 05 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/how-for-range-works/</guid>
+      <description>&lt;p&gt;for range 是一个非常常用的遍历数组切片的方法，但是它有一些比较奇怪的特性，让我们了解一下。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

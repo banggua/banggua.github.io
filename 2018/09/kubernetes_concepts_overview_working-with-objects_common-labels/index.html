@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 推荐标签">
+<meta name="twitter:title" content="Kubernetes 推荐标签">
+<meta property="og:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-09-01T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-09-01T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes 推荐标签</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes 推荐标签
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-01T00:00:00Z">
+        
+  September 1, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/</p>
+<p>你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。</p>
+<p>除了支持工具之外，推荐标签还以可查询的方式描述应用程序。</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#labels">标签</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#applications-and-instances-of-applications">应用和应用实例</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#examples">例子</a></li>
+</ul>
+<p>元数据围绕应用程序的概念进行组织。Kubernetes 不是一个服务平台（PaaS），没有也不限定应用程序的范围。相反，应用程序是任意的并用元数据进行描述。应用程序所包含内容的定义是宽松的。</p>
+<blockquote>
+<p>注意：这些只是推荐标签。它们使管理应用程序变得更容易，但对于任何核心工具来说并不是必需的。</p>
+</blockquote>
+<p>共享标签和注释使用一个共同的前缀：<code>app.kubernetes.io</code>。没有前缀的标签对用户是私有的。共享前缀可确保共享标签不会干扰自定义用户标签。</p>
+<h2 id="标签">标签</h2>
+<p>为了充分利用这些标签，应将它们应用于每个资源对象。</p>
+<table>
+<thead>
+<tr>
+<th align="left">键</th>
+<th align="left">描述</th>
+<th align="left">例子</th>
+<th align="left">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>app.kubernetes.io/name</code></td>
+<td align="left">应用程序的名称</td>
+<td align="left"><code>mysql</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>app.kubernetes.io/instance</code></td>
+<td align="left">标识应用程序实例的唯一名称</td>
+<td align="left"><code>wordpress-abcxzy</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>app.kubernetes.io/version</code></td>
+<td align="left">应用程序的当前版本（例如，语义版本、修订版哈希等）</td>
+<td align="left"><code>5.7.21</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>app.kubernetes.io/component</code></td>
+<td align="left">架构中的组件</td>
+<td align="left"><code>database</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>app.kubernetes.io/part-of</code></td>
+<td align="left">所属的更高级的应用程序的名称</td>
+<td align="left"><code>wordpress</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>app.kubernetes.io/managed-by</code></td>
+<td align="left">用于管理应用程序操作的工具</td>
+<td align="left"><code>helm</code></td>
+<td align="left">string</td>
+</tr>
+</tbody>
+</table>
+<p>要说明这些标签的运行情况，请参考 StatefulSet 对象：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: StatefulSet
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: mysql
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: wordpress-abcxzy
+    <span style="color:#66d9ef">app.kubernetes.io/version</span>: <span style="color:#e6db74">&#39;5.7.21&#39;</span>
+    <span style="color:#66d9ef">app.kubernetes.io/component</span>: database
+    <span style="color:#66d9ef">app.kubernetes.io/part-of</span>: wordpress
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: helm
+</code></pre></div><h2 id="应用和应用实例">应用和应用实例</h2>
+<p>应用程序可以安装一次或多次到 Kubernetes 集群中，在某些情况下，可以安装在同一命名空间中。例如，wordpress 不止安装一次，不同的网站使用 wordpress 的不同安装。</p>
+<p>应用程序的名称和实例名称应分别记录。例如，WordPress 有值为 <code>wordpress</code> 的 <code>app.kubernetes.io/name</code> 标签，同时它还有一个值为 <code>wordpress-abcxzy</code> 的 <code>app.kubernetes.io/instance</code> 实例名标签。这使应用程序的应用程序和实例可以被识别。应用程序的每个实例都必须具有唯一的名称。</p>
+<h2 id="例子">例子</h2>
+<p>为了说明使用这些标签的不同方式，请看下面具有不同复杂性的示例。</p>
+<h3 id="简单的无状态服务">简单的无状态服务</h3>
+<p>考虑使用 <code>Deployment</code> 和 <code>Service</code> 对象部署简单的无状态服务的情况。下面两个代码片段展示了如何以最简单的形式使用标签。</p>
+<p>此 <code>Deployment</code> 用于监视运行应用程序本身的 Pod。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: Deployment
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: myservice
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: myservice-abcxzy
+......
+</code></pre></div><p>此 <code>Service</code> 用于暴露该应用程序。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: myservice
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: myservice-abcxzy
+......
+</code></pre></div><h3 id="使用数据库的-web-应用程序">使用数据库的 Web 应用程序</h3>
+<p>考虑一个稍微复杂的应用程序：使用 Helm 安装的使用数据库（MySQL）的 Web 应用程序（WordPress）。下面的代码片段展示了部署此应用程序所使用对象的开始部分。</p>
+<p>下面 <code>Deployment</code> 的开始部分用于 WordPress：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: Deployment
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: wordpress
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: wordpress-abcxzy
+    <span style="color:#66d9ef">app.kubernetes.io/version</span>: <span style="color:#e6db74">&#34;4.9.4&#34;</span>
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: helm
+    <span style="color:#66d9ef">app.kubernetes.io/component</span>: server
+    <span style="color:#66d9ef">app.kubernetes.io/part-of</span>: wordpress
+......
+</code></pre></div><p>此 <code>Service</code> 用于暴露 WordPress：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: wordpress
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: wordpress-abcxzy
+    <span style="color:#66d9ef">app.kubernetes.io/version</span>: <span style="color:#e6db74">&#34;4.9.4&#34;</span>
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: helm
+    <span style="color:#66d9ef">app.kubernetes.io/component</span>: server
+    <span style="color:#66d9ef">app.kubernetes.io/part-of</span>: wordpress
+......
+</code></pre></div><p>MySQL 暴露为 <code>StatefulSet</code>，其中包含它和它所属的更高级的应用程序的元数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: StatefulSet
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: mysql
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: wordpress-abcxzy
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: helm
+    <span style="color:#66d9ef">app.kubernetes.io/component</span>: database
+    <span style="color:#66d9ef">app.kubernetes.io/part-of</span>: wordpress
+    <span style="color:#66d9ef">app.kubernetes.io/version</span>: <span style="color:#e6db74">&#34;5.7.21&#34;</span>
+......
+</code></pre></div><p>此 <code>Service</code> 用于将 MySQL 作为 WordPress 的一部分公开：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+metadata:
+  labels:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: mysql
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: wordpress-abcxzy
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: helm
+    <span style="color:#66d9ef">app.kubernetes.io/component</span>: database
+    <span style="color:#66d9ef">app.kubernetes.io/part-of</span>: wordpress
+    <span style="color:#66d9ef">app.kubernetes.io/version</span>: <span style="color:#e6db74">&#34;5.7.21&#34;</span>
+......
+</code></pre></div><p>使用 MySQL 的 <code>StatefulSet</code> 和 <code>Service</code>，你会注意到有关 MySQL 和 Wordpress 的信息，也包括其他的应用。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/" data-tooltip="Kubernetes 字段选择器">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/" data-tooltip="Kubernetes 注解">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/" data-tooltip="Kubernetes 字段选择器">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/" data-tooltip="Kubernetes 注解">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_working-with-objects_common-labels%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_working-with-objects_common-labels%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_working-with-objects_common-labels%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>blog on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/categories/blog/</link>
+    <description>Recent content in blog on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/categories/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>把博客迁移到服务器上</title>
+      <link>https://blog.guagua.tech/2018/07/blog-to-server/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/blog-to-server/</guid>
+      <description>&lt;p&gt;之前一直使用 GitHub Pages 托管博客，但是国内访问 GitHub 速度太慢了。恰逢腾讯云前段时间服务器做活动，便买了服务器把博客迁移到服务器上。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Hugo &#43; Github Pages 搭建个人博客</title>
+      <link>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</link>
+      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</guid>
+      <description>&lt;p&gt;Hugo 是一个快速灵活的静态网站生成器。Github Pages 是面向用户、组织和项目开放的公共静态页面搭建托管服务，站点可以被免费托管在 Github 上。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

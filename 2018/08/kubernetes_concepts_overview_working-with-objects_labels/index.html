@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 标签和选择器">
+<meta name="twitter:title" content="Kubernetes 标签和选择器">
+<meta property="og:url" content="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-08-31T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-08-31T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes 标签和选择器</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes 标签和选择器
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-08-31T00:00:00Z">
+        
+  August 31, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/</p>
+<p>Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#e6db74">&#34;metadata&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+  <span style="color:#f92672">&#34;labels&#34;</span>: {
+    <span style="color:#f92672">&#34;key1&#34;</span> : <span style="color:#e6db74">&#34;value1&#34;</span>,
+    <span style="color:#f92672">&#34;key2&#34;</span> : <span style="color:#e6db74">&#34;value2&#34;</span>
+  }
+}
+</code></pre></div><p>Labels 允许高效的查询和监视，非常适合在 UIs 和 CLIs 中使用。记录非识别性的信息时应使用<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/">注解</a>。</p>
+<h2 id="动机">动机</h2>
+<p>标签使用户能够以松散耦合的方式将自己的组织结构映射到系统对象，而无需客户端存储这些映射。</p>
+<p>服务部署和批处理流水线通常是多维实体（例如，多个分区或部署、多个发布轨道、多个层、每层多个微服务）。管理通常需要交叉操作，这打破了严格的层次表示的封装，特别是由基础设施而不是用户确定的严格的层次结构。</p>
+<p>标签示例：</p>
+<ul>
+<li><code>&quot;release&quot; : &quot;stable&quot;</code>, <code>&quot;release&quot; : &quot;canary&quot;</code></li>
+<li><code>&quot;environment&quot; : &quot;dev&quot;</code>, <code>&quot;environment&quot; : &quot;qa&quot;</code>, <code>&quot;environment&quot; : &quot;production&quot;</code></li>
+<li><code>&quot;tier&quot; : &quot;frontend&quot;</code>, <code>&quot;tier&quot; : &quot;backend&quot;</code>, <code>&quot;tier&quot; : &quot;cache&quot;</code></li>
+<li><code>&quot;partition&quot; : &quot;customerA&quot;</code>, <code>&quot;partition&quot; : &quot;customerB&quot;</code></li>
+<li><code>&quot;track&quot; : &quot;daily&quot;</code>, <code>&quot;track&quot; : &quot;weekly&quot;</code></li>
+</ul>
+<p>这些只是常用标签的例子，你可以自由地定制自己的规范。记住标签的 key 对于给定对象必须是唯一的。</p>
+<h2 id="语法和字符集">语法和字符集</h2>
+<p><strong>Labels</strong> 是键值对。有效的标签 key 有两个部分：可选的前缀和名称，它们用斜杠分隔 <code>/</code> 。名称部分是必须的，并且必须在 63 个字符以内，开始和结尾的字符必须是字母（大小写都可以）或数字，中间还可以使用破折号、下划线和句点（即 <code>^[:alnum:][\w-.]{0,61}[:alnum:]$</code>）。前缀是可选的。如果指定的话，前缀必须是 DNS 子域：一系列由点 <code>.</code> 分隔的 DNS 标签，总长度不超过 253 个字符，后面跟着一个斜线 <code>/</code>。如果省略了前缀，这个标签的 key 会被推断为用户私有。自动化系统组件（例如，<code>kube-scheduler</code>、<code>kube-controller-manager</code>、<code>kube-apiserver</code>、<code>kubectl</code> 或第三方自动化组件），它们添加到最终用户对象上的标签必须指定前缀。<code>kubernetes.io/</code> 和 <code>k8s.io/</code> 前缀是为 Kubernetes 核心组件预留的。</p>
+<p>有效的标签 value 必须在 63 个字符以内，值可以为空，也可以是字符串，字符串开始和结尾的字符是字母（大小写都可以）或数字，中间还可以使用破折号、下划线和句点。</p>
+<h2 id="标签选择器">标签选择器</h2>
+<p>不像 <a href="https://kubernetes.io/docs/user-guide/identifiers">名称和 UIDs</a>，标签不保证唯一性。通常情况下，我们希望很多对象携带相同的标签。</p>
+<p>通过标签选择器，客户端/用户可以指定一个对象集合。标签选择器是 Kubernetes 中的核心分组原语。</p>
+<p>目前 API 支持两种类型的选择器：<strong>基于等式</strong> 和 <strong>基于集合</strong>。标签选择器可以由多个逗号分隔的需求组成。在多个需求的情况下，所有需要都要被满足。逗号分隔符的作用与逻辑与 <code>&amp;&amp;</code> 一样。</p>
+<p>一个空的标签选择器（即，零个需求）会选择集合中的每个对象。</p>
+<p>一个空标签的选择器（仅可用于可选选择器字段）不选择任何对象。</p>
+<blockquote>
+<p>注意：两个控制器的标签选择器不得在命名空间内重复，否则它们将相互竞争。</p>
+</blockquote>
+<h2 id="基于等式需求">基于等式需求</h2>
+<p>基于相等或不等的需求允许通过标签的 keys 和 values 进行过滤。匹配的对象必须满足所有指定标签的约束，尽管它们可能具有其他标签。有三种可以使用的运算符：<code>=</code>、<code>==</code> 和 <code>!=</code>。前两个代表等于（它们是同义词），后者代表不等于。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">environment <span style="color:#f92672">=</span> production
+tier !<span style="color:#f92672">=</span> frontend
+</code></pre></div><p>前一个需求所有 key 等于 <code>environment</code> 并且 value 等于 <code>production</code> 的资源。后一个需求所有 key 等于 <code>tier</code> 并且 value 不为 <code>frontend</code> 或不存在 key 等于 <code>tier</code> 的所有资源。要选择生产环境中除前端外的资源可以使用逗号分隔：<code>environment=production,tier!=frontend</code>。</p>
+<p>基于等式的标签需求的一种使用场景是 Pods 选择节点。例如，下面的示例 Pod 选择带有标签 <code>accelerator=nvidia-tesla-p100</code> 的节点。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Pod
+metadata:
+  <span style="color:#66d9ef">name</span>: cuda-test
+spec:
+  containers:
+    - <span style="color:#66d9ef">name</span>: cuda-test
+      <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#39;k8s.gcr.io/cuda-vector-add:v0.1&#39;</span>
+      resources:
+        limits:
+          <span style="color:#66d9ef">nvidia.com/gpu</span>: <span style="color:#ae81ff">1</span>
+  nodeSelector:
+    <span style="color:#66d9ef">accelerator</span>: nvidia-tesla-p100
+</code></pre></div><h3 id="基于集合需求">基于集合需求</h3>
+<p>基于集合的需求允许 key 根据一组 values 过滤。有三种可以使用的运算符，<code>in</code>、<code>notin</code> 和 <code>exists</code>（仅 key 标识符）。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">environment in <span style="color:#f92672">(</span>production, qa<span style="color:#f92672">)</span>
+tier notin <span style="color:#f92672">(</span>frontend, backend<span style="color:#f92672">)</span>
+partition
+!partition
+</code></pre></div><p>第一个例子需求所有 key 等于 <code>environment</code> 并且 value 等于 <code>production</code> 或 <code>qa</code> 的资源。第二个例子需求所有 key 等于 <code>tier</code> 并且 value 不为 <code>frontend</code> 和 <code>backend</code> 或不存在 key 等于 <code>tier</code> 的资源。第三个例子需求所有包含标签 key 为 <code>partition</code> 的资源，不检查值。第四个例子需求所有不存在标签 key 为 <code>partition</code> 的资源，不检查值。类似地，逗号分隔符充当 <code>&amp;&amp;</code> 运算符。因此，要选择有分区并且不在 qa 环境的所有资源可以使用：<code>partition,environment notin (qa)</code>。基于集合的标签是等式的一般形式，因为 <code>environment=production</code> 等同于 <code>environment in (production)</code>，类似地 <code>!=</code> 相当于 <code>notin</code>。</p>
+<p>基于集合的需求可以与基于等式的需求相结合，例如：<code>partition in (customerA, customerB),environment!=qa</code>。</p>
+<h2 id="api">API</h2>
+<h3 id="list-和-watch-过滤">LIST 和 WATCH 过滤</h3>
+<p>LIST 和 WATCH 操作使用查询参数可以指定标签选择器过滤对象集。两种类型的选择器都是被允许的（这里显示的是当它们出现 URL 查询字符串中的形式）：</p>
+<ul>
+<li>
+<p>基于等式需求：
+<code>?labelSelector=environment%3Dproduction,tier%3Dfrontend</code></p>
+</li>
+<li>
+<p>基于集合需求：
+<code>?labelSelector=environment+in+%28production%2Cqa%29%2Ctier+in+%28frontend%29</code></p>
+</li>
+</ul>
+<p>两种标签选择器的样式都能被用来通过一个 REST 客户端列出或者监视资源。例如，针对使用 <code>kubectl</code> 操作 <code>apiserver</code> 和使用基于等式的标签需求可以这样写：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l environment<span style="color:#f92672">=</span>production,tier<span style="color:#f92672">=</span>frontend
+</code></pre></div><p>或者使用基于集合的标签需求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#e6db74">&#39;environment in (production),tier in (frontend)&#39;</span>
+</code></pre></div><p>正如之前所提到的，基于集合的需求语句更具表现力。例如，他们可以在值上实现 <code>||</code> 运算符：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#e6db74">&#39;environment in (production, qa)&#39;</span>
+</code></pre></div><p>或通过存在运算符限制负匹配：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#e6db74">&#39;environment,environment notin (frontend)&#39;</span>
+</code></pre></div><h3 id="设置-api-对象的参考">设置 API 对象的参考</h3>
+<p>某些 Kubernetes 对象，例如 <a href="https://kubernetes.io/docs/user-guide/services">services</a> 和 <a href="https://kubernetes.io/docs/user-guide/replication-controller">replicationcontrollers</a>，它们也可以使用标签选择器去指定其他资源的集合，例如 <a href="https://kubernetes.io/docs/user-guide/pods">pods</a>。</p>
+<h4 id="service-和-replicationcontroller">Service 和 ReplicationController</h4>
+<p><code>service</code> 通过标签选择器定义作为目标的一组 Pods。类似地，<code>replicationcontroller</code> 应该管理的 Pod 的数量也使用标签选择器定义。</p>
+<p>标签选择器对于 <code>service</code> 和 <code>replicationcontroller</code> 这两个对象使用 json 或者 yaml 文件映射的方式来被定义，并且只支持基于等式的需求选择器：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#e6db74">&#34;selector&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+    <span style="color:#f92672">&#34;component&#34;</span> : <span style="color:#e6db74">&#34;redis&#34;</span>,
+}
+</code></pre></div><p>或者</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">selector:
+  <span style="color:#66d9ef">component</span>: redis
+</code></pre></div><p>这个选择器（分别为 json 和 yaml 格式）与 <code>component=redis</code> 或 <code>component in (redis)</code> 相等。</p>
+<h4 id="支持基于集合的需求的资源">支持基于集合的需求的资源</h4>
+<p>Kubernetes 较新的资源，例如 <a href="https://kubernetes.io/docs/concepts/jobs/run-to-completion-finite-workloads/">Job</a>、<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployment</a>、<a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/">Replica Set</a> 和 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/">Daemon Set</a>，也支持基于集合的需求。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">selector:
+  matchLabels:
+    <span style="color:#66d9ef">component</span>: redis
+  matchExpressions:
+    - { <span style="color:#66d9ef">key: tier, operator: In, values</span>: [cache] }
+    - { <span style="color:#66d9ef">key: environment, operator: NotIn, values</span>: [dev] }
+</code></pre></div><p><code>matchLabels</code> 是 <code>{key,value}</code> 键值对的映射。在 <code>matchLabels</code> 映射里的单独的 <code>{key,value}</code> 键值对是等价于一个 <code>matchExpressions</code> 的元素，它的字段 <code>key</code> 是 ：“key”，<code>operator</code> 是 “In”，<code>values</code> 数组仅包含 “value”。<code>matchExpressions</code> 是一个 <code>pod</code> 选择器需求的列表。有效的操作符包括 In、NotIn、Exists 和 DoesNotExist。当操作符为 In 或 NotIn 时，值必须不为空。所有的这些 <code>matchLabels</code> 和 <code>matchExpressions</code> 中的需求都用 <code>&amp;&amp;</code> 连接到一起，它们必须都被满足才能匹配。</p>
+<h4 id="选择节点的集合">选择节点的集合</h4>
+<p>一个通过标签选择的使用场景是约束 Pod 可以调度的节点集。更多信息请看文档 &ndash; <a href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/">node selection</a>。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/" data-tooltip="Kubernetes 注解">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_namespaces/" data-tooltip="Kubernetes 命名空间">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/" data-tooltip="Kubernetes 注解">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_namespaces/" data-tooltip="Kubernetes 命名空间">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_working-with-objects_labels%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_working-with-objects_labels%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_working-with-objects_labels%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

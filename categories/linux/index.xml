@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/categories/linux/</link>
+    <description>Recent content in linux on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>在 Linux 设置开机启动项</title>
+      <link>https://blog.guagua.tech/2018/03/chkconfig-usage/</link>
+      <pubDate>Wed, 21 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/chkconfig-usage/</guid>
+      <description>&lt;p&gt;在服务器上怎样添加一个开机启动项呢？我们可以使用 chkconfig 来做到这一切，下面给大家介绍介绍 chkconfig 的使用方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ssh 的使用</title>
+      <link>https://blog.guagua.tech/2018/03/ssh-usage/</link>
+      <pubDate>Sat, 17 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/ssh-usage/</guid>
+      <description>&lt;p&gt;ssh 是每一台 Linux 电脑的标配，学习它的使用是非常有必要的！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 deb 包在 manjaro 上安装 mongodb-compass</title>
+      <link>https://blog.guagua.tech/2018/03/install-mongodb-compass-on-manjaro/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/install-mongodb-compass-on-manjaro/</guid>
+      <description>&lt;p&gt;今天在 manjaro 上安装 mongodb-compass 时发现 yaourt mongodb-compass 搜到的两个库都已经无法使用了，下面我介绍一种安装方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>apt、dpkg &amp;&amp; yum、rpm &amp;&amp; pacman 使用详解</title>
+      <link>https://blog.guagua.tech/2017/12/apt-dpkg-yum-rpm-pacman-usage/</link>
+      <pubDate>Sun, 24 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/apt-dpkg-yum-rpm-pacman-usage/</guid>
+      <description>&lt;p&gt;我在这里总结了一下三个比较流行的包管理器的命令，apt、dpkg、yum、rpm 和 ArchLinux 中使用的 pacman，以及 yaourt。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>linux 安装 Matlab</title>
+      <link>https://blog.guagua.tech/2017/11/install-matlab-on-linux/</link>
+      <pubDate>Wed, 29 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/install-matlab-on-linux/</guid>
+      <description>&lt;p&gt;在 Windows 和 Mac 上安装 Matlab 比较容易，而在 linux 上却并没那么简单了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

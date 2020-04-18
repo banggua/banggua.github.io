@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>build on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/build/</link>
+    <description>Recent content in build on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/build/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>macOS 上编译 Y86-64 模拟器</title>
+      <link>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</guid>
+      <description>&lt;p&gt;在阅读《深入理解计算机（第三版）》第四章的时候，和它配套的有一个辅助的工具需要自己编译 &amp;ndash; Y86-64 模拟器（Y86-64 Simulator）。当我在网上搜索相关教程时，只找到了在 Ubuntu 编译 Y86-64 模拟器的教程没有 macOS 下编译的教程，所以遇到了不少坑，下面一步步填坑的过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

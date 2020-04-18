@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/
+Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/
+Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes Pods">
+<meta name="twitter:title" content="Kubernetes Pods">
+<meta property="og:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/
+Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/
+Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-09-12T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-09-12T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes Pods</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes Pods
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-12T00:00:00Z">
+        
+  September 12, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/</p>
+<p>Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。</p>
+<h2 id="什么是-pod">什么是 Pod</h2>
+<p>Pod（就像鲸群或者豌豆荚一样）是一组共享存储、网络以及指明运行方式的容器（例如 docker 容器）。一个 Pod 的内容总是协同寻址，协同调度的，并在共享的上下文中运行。Pod 为应用程序模拟了专用的逻辑主机 &ndash; 它包含一个或多个相互紧密联系的应用程序镜像 &ndash; 在没有容器技术之前，它们将在相同物理或虚拟机上执行。</p>
+<p>虽然 Kubernetes 支持除 docker 外的其他容器运行时环境，但是 docker 是最广为人知的运行时环境，所以使用 docker 术语来描述 Pod 有助于理解。</p>
+<p>Pod 共享的上下文是一系列 Linux namespaces、cgroups 和其他底层的隔离设施 &ndash; 这些技术同样是 docker 容器隔离的基础。在 Pod 的上下文中，各个应用可能具有进一步的子隔离。</p>
+<p>Pod 中的容器共享一个 IP 地址和端口空间，并且能通过 <code>localhost</code> 找到 Pod 中的其他容器。它们也可以使用标准的进程间通信方式相互交流，例如 SystemV 信号量、POSIX 共享内存。不同 Pod 中的容器由不同的 IP 地址并且在没有 <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">特殊配置</a> 的情况下不能通过进程间通信进行交流。这些容器通常通过 Pod IP 地址相互交流。</p>
+<p>Pod 中的应用程序也可以访问共享卷，共享卷被定义为 Pod 的一部分，可以挂载到每个应用程序的文件系统中。</p>
+<p>在 <a href="https://www.docker.com/">docker</a> 的术语中，Pod 被定义为一组共享命名空间和共享 <a href="https://kubernetes.io/docs/concepts/storage/volumes/">卷</a> 的 docker 容器。</p>
+<p>就像单独的应用容器，Pod 被认为是相对短暂的（不是持久的）实体。就像在 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Pod 的生命周期</a> 中所讨论的，Pod 被创建，被标记上一个唯一的 ID（UID），并被调度到一个节点上直到被终止（根据重启策略）或被删除。如果一个节点停止运行，在超过期限之后，调度到该节点上的 Pod 就会被删除。一个给定的 Pod（由 UID 定义）不会重新调度到新的节点，它会被相同的 Pod 替代。如果需要，甚至可以使用相同的名称，但是必须使用一个新的 UID（更多细节请看 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/">replication controller</a>）。</p>
+<p>当我们说某个东西具有与 Pod 相同当生命周期，这意味着只要此 Pod（具有此 UID）存在它也就存在，例如卷。如果由于任何原因 Pod 被删除，即使创建了相同的 Pod 代替它，则与这个 Pod 相关的东西也会被销毁再重新创建，例如卷。</p>
+<p><img src="https://blog.guagua.tech/images/2018/08/pod.svg" alt="Pod diagram"></p>
+<p><strong>一个多容器 Pod 包含了一个文件拉取器和 web 服务器，该服务器使用持久卷作为容器间的共享存储。</strong></p>
+<h2 id="使用-pod-的动机">使用 Pod 的动机</h2>
+<h3 id="管理">管理</h3>
+<p>Pod 是一个模式的模型 &ndash; 多个相互协作的进程形成一个紧密结合的服务单元。它们通过提供比其组成的应用集合更高级别的抽象来简化了应用程序的部署和管理。Pod 被用作部署、横向扩展以及复制的单元。对于 Pod 中的容器来说，协同定位（协同调度）、共享生命周期（例如终止）、协调复制、资源共享以及依赖管理都被自动处理了。</p>
+<h4 id="资源共享和交流">资源共享和交流</h4>
+<p>Pod 内部实现数据共享和相互通信。</p>
+<p>Pod 中的应用程序都使用同样的网络命名空间（相同的 IP 和端口空间），并且彼此之间可以使用 <code>localhost</code> 进行通讯。因此，Pod 中的应用程序必须协调它们对端口的使用。每个 Pod 在平面共享网络空间中具有 IP 地址，该网络空间与网络中的其他网络计算机和 Pod 完全通讯。</p>
+<p>Pod 里的应用容器的主机名被设置为 Pod 的名字，更多细节查看 <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">网络</a>。</p>
+<p>除了定义在 Pod 中运行的应用容器之外，Pod 还指定了一组共享存储卷。卷使数据能够在容器重启后继续存在，并且可以让数据在 Pod 中的应用程序之间共享。</p>
+<h2 id="pod-的使用">Pod 的使用</h2>
+<p>Pod 可以被用于托管纵向集成的应用栈（例如 LAMP），但是其主要优势是支持协同定位、协同管理复制程序，例如：</p>
+<ul>
+<li>内容管理系统，文件和数据加载器，本地缓存管理器等。</li>
+<li>日志和检查点备份，压缩，循环，快照等。</li>
+<li>数据更改监视器，日志追踪器，日志和监控适配器，活动发布器等。</li>
+<li>代理，网桥和适配器。</li>
+<li>控制器，管理器，配置器和更新器。</li>
+</ul>
+<p>通常，独立的 Pod 不应该用于运行同一应用程序的多个实例。</p>
+<p>关于这部分的详细解释，请参见 <a href="http://blog.kubernetes.io/2015/06/the-distributed-system-toolkit-patterns.html">分布式系统工具箱：混合容器模式</a>。</p>
+<h2 id="选择的思考">选择的思考</h2>
+<p><strong>为什么不在一个（docker）容器里运行多个程序？</strong></p>
+<p>1.透明度。让 Pod 中的容器对框架可见，使得框架能够为这些容器通过服务，例如，进程管理和资源监控。这为用户提供了许多便利。</p>
+<p>2.软件依赖的解耦。各个容器可以单独地管理版本，单独地重新构建以及单独地重新部署。Kubernetes 甚至可能有一天支持单个容器对实时更新。</p>
+<p>3.使用方便。用户不需要运行自己的进程管理器，担心信号量和退出处理等。</p>
+<p>4.效率。由于框架承担更多的责任，因此容器变得更加轻量级。</p>
+<p><strong>为什么不支持基于亲和性的容器协同调度？</strong></p>
+<p>这个方法可以提供协同寻址，但是不能通过 Pod 的大多数好处，例如资源共享、进程间通信、生命周期共享以及简单化的管理。</p>
+<h2 id="pod-的持久性pod-需要提升的方面">Pod 的持久性（Pod 需要提升的方面）</h2>
+<p>Pod 不应该被视为持久对实体。它们不会在调度故障、节点故障或其他驱逐（例如缺乏资源）或节点维护对情况下存活下来。</p>
+<p>通常，用户不需要直接创建 Pod。它们应该总是使用控制器（例如 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>），哪怕只需要一个 Pod 时。Controller 提供了集群内部 Pod 自我修复，也提供了 Pod 复制和回滚管理。像 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset.md">StatefulSet</a> 这样的 Controller 还可以为有状态的 Pod 提供支持。</p>
+<p>使用集群 API 作为主要的面向用户的原语在集群调度系统中相对常见，例如 <a href="https://research.google.com/pubs/pub43438.html">Borg</a>、<a href="https://mesosphere.github.io/marathon/docs/rest-api.html">Marathon</a>、<a href="http://aurora.apache.org/documentation/latest/reference/configuration/#job-schema">Aurora</a> 和 <a href="http://www.slideshare.net/Docker/aravindnarayanan-facebook140613153626phpapp02-37588997">Tupperware</a>。</p>
+<p>Pod 作为暴露的单元，有以下好处：</p>
+<ul>
+<li>调度器和控制器的可拔插</li>
+<li>支持 Pod 级操作，不需要通过控制器 API 代理。</li>
+<li>将 Pod 的生命周期从控制器中剥离出来，从而减少相互影响。</li>
+<li>剥离出控制器和服务 &ndash; 端点控制器只需要监视 Pod。</li>
+<li>集群级的功能和 kubelet 级的功能组合更加清晰 - kubelet 实际上是 Pod 控制器</li>
+<li>高可用应用程序。在终止和删除 Pod 前，必须提前生成替代 Pod。例如，在被计划地驱逐或图像预先拉取的情况下。</li>
+</ul>
+<h2 id="pod-的终止">Pod 的终止</h2>
+<p>因为 Pod 代表集群中节点上运行的进程，所以很重要的一件事是，当它们不再被需要时如何优雅地终止 Pod（而不是粗暴地使用 KILL 命令杀死它们以致于没有机会做清理工作）。用户应该能够发起删除请求并且知道进程何时终止，同时也应该确保最终完成删除。当用户请求删除 Pod 时，系统会在 Pod 被强制终止之前记录下预估期限，并将 TERM 信号量发送给每个容器的主进程。预估期限过期之后，KILL 信号量会被发送到这些进程，并从 API 服务器中删除该 Pod。如果 kubelet 或容器管理器在等待结束进程时重启，终止操作将在预估期限内反复重试。</p>
+<p>示例流程：</p>
+<p>1.用户发送命令删除 Pod，并使用默认预估期限（30s）。</p>
+<p>2.在 API 服务器上的 Pod 在其视为 &ldquo;dead&rdquo; 的预估期限前随时间更新。</p>
+<p>3.在客户端命令中列出 Pod 时，Pod 显示为 &ldquo;Terminating&rdquo;。</p>
+<p>4.（与 3 同时）当 kubelet 发现 Pod 已经被标记为终止（因为在 2 时已经设置了），它将开始 Pod 关闭进程。</p>
+<blockquote>
+<p>1.如果 Pod 定义了一个 <a href="https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-details">preStop 钩子</a>，则会在 Pod 内部调用它。如果预估期限过期之后 <code>preStop</code> 钩子仍在运行，则调用下面的步骤 2 并在原来当期限上加上一个小的延时（2s）。</p>
+</blockquote>
+<blockquote>
+<p>2.Pod 中的进程被发送 TERM 信号量。</p>
+</blockquote>
+<p>5.（与 3 同时）Pod 将从服务当端点列表中移除，并不再被看作 replication 控制器运行的 Pod 集的一部分。Pod 会缓慢关闭直到法继续为流量提供服务，同时负载均衡器（如 服务代理）会将 Pod 从循环列表中移除。</p>
+<p>6.当预估期限过期，任何仍然在 Pod 中运行的进程都会被 SIGKILL 杀死。</p>
+<p>7.kubelet 将通过在 API 服务器上设置预估期限为 0（立即删除）完成删除 Pod 的过程。这时 Pod 从 API 里消失，也不再能被用户看到。</p>
+<p>默认情况下，所有删除在 30s 内都是正常的。<code>kubectl delete</code> 命令支持 <code>--grace-period=&lt;seconds&gt;</code> 选项，这个选项允许用户用指定的值覆盖默认值。值 <code>0</code> 会 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/#force-deletion-of-pods">强制删除</a> Pod。在 kubectl 版本 &gt;= 1.5，你必须指定额外的标志 <code>--grace-period=0</code> 和 <code>--force</code> 一起才能执行强制删除。</p>
+<h3 id="强制删除-pod">强制删除 Pod</h3>
+<p>强制删除 Pod 被定义为从集群状态和 etcd 中立刻删除这个 Pod。当强制删除被执行，API 服务器不会等待来自 Pod 所在节点上的 kubelet 的确认信息：该 Pod 已经终止。它会立即从 API 中移除 Pod 以便使用相同的名字创建新的 Pod。在节点上，Pod 被设置成立即终止后，在强行终止前仍会被给予很短的期限。</p>
+<p>强制删除可能对某些 Pod 有潜在危险，应该谨慎执行。对于 StatefulSet Pod 的情况，请参考任务文档 <a href="https://kubernetes.io/docs/tasks/run-application/force-delete-stateful-set-pod/">从 StatefulSet 删除 Pod</a>。</p>
+<h2 id="pod-容器的特权模式">Pod 容器的特权模式</h2>
+<p>从 Kubernetes v1.1 版本开始，Pod 中的任何容器都可以启动特区模式，只需要将容器规格（spec）的 <code>SecurityContext</code> 指定为 <code>privileged</code>。这对于想使用 Linux 功能的容器非常有用，例如操作网络堆栈和访问系备。容器内的进程获得与容器外部进程几乎完全相同的权限。有了特权模式，编写网络和卷插件变得更加容易，因为它们可以作为独立的 Pod 运行，而不需要编译到 kubelet 中去。</p>
+<p>如果主节点运行 Kubernetes v1.1 或更高版本，但是其他节点上运行的版本低于 v1.1。虽然 API 服务器会接受新的特权 Pod，但是这些 Pod 却无法正常运行起来。它们将一直处于 <code>pending</code> 状态。如果用户调用 <code>kubectl describe pod FooPodName</code>，用户可以看到 Pod 处于 pending 状态的原因。<code>kubectl describe</code> 命令将输出如下事件表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Error validating pod <span style="color:#e6db74">&#34;FooPodName&#34;</span>.<span style="color:#e6db74">&#34;FooPodNamespace&#34;</span> from api, ignoring: spec.containers<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.securityContext.privileged: forbidden <span style="color:#e6db74">&#39;&lt;*&gt;(0xc2089d3248)true&#39;</span>
+</code></pre></div><p>如果主节点运行的版本低于 v1.1，则特权 Pod 不能被创建。如果用户尝试创建具有特权容器的 Pod，用户将收到以下错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">The Pod <span style="color:#e6db74">&#34;FooPodName&#34;</span> is invalid. spec.containers<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.securityContext.privileged: forbidden <span style="color:#e6db74">&#39;&lt;*&gt;(0xc20b222db0)true&#39;</span>
+</code></pre></div><h2 id="api-对象">API 对象</h2>
+<p>Pod 是 Kubernetes REST API 中的顶级资源。更多有关 API 对象的细节可以在 <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#pod-v1-core">Pod API
+对象</a> 中找到。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-lifecycle/" data-tooltip="Kubernetes Pod 的生命周期">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-overview/" data-tooltip="Kubernetes Pod 概述">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-lifecycle/" data-tooltip="Kubernetes Pod 的生命周期">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-overview/" data-tooltip="Kubernetes Pod 概述">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_workloads_pods_pod%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_workloads_pods_pod%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_workloads_pods_pod%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

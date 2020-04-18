@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="golang, library, cobra">
+<meta name="description" content="今天我们介绍一个简化构建 CLI 应用程序的库 &ndash; Cobra。">
+
+
+<meta property="og:description" content="今天我们介绍一个简化构建 CLI 应用程序的库 &ndash; Cobra。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cobra 使用入门">
+<meta name="twitter:title" content="Cobra 使用入门">
+<meta property="og:url" content="https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="今天我们介绍一个简化构建 CLI 应用程序的库 &ndash; Cobra。">
+<meta name="twitter:description" content="今天我们介绍一个简化构建 CLI 应用程序的库 &ndash; Cobra。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-06-15T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-06-15T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="golang">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+      <meta property="article:tag" content="library">
+    
+      <meta property="article:tag" content="cobra">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Cobra 使用入门</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Cobra 使用入门
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-06-15T00:00:00Z">
+        
+  June 15, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/golang">golang</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>今天我们介绍一个简化构建 CLI 应用程序的库 &ndash; Cobra。</p>
+<h2 id="cobra">Cobra</h2>
+<p>Cobra 是用于创建 CLI 应用程序的库，同时提供了用于生成应用程序和命令文件的程序。</p>
+<p>非常多有名的开源项目都在使用它：</p>
+<ul>
+<li><a href="http://kubernetes.io/">Kubernetes</a></li>
+<li><a href="http://gohugo.io">Hugo</a></li>
+<li><a href="https://github.com/coreos/rkt">rkt</a></li>
+<li><a href="https://github.com/coreos/etcd">etcd</a></li>
+<li><a href="https://github.com/moby/moby">Moby (former Docker)</a></li>
+<li><a href="https://github.com/docker/distribution">Docker (distribution)</a></li>
+<li><a href="https://www.openshift.com/">OpenShift</a></li>
+<li><a href="https://github.com/derekparker/delve">Delve</a></li>
+<li><a href="http://www.gopherjs.org/">GopherJS</a></li>
+<li><a href="http://www.cockroachlabs.com/">CockroachDB</a></li>
+<li><a href="http://www.blevesearch.com/">Bleve</a></li>
+<li><a href="http://www.projectatomic.io/">ProjectAtomic (enterprise)</a></li>
+<li><a href="https://github.com/giantswarm/cli">GiantSwarm&rsquo;s swarm</a></li>
+<li><a href="https://github.com/nanobox-io/nanobox">Nanobox</a>/<a href="https://github.com/nanopack">Nanopack</a></li>
+<li><a href="http://rclone.org/">rclone</a></li>
+<li><a href="https://github.com/bogem/nehm">nehm</a></li>
+<li><a href="https://github.com/alibaba/pouch">Pouch</a></li>
+</ul>
+<h2 id="命令子命令参数与标志型参数">命令、子命令、参数与标志型参数</h2>
+<p>命令表示动作，参数是事物，标志是这些动作的修饰符。</p>
+<h3 id="命令与子命令">命令与子命令</h3>
+<p>以 docker 为例，docker 是一个命令，<code>docker pull</code> 中的 pull 就是 docker 的子命令。</p>
+<p>为什么有子命令这样的设计呢？</p>
+<blockquote>
+<p>假设，我们将 docker 拆分成 docker-version、docker-ps、docker-pull 等等，那么它们共用的很多代码都得编译多次大大增加了可执行文件的总大小。在升级时，改动公有代码得多次改动，分发时得多次分发，不易维护同时增加了出错的概率。</p>
+</blockquote>
+<h3 id="参数与标志型参数">参数与标志型参数</h3>
+<p>同样以 docker 为例，<code>docker rmi mysql mongo</code> 的 mysql 和 mongo 都是 docker rmi 命令的参数。</p>
+<p>那么什么是标志型参数呢？</p>
+<blockquote>
+<p>看这一条命令 <code>docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql</code> 中的 <code>--name some-mysql</code>、<code>-e MYSQL_ROOT_PASSWORD=my-secret-pw</code>、<code>-d</code> 均为标志型参数。</p>
+</blockquote>
+<p>那非标志性和标志型参数有什么区别呢？</p>
+<blockquote>
+<p>看 <code>docker rm mysql mongo</code> 参数(mysql、mongo)对于命令(docker rmi)来说并没有什么区别(除移除的顺序)，更不会改变 <code>docker rmi</code> 这一命令的行为有任何影响。而标志型参数(-e MYSQL_ROOT_PASSWORD=my-secret-pw 等)则会对命令(docker run)的运行造成影响。</p>
+</blockquote>
+<blockquote>
+<p>如果不能理解，再举一例 <code>docker rm job1 job2</code> 和 <code>docker rm -f job1 job2</code>，-f 是一个标志型参数，它有默认值为 true，-f 等同于 -f=1。如果 job1 和 job2 正在运行，则 <code>docker rm job1 job2</code> 不能将它们移除，而 <code>docker rm -f job1 job2</code> 可以将他们强制移除。由此看来，标志型参数往往具有特殊意义，可以对命令的行为。</p>
+</blockquote>
+<h2 id="cobra-的使用">Cobra 的使用</h2>
+<p>这里有一个多层嵌套的例子，<a href="https://github.com/spf13/cobra/blob/master/README.md#example">official example</a>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// basic.go
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;strings&#34;</span>
+
+    <span style="color:#e6db74">&#34;github.com/spf13/cobra&#34;</span>
+    <span style="color:#e6db74">&#34;github.com/spf13/pflag&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">echoTimes</span> <span style="color:#66d9ef">int</span>
+
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cmdPrint</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>{
+        <span style="color:#a6e22e">Use</span>:   <span style="color:#e6db74">&#34;print [string to print]&#34;</span>,
+        <span style="color:#a6e22e">Short</span>: <span style="color:#e6db74">&#34;Print anything to the screen&#34;</span>,
+        <span style="color:#a6e22e">Long</span>: <span style="color:#e6db74">`print is for printing anything back to the screen.
+</span><span style="color:#e6db74">For many years people have printed back to the screen.`</span>,
+        <span style="color:#a6e22e">Args</span>: <span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">MinimumNArgs</span>(<span style="color:#ae81ff">1</span>),
+        <span style="color:#a6e22e">Run</span>: <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) {
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Print: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">args</span>, <span style="color:#e6db74">&#34; &#34;</span>))
+            <span style="color:#a6e22e">flags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Flags</span>()
+            <span style="color:#a6e22e">flags</span>.<span style="color:#a6e22e">VisitAll</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">flag</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">pflag</span>.<span style="color:#a6e22e">Flag</span>) {
+                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;FLAG: --%s=%q\n&#34;</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Value</span>)
+            })
+        },
+    }
+
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cmdEcho</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>{
+        <span style="color:#a6e22e">Use</span>:   <span style="color:#e6db74">&#34;echo [string to echo]&#34;</span>,
+        <span style="color:#a6e22e">Short</span>: <span style="color:#e6db74">&#34;Echo anything to the screen&#34;</span>,
+        <span style="color:#a6e22e">Long</span>: <span style="color:#e6db74">`echo is for echoing anything back.
+</span><span style="color:#e6db74">Echo works a lot like print, except it has a child command.`</span>,
+        <span style="color:#a6e22e">Args</span>: <span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">MinimumNArgs</span>(<span style="color:#ae81ff">1</span>),
+        <span style="color:#a6e22e">Run</span>: <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) {
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Print: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">args</span>, <span style="color:#e6db74">&#34; &#34;</span>))
+            <span style="color:#a6e22e">flags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Flags</span>()
+            <span style="color:#a6e22e">flags</span>.<span style="color:#a6e22e">VisitAll</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">flag</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">pflag</span>.<span style="color:#a6e22e">Flag</span>) {
+                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;FLAG: --%s=%q\n&#34;</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Value</span>)
+            })
+        },
+    }
+
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">cmdTimes</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>{
+        <span style="color:#a6e22e">Use</span>:   <span style="color:#e6db74">&#34;times [# times] [string to echo]&#34;</span>,
+        <span style="color:#a6e22e">Short</span>: <span style="color:#e6db74">&#34;Echo anything to the screen more times&#34;</span>,
+        <span style="color:#a6e22e">Long</span>: <span style="color:#e6db74">`echo things multiple times back to the user by providing
+</span><span style="color:#e6db74">a count and a string.`</span>,
+        <span style="color:#a6e22e">Args</span>: <span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">MinimumNArgs</span>(<span style="color:#ae81ff">1</span>),
+        <span style="color:#a6e22e">Run</span>: <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>, <span style="color:#a6e22e">args</span> []<span style="color:#66d9ef">string</span>) {
+            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">echoTimes</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Echo: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">args</span>, <span style="color:#e6db74">&#34; &#34;</span>))
+            }
+            <span style="color:#a6e22e">flags</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Flags</span>()
+            <span style="color:#a6e22e">flags</span>.<span style="color:#a6e22e">VisitAll</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">flag</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">pflag</span>.<span style="color:#a6e22e">Flag</span>) {
+                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;FLAG: --%s=%q\n&#34;</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Value</span>)
+            })
+        },
+    }
+
+    <span style="color:#a6e22e">cmdTimes</span>.<span style="color:#a6e22e">Flags</span>().<span style="color:#a6e22e">IntVarP</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">echoTimes</span>, <span style="color:#e6db74">&#34;times&#34;</span>, <span style="color:#e6db74">&#34;t&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;times to echo the input&#34;</span>)
+
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">rootCmd</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cobra</span>.<span style="color:#a6e22e">Command</span>{<span style="color:#a6e22e">Use</span>: <span style="color:#e6db74">&#34;app&#34;</span>}
+    <span style="color:#a6e22e">rootCmd</span>.<span style="color:#a6e22e">AddCommand</span>(<span style="color:#a6e22e">cmdPrint</span>, <span style="color:#a6e22e">cmdEcho</span>)
+    <span style="color:#a6e22e">cmdEcho</span>.<span style="color:#a6e22e">AddCommand</span>(<span style="color:#a6e22e">cmdTimes</span>)
+    <span style="color:#a6e22e">rootCmd</span>.<span style="color:#a6e22e">Execute</span>()
+}
+</code></pre></div><p><img src="https://blog.guagua.tech/images/2018/06/cobra.svg" alt="cobra"></p>
+<p>这个命令是这样的，print 和 echo 都是 app 的子命令，并且行为相同都是输出 “Print: 参数”。times 是 echo 的子参数，它有一个标志型参数，默认值是 1，它会输出 x 次（-t x）“Echo: 参数”。所有命令最后都会将所有的标志型参数输出。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go build -o app basic.go
+
+$ ./app print 123456
+Print: 123456
+FLAG: --help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span>
+
+$ ./app echo 123456
+Print: 123456
+FLAG: --help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span>
+
+$ ./app echo times 123456
+Echo: 123456
+FLAG: --help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span>
+FLAG: --times<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span>
+
+$ ./app echo times <span style="color:#ae81ff">123456</span> -t 3
+Echo: 123456
+Echo: 123456
+Echo: 123456
+FLAG: --help<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span>
+FLAG: --times<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3&#34;</span>
+
+$ ./app times 123456
+Error: unknown command <span style="color:#e6db74">&#34;times&#34;</span> <span style="color:#66d9ef">for</span> <span style="color:#e6db74">&#34;app&#34;</span>
+Run <span style="color:#e6db74">&#39;app --help&#39;</span> <span style="color:#66d9ef">for</span> usage.
+</code></pre></div><h2 id="扩展">扩展</h2>
+<p>linux 中间有的命令是一个横杠，有的命令是两个横杠。这有什么区别吗？</p>
+<p>Unix 程序的命令行选项有三种风格：Unix 风格、GNU 风格和 X toolkit 风格。</p>
+<ul>
+<li>Unix 风格: 在选项需要加参数的时候，紧跟在选项后面或者加空格。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql -u root -p
+mysql -uroot -p
+</code></pre></div><ul>
+<li>GNU 风格: 这种风格的出现是因为有一些复杂的 GNU 程序，仅仅 26 个字母（或者算上大小写 52 个）不够使用而发展出来的。另外一个有点是容易理解，因为出现的不再是缩写的字母。选项参数可以使用空格分割也可以使用&quot;=&quot;来分割。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ls --human-readable --sort<span style="color:#f92672">=</span>time
+ls -ht <span style="color:#75715e"># Unix Style</span>
+</code></pre></div><ul>
+<li>X toolkit 风格: 这是一种比较不常见的风格，使用单个连字符加上关键词。只有 X 相关的程序才使用这种风格，一般不建议使用。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xeyes -display joesws:0 -geometry 1000x1000+0+0
+</code></pre></div><h2 id="references">References</h2>
+<ul>
+<li><a href="http://www.faqs.org/docs/artu/ch10s05.html">Command-Line Options</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/golang/">golang</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/library/">library</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/cobra/">cobra</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/06/latex-in-mac/" data-tooltip="LaTeX in Mac">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/05/how-to-access-wikipedia/" data-tooltip="如何访问维基百科">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/06/latex-in-mac/" data-tooltip="LaTeX in Mac">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/05/how-to-access-wikipedia/" data-tooltip="如何访问维基百科">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/06/how-to-use-cobra/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F06%2Fhow-to-use-cobra%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F06%2Fhow-to-use-cobra%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F06%2Fhow-to-use-cobra%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

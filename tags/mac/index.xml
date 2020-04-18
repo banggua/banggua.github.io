@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mac on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/mac/</link>
+    <description>Recent content in mac on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>安装 DOSBox 及配置</title>
+      <link>https://blog.guagua.tech/2018/10/dosbox-in-mac/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/dosbox-in-mac/</guid>
+      <description>&lt;p&gt;由于今年开设了《IBM-PC 汇编语言程序设计》这门课，所以安装了 DOSBox，下面介绍一下安装的过程及我的配置。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gdb on macOS</title>
+      <link>https://blog.guagua.tech/2018/09/using-gdb-on-macos/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/using-gdb-on-macos/</guid>
+      <description>&lt;p&gt;gdb 无法在 macOS Mojave 上正常使用。&lt;/p&gt;
+&lt;p&gt;最近在 mac 上使用 gdb 调试程序的时候，突然发现 gdb 不能很好的运行。下面是我遇到的一些坑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LaTeX in Mac</title>
+      <link>https://blog.guagua.tech/2018/06/latex-in-mac/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/latex-in-mac/</guid>
+      <description>&lt;p&gt;LaTeX 是一个高质量的排版系统，它包含为生产技术和科学文档而设计的功能。LaTeX 是科学文件通讯和出版的事实标准。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

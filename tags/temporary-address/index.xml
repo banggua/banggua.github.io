@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>temporary-address on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/temporary-address/</link>
+    <description>Recent content in temporary-address on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/temporary-address/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>go temporary address</title>
+      <link>https://blog.guagua.tech/2019/01/go-temporary-address/</link>
+      <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-temporary-address/</guid>
+      <description>&lt;p&gt;在很久之前遇到过一个很奇怪的问题，最近忆起终得答案，特记录于此。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

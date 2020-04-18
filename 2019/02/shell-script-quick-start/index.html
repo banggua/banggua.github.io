@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="shell, script">
+<meta name="description" content="Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。">
+
+
+<meta property="og:description" content="Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell Script 快速入门">
+<meta name="twitter:title" content="Shell Script 快速入门">
+<meta property="og:url" content="https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。">
+<meta name="twitter:description" content="Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-02-06T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-02-06T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="skill">
+    
+  
+  
+    
+      <meta property="article:tag" content="shell">
+    
+      <meta property="article:tag" content="script">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Shell Script 快速入门</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Shell Script 快速入门
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-02-06T00:00:00Z">
+        
+  February 6, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/skill">skill</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。</p>
+<h2 id="变量">变量</h2>
+<p>变量类型</p>
+<p>Shell 的两种变量：</p>
+<ol>
+<li><em>局部变量：</em> 局部变量在脚本或命令中定义，仅在当前脚本或命令中有效，其他脚本或命令启动的程序无法访问。</li>
+<li><em>环境变量：</em> 所有的程序，包括 Shell 启动的程序，都能访问环境变量，有些程序需要环境变量来保证其正常运行。</li>
+</ol>
+<h3 id="基本操作">基本操作</h3>
+<p>1.定义变量</p>
+<p>定义变量时，变量名和等号之间不能有空格。变量名的命名规则与大多数编程语言相同，在此不再赘述。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">var
+VAR
+CONST_VAR
+_var
+</code></pre></div><p>2.使用变量</p>
+<p>使用一个定义过的变量，只要在变量名前面加美元符号即可，变量名外也可以加花括号。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo $var
+echo <span style="color:#e6db74">${</span>var<span style="color:#e6db74">}</span>
+</code></pre></div><p>3.只读变量</p>
+<p>使用 <code>readonly</code> 命令可以将变量定义为只读变量，只读变量的值不能被改变。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">readonly var
+</code></pre></div><p>4.删除变量</p>
+<p>使用 <code>unset</code> 命令可以删除变量。变量被删除后不能再次使用。<code>unset</code> 命令不能删除只读变量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">unset var
+</code></pre></div><h3 id="字符串">字符串</h3>
+<p>1.单引号</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">str<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;My name is &#39;</span>$name<span style="color:#e6db74">&#39;.&#39;</span>
+</code></pre></div><p>单引号字符串的限制：</p>
+<ol>
+<li>单引号字符串里的任何字符都会原样输出，使用的变量、转义字符都会被原样输出。</li>
+<li>单引号字串中的单引号必须成对出现，成对时可以进行字符串拼接。</li>
+</ol>
+<p>2.双引号</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">str<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;My name is </span>$name<span style="color:#e6db74">.&#34;</span>
+</code></pre></div><p>双引号字符串的优点：</p>
+<ol>
+<li>双引号字符串里可以有变量。</li>
+<li>双引号字符串里可以出现转义字符。</li>
+</ol>
+<p>3.拼接字符串</p>
+<p>单引号字符串、双引号字符串都可以进行拼接，而且单引号字符串和双引号字符串可以混合拼接。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 单引号</span>
+greeting<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello, &#34;</span>$your_name<span style="color:#e6db74">&#34;!&#34;</span>
+<span style="color:#75715e"># 双引号</span>
+greeting<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Hello, &#39;</span>$your_name<span style="color:#e6db74">&#39;!&#39;</span>
+<span style="color:#75715e"># 混合拼接</span>
+greeting<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello, &#34;</span>$your_name<span style="color:#e6db74">&#39;!&#39;</span>
+</code></pre></div><p>4.获取长度</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">${#</span>string<span style="color:#e6db74">}</span>
+</code></pre></div><p>5.提取子串</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">${</span>string:1:4<span style="color:#e6db74">}</span>
+</code></pre></div><p>6.查找子串</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">`</span>expr index <span style="color:#e6db74">&#34;</span>$string<span style="color:#e6db74">&#34;</span> io<span style="color:#e6db74">`</span>
+</code></pre></div><h3 id="数组">数组</h3>
+<p>BASH 只支持一维数组，不支持多维数组，并且不限定数组的大小。数组元素的下标由 0 开始编号，而且可以不使用连续下标，下标的范围没有限制。</p>
+<p>1.定义数组</p>
+<p>在 Shell 中，用括号来表示数组，数组元素用 <em>空格</em> 符号分割开。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">array_name<span style="color:#f92672">=(</span>value0 value1 value2 value3<span style="color:#f92672">)</span>
+
+array_name<span style="color:#f92672">=(</span>
+value0
+value1
+value2
+value3
+<span style="color:#f92672">)</span>
+
+array_name<span style="color:#f92672">[</span>0<span style="color:#f92672">]=</span>value0
+array_name<span style="color:#f92672">[</span>1<span style="color:#f92672">]=</span>value1
+array_name<span style="color:#f92672">[</span>2<span style="color:#f92672">]=</span>value2
+array_name<span style="color:#f92672">[</span>3<span style="color:#f92672">]=</span>value3
+</code></pre></div><p>2.读取数组</p>
+<p>读取数组元素值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">${</span>array_name[index]<span style="color:#e6db74">}</span>
+</code></pre></div><p>获取数组中的所有元素。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">${</span>array_name[@]<span style="color:#e6db74">}</span>
+</code></pre></div><p>3.获取长度</p>
+<p>获取数组长度的方法与获取字符串长度的方法相同。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#e6db74">${#</span>array_name<span style="color:#e6db74">}</span>
+<span style="color:#e6db74">${#</span>array_name[@]<span style="color:#e6db74">}</span>
+<span style="color:#e6db74">${#</span>array_name[*]<span style="color:#e6db74">}</span>
+</code></pre></div><h3 id="注释">注释</h3>
+<p>Shell 支持 <em>单行注释</em> 和 <em>多行注释</em> 。</p>
+<p>1.单行注释</p>
+<p>以 <code>#</code> 开头的行就是注释，会被解释器忽略。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># annotation</span>
+<span style="color:#75715e"># annotation</span>
+<span style="color:#75715e"># annotation</span>
+</code></pre></div><p>2.多行注释</p>
+<p>使用 <code>: &lt;&lt;delimiter</code> 可以定义一个多行注释，它遇到 <code>delimiter</code> 结束，<code>delimiter</code> 可以是任意标记。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">: <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">annotation
+</span><span style="color:#e6db74">annotation
+</span><span style="color:#e6db74">annotation
+</span><span style="color:#e6db74">EOF</span>
+</code></pre></div><h2 id="参数">参数</h2>
+<p>在执行 Shell 脚本时，可以向脚本传递参数，脚本内获取参数的格式为：<code>$n</code>。n 是一个数字，1 为执行脚本的第一个参数，2 为执行脚本的第二个参数，以此类推。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/usr/bin/env bash
+</span><span style="color:#75715e"></span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+echo <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span>
+echo <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>
+echo <span style="color:#e6db74">&#34;</span>$2<span style="color:#e6db74">&#34;</span>
+echo <span style="color:#e6db74">&#34;</span>$3<span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>另外，还有几个特殊字符用来处理参数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数处理</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>$#</code></td>
+<td align="left">传递到脚本的参数个数</td>
+</tr>
+<tr>
+<td align="left"><code>$*</code></td>
+<td align="left">以一个单字符串显示所有向脚本传递的参数</td>
+</tr>
+<tr>
+<td align="left"><code>$$</code></td>
+<td align="left">脚本运行的当前进程 ID 号</td>
+</tr>
+<tr>
+<td align="left"><code>$!</code></td>
+<td align="left">后台运行的最后一个进程的 ID 号</td>
+</tr>
+<tr>
+<td align="left"><code>$@</code></td>
+<td align="left">与 <code>$*</code> 相同，但是使用时加引号，并在引号中返回每个参数</td>
+</tr>
+<tr>
+<td align="left"><code>$-</code></td>
+<td align="left">显示 Shell 使用的当前选项</td>
+</tr>
+<tr>
+<td align="left"><code>$?</code></td>
+<td align="left">显示最后命令的退出状态，0 表示没有错误</td>
+</tr>
+</tbody>
+</table>
+<p><code>$*</code> 与 <code>$@</code> 区别：</p>
+<ul>
+<li>
+<p>相同点：都是引用所有参数。</p>
+</li>
+<li>
+<p>不同点： <code>&quot;$*&quot;</code> 等价于 &ldquo;$1 $2 $3 &hellip; $n&rdquo; 只传递了一个参数，而 <code>&quot;$@&quot;</code> 等价于 &ldquo;$1&rdquo; &ldquo;$2&rdquo; &ldquo;$3&rdquo; &hellip; &ldquo;$n&rdquo; 传递了 n 个参数。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/usr/bin/env bash
+</span><span style="color:#75715e"></span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+args1<span style="color:#f92672">=(</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>...<span style="color:#f92672">)</span>
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${#</span>args1<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+args2<span style="color:#f92672">=(</span><span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>...<span style="color:#f92672">)</span>
+echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${#</span>args2<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</code></pre></div><h2 id="运算符">运算符</h2>
+<p>Shell 和其他编程语言一样，支持多种运算符，包括：</p>
+<ol>
+<li>算数运算符</li>
+<li>关系运算符</li>
+<li>布尔运算符</li>
+<li>逻辑运算符</li>
+<li>字符串运算符</li>
+<li>文件测试运算符</li>
+</ol>
+<h3 id="算数运算符">算数运算符</h3>
+<blockquote>
+<p>注意：请使用 <code>$((...))</code>，不要使用 <code>expr</code> 和 <code>$[...]</code>。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">运算</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">赋值</td>
+<td align="left"><code>var1=$var2</code></td>
+</tr>
+<tr>
+<td align="left">加法</td>
+<td align="left"><code>$((var1 + var2))</code></td>
+</tr>
+<tr>
+<td align="left">减法</td>
+<td align="left"><code>$((var1 - var2))</code></td>
+</tr>
+<tr>
+<td align="left">乘法</td>
+<td align="left"><code>$((var1 * var2))</code></td>
+</tr>
+<tr>
+<td align="left">除法</td>
+<td align="left"><code>$((var1 / var2))</code></td>
+</tr>
+<tr>
+<td align="left">取余</td>
+<td align="left"><code>$((var1 % var2))</code></td>
+</tr>
+<tr>
+<td align="left">相等</td>
+<td align="left"><code>$((var1 == var1))</code></td>
+</tr>
+<tr>
+<td align="left">不等</td>
+<td align="left"><code>$((var1 != var1))</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="关系运算符">关系运算符</h3>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-eq</code></td>
+<td align="left">检测两个数是否相等，相等则返回 true</td>
+<td align="left"><code>[ $var1 -eq $var2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-ne</code></td>
+<td align="left">检测两个数是否不等，不等则返回 true</td>
+<td align="left"><code>[ $var1 -ne $var2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-gt</code></td>
+<td align="left">检测左边是否大于右边，是则返回 true</td>
+<td align="left"><code>[ $var1 -gt $var2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-lt</code></td>
+<td align="left">检测左边是否小于右边，是则返回 true</td>
+<td align="left"><code>[ $var1 -lt $var2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-ge</code></td>
+<td align="left">检测左是否大于等于右，是则返回 true</td>
+<td align="left"><code>[ $var1 -ge $var2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-le</code></td>
+<td align="left">检测左是否小于等于右，是则返回 true</td>
+<td align="left"><code>[ $var1 -le $var2 ]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="布尔运算符">布尔运算符</h3>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>!</code></td>
+<td align="left">非运算</td>
+<td align="left"><code>[ ! bool ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-o</code></td>
+<td align="left">或运算</td>
+<td align="left"><code>[ bool -o bool ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-a</code></td>
+<td align="left">与运算</td>
+<td align="left"><code>[ bool -a bool ]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="逻辑运算符">逻辑运算符</h3>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">||</td>
+<td align="left">逻辑或</td>
+<td align="left"><code>[ bool ]</code> || <code>[ bool ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>&amp;&amp;</code></td>
+<td align="left">逻辑与</td>
+<td align="left"><code>[ bool ] &amp;&amp; [ bool ]</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>布尔运算符</em> 与 <em>逻辑运算符</em> 有什么区别呢？</p>
+</blockquote>
+<blockquote>
+<p>逻辑运算符具有短路的功能。即， <code>||</code> 的左式为 true，右式不会执行。同理，<code>&amp;&amp;</code> 的左式为 false，右式不会执行。布尔运算符则不具有短路的功能。</p>
+</blockquote>
+<h3 id="字符串运算符">字符串运算符</h3>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>=</code></td>
+<td align="left">检测两个字符串是否相等，相等则返回 true</td>
+<td align="left"><code>[ $str1 = $str2 ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>!=</code></td>
+<td align="left">检测两个字符串是否不等，不等则返回 true</td>
+<td align="left"><code>[ $str1 != $str ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-z</code></td>
+<td align="left">检测字符串长度是否为 0，为 0 则返回 true</td>
+<td align="left"><code>[ -z $string ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-n</code></td>
+<td align="left">检测字符串长度是否为 0，不为 0 则返回 true</td>
+<td align="left"><code>[ -n &quot;$string&quot; ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>$</code></td>
+<td align="left">检测字符串是否为空，不为空则返回 true</td>
+<td align="left"><code>[ $string ]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件测试运算符">文件测试运算符</h3>
+<p>文件测试运算符用于检测文件的各种属性。</p>
+<table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-b file</code></td>
+<td align="left">检测文件是否是块设备文件，是则返回 true</td>
+<td align="left"><code>[ -b $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-c file</code></td>
+<td align="left">检测文件是否是字符设备文件，是则返回 true</td>
+<td align="left"><code>[ -c $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-d file</code></td>
+<td align="left">检测文件是否是目录，是则返回 true</td>
+<td align="left"><code>[ -d $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-e file</code></td>
+<td align="left">检测文件（目录）是否存在，是则返回 true</td>
+<td align="left"><code>[ -e $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-f file</code></td>
+<td align="left">检测文件是否是 <em>普通文件</em>@1，是则返回 true</td>
+<td align="left"><code>[ -f $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-g file</code></td>
+<td align="left">检测文件是否设置 <em>SGID 位</em>@2，是则返回 true</td>
+<td align="left"><code>[ -g $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-k file</code></td>
+<td align="left">检测文件是否设置 <em>Sticky 位</em>@2，是则返回 true</td>
+<td align="left"><code>[ -k $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-p file</code></td>
+<td align="left">检测文件是否是有名管道，是则返回 true</td>
+<td align="left"><code>[ -p $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-r file</code></td>
+<td align="left">检测文件是否可读，是则返回 true</td>
+<td align="left"><code>[ -r $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-s file</code></td>
+<td align="left">检测文件是否为 <em>空</em>@3，不为空则返回 true</td>
+<td align="left"><code>[ -s $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-u file</code></td>
+<td align="left">检测文件是否设置 <em>SUID 位</em>@2，是则返回 true</td>
+<td align="left"><code>[ -u $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-w file</code></td>
+<td align="left">检测文件是否可写，是则返回 true</td>
+<td align="left"><code>[ -w $file ]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-x file</code></td>
+<td align="left">检测文件是否可执行，是则返回 true</td>
+<td align="left"><code>[ -x $file ]</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>普通文件：既不是目录，也不是设备文件。</li>
+<li>SUID、SGID、Sticky：《深入理解 LINUX 内核》（第三版）的第 21 面有简单解释。详细请参见维基百科 <a href="https://en.wikipedia.org/wiki/Setuid">setuid</a>、<a href="https://en.wikipedia.org/wiki/Chmod">chmod</a>、<a href="https://en.wikipedia.org/wiki/Sticky_bit">sticky bit</a> 等。</li>
+<li>空：文件大小为 0。</li>
+</ol>
+<h2 id="控制流">控制流</h2>
+<p>与大多数编程语言不同，Shell 的流程控制语句不能为空。</p>
+<h3 id="if-else-语句">if else 语句</h3>
+<p>1.if</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> condition <span style="color:#66d9ef">then</span>
+    command
+<span style="color:#66d9ef">fi</span>
+</code></pre></div><p>2.if else</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> condition <span style="color:#66d9ef">then</span>
+    command
+<span style="color:#66d9ef">else</span>
+    command
+<span style="color:#66d9ef">fi</span>
+</code></pre></div><p>3.if elif else</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> condition <span style="color:#66d9ef">then</span>
+    command
+<span style="color:#66d9ef">elif</span> condition <span style="color:#66d9ef">then</span>
+    command
+<span style="color:#66d9ef">else</span>
+    command
+<span style="color:#66d9ef">fi</span>
+</code></pre></div><h3 id="for-语句">for 语句</h3>
+<p>1.for i</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">for</span> <span style="color:#f92672">((</span>i <span style="color:#f92672">=</span> 0; i &lt; n; i++<span style="color:#f92672">))</span>; <span style="color:#66d9ef">do</span>
+    command
+<span style="color:#66d9ef">done</span>
+</code></pre></div><p>2.for in</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">for</span> item in item item ...; <span style="color:#66d9ef">do</span>
+    command
+<span style="color:#66d9ef">done</span>
+</code></pre></div><h3 id="while-语句">while 语句</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">while</span> condition
+<span style="color:#66d9ef">do</span>
+    command
+<span style="color:#66d9ef">done</span>
+</code></pre></div><h3 id="until-语句">until 语句</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">until</span> condition
+<span style="color:#66d9ef">do</span>
+    command
+<span style="color:#66d9ef">done</span>
+</code></pre></div><h3 id="case-语句">case 语句</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;</span>$item<span style="color:#e6db74">&#34;</span> in
+    1<span style="color:#f92672">)</span>
+        echo <span style="color:#e6db74">&#34;case 1&#34;</span>
+    ;;
+    2|3<span style="color:#f92672">)</span>
+        echo <span style="color:#e6db74">&#34;case 2 or 3&#34;</span>
+    ;;
+    *<span style="color:#f92672">)</span>
+        echo <span style="color:#e6db74">&#34;default&#34;</span>
+    ;;
+<span style="color:#66d9ef">esac</span>
+</code></pre></div><h3 id="break-和-continue-命令">break 和 continue 命令</h3>
+<ol>
+<li>break 命令允许跳出所有循环，终止执行后面的所有循环。</li>
+<li>continue 命令跳出当前循环，并进入下一次循环。</li>
+</ol>
+<h2 id="函数">函数</h2>
+<p>Shell Script 中也可以定义函数。</p>
+<h3 id="函数格式">函数格式</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># define</span>
+<span style="color:#66d9ef">function</span> function_name<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    command
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># call</span>
+function_name
+</code></pre></div><h3 id="函数参数">函数参数</h3>
+<p>调用函数时可以向其传递参数，在函数体内部，通过 <code>$n</code> 的形式来获取参数的值。</p>
+<blockquote>
+<p>注意：当 n&gt;=10 时，需要使用 <code>${n}</code> 来获取参数。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># define</span>
+<span style="color:#66d9ef">function</span> function_name<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    echo <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74"> </span>$2<span style="color:#e6db74"> </span>$3<span style="color:#e6db74"> ... </span>$n<span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># call</span>
+function_name <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> ... n
+</code></pre></div><p>函数也可以使用与 <em>参数</em> 中提到的相同的几个特殊字符用来处理参数。</p>
+<h3 id="带-return-语句">带 return 语句</h3>
+<p>与大多数编程语言不同，Shell 中的 <code>return</code> 只允许返回 0~255 之间的数字。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">function</span> function_name<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    command
+    <span style="color:#66d9ef">return</span> num
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="输入输出">输入/输出</h2>
+<p>默认情况下，命令从 <em>标准输入</em> 读取输入，然后将输出写入到 <em>标准输出</em> 。</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>command &lt; file</code></td>
+<td align="left">将输入重定向到 file</td>
+</tr>
+<tr>
+<td align="left"><code>command &gt; file</code></td>
+<td align="left">将输出重定向到 file</td>
+</tr>
+<tr>
+<td align="left"><code>command &gt;&gt; file</code></td>
+<td align="left">将输出以追加的方式重定向到 file</td>
+</tr>
+<tr>
+<td align="left"><code>n &gt; file</code></td>
+<td align="left">将文件描述符为 n 的文件重定向到 file</td>
+</tr>
+<tr>
+<td align="left"><code>n &gt;&gt; file</code></td>
+<td align="left">将文件描述符为 n 的文件以追加的方式重定向到 file</td>
+</tr>
+<tr>
+<td align="left"><code>n &lt;&amp; m</code></td>
+<td align="left">将输入文件 m 和 n 合并</td>
+</tr>
+<tr>
+<td align="left"><code>n &gt;&amp; m</code></td>
+<td align="left">将输出文件 m 和 n 合并</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;&lt; delimiter</code></td>
+<td align="left">将开始标记 delimiter 和结束标记 delimiter 之间的内容作为输入</td>
+</tr>
+</tbody>
+</table>
+<h3 id="输入重定向">输入重定向</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">command &lt; file
+</code></pre></div><h3 id="输出重定向">输出重定向</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">command &gt; file
+</code></pre></div><h3 id="输入输出重定向">输入输出重定向</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">command &lt; file &gt; file
+</code></pre></div><h3 id="stdinstdoutstderr-的处理">stdin、stdout、stderr 的处理</h3>
+<p>一般情况下，每个命令运行时都会打开三个文件：</p>
+<ul>
+<li>标准输入文件：stdin 的文件描述符为 0，程序默认会从 stdin 读取数据。</li>
+<li>标准输出文件：stdout 的文件描述符为 1，程序默认会向 stdout 写入数据。</li>
+<li>标准错误文件：stderr 的文件描述符为 2，程序默认会向 stderr 入错误信息。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">command &lt; file &gt; file
+
+command <span style="color:#ae81ff">2</span> &gt; file
+command <span style="color:#ae81ff">2</span> &gt;&gt; file
+
+command &gt; file 2&gt;&amp;1
+command &gt;&gt; file 2&gt;&amp;1
+</code></pre></div><h3 id="here-document">Here Document</h3>
+<p>Here Document 是 Shell 中的一种特殊的重定向方式。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">command <span style="color:#e6db74">&lt;&lt; delimiter
+</span><span style="color:#e6db74">    document
+</span><span style="color:#e6db74">delimiter</span>
+</code></pre></div><p>将两个 delimiter 之间的内容作为输入传递给 command。</p>
+<blockquote>
+<p>注意：前面的 delimiter 前后的空格会被忽略掉。结尾的 delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符。</p>
+</blockquote>
+<h3 id="devnull-文件">/dev/null 文件</h3>
+<p><code>/dev/null</code> 是一个特殊的文件，写入到它的内容都会被丢弃，并且从该文件中无法读取任何内容。</p>
+<h2 id="导入文件">导入文件</h2>
+<p>和其他编程语言一样，Shell 也可以包含外部脚本。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># use `.`</span>
+. filename
+
+<span style="color:#75715e"># use `source`</span>
+source filename
+</code></pre></div><h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://wiki.bash-hackers.org/">Bash Hackers Wiki</a></li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/shell/">shell</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/script/">script</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/function-pointer-in-flag/" data-tooltip="flag 中的 Go 函数指针">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/function-pointer-in-flag/" data-tooltip="flag 中的 Go 函数指针">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/02/shell-script-quick-start/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2019%2F02%2Fshell-script-quick-start%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2019%2F02%2Fshell-script-quick-start%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2019%2F02%2Fshell-script-quick-start%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

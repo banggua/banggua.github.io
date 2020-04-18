@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nginx on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/nginx/</link>
+    <description>Recent content in nginx on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>把博客迁移到服务器上</title>
+      <link>https://blog.guagua.tech/2018/07/blog-to-server/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/blog-to-server/</guid>
+      <description>&lt;p&gt;之前一直使用 GitHub Pages 托管博客，但是国内访问 GitHub 速度太慢了。恰逢腾讯云前段时间服务器做活动，便买了服务器把博客迁移到服务器上。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

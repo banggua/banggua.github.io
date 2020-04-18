@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, kubeadm, setup">
+<meta name="description" content="怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。">
+
+
+<meta property="og:description" content="怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 kubeadm 创建单 master 集群">
+<meta name="twitter:title" content="使用 kubeadm 创建单 master 集群">
+<meta property="og:url" content="https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。">
+<meta name="twitter:description" content="怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-08-26T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-08-26T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>使用 kubeadm 创建单 master 集群</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      使用 kubeadm 创建单 master 集群
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-08-26T00:00:00Z">
+        
+  August 26, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。</p>
+<h2 id="安装-kubeadmhttpsv1-11docskubernetesiodocssetupindependentinstall-kubeadm"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/">安装 kubeadm</a></h2>
+<p>我使用的机器：4 台 8 GB E3-1220 v5 CentOS 7 服务器</p>
+<h3 id="开始前单准备httpsv1-11docskubernetesiodocssetupindependentinstall-kubeadmbefore-you-begin"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin">开始前单准备</a></h3>
+<p>要求：</p>
+<ul>
+<li>一台或多台机器运行下列中系统：
+<ul>
+<li>Ubuntu 16.04+</li>
+<li>Debian 9</li>
+<li>CentOS 7</li>
+<li>RHEL 7</li>
+<li>Fedora 25/26 (best-effort)</li>
+<li>HypriotOS v1.0.1+</li>
+<li>Container Linux (tested with 1800.6.0)</li>
+</ul>
+</li>
+<li>每台机器有 2 GB 或者更多的内存</li>
+<li>双核或者更多</li>
+<li>集群中的所有计算机之间都可以进行网络连接（公网或私网都行）</li>
+<li>每个节点有唯一单主机名、MAC 地址、product_uuid</li>
+<li>禁用 swap，必须禁用 swap 来确保 kubelet 正常工作</li>
+</ul>
+<p>暂时关闭 swap</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">swapoff -a
+</code></pre></div><p>永久关闭 <code>vim /etc/fstab</code> 将 swap 那一行注释掉。</p>
+<h3 id="检验-mac-地址product_uuid-是否唯一httpsv1-11docskubernetesiodocssetupindependentinstall-kubeadmverify-the-mac-address-and-product-uuid-are-unique-for-every-node"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#verify-the-mac-address-and-product-uuid-are-unique-for-every-node">检验 MAC 地址、product_uuid 是否唯一</a></h3>
+<p>通过 <code>ip link</code> 或 <code>ifconfig -a</code> 命令获取 MAC 地址。</p>
+<p>通过 <code>cat /sys/class/dmi/id/product_uuid</code> 获取 product_uuid。</p>
+<h3 id="检查网络适配器httpsv1-11docskubernetesiodocssetupindependentinstall-kubeadmcheck-network-adapters"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#check-network-adapters">检查网络适配器</a></h3>
+<h3 id="检查所需的端口httpsv1-11docskubernetesiodocssetupindependentinstall-kubeadmcheck-required-ports"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#check-required-ports">检查所需的端口</a></h3>
+<p>Master node(s)</p>
+<table>
+<thead>
+<tr>
+<th align="left">Protocol</th>
+<th align="left">Direction</th>
+<th align="left">Port Range</th>
+<th align="left">Purpose</th>
+<th align="left">Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">6443*</td>
+<td align="left">Kubernetes API server</td>
+<td align="left">All</td>
+</tr>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">2379-2380</td>
+<td align="left">etcd server client API</td>
+<td align="left">kube-apiserver, etcd</td>
+</tr>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">10250</td>
+<td align="left">Kubelet API</td>
+<td align="left">Self, Control plane</td>
+</tr>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">10251</td>
+<td align="left">kube-scheduler</td>
+<td align="left">Self</td>
+</tr>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">10252</td>
+<td align="left">kube-controller-manager</td>
+<td align="left">Self</td>
+</tr>
+</tbody>
+</table>
+<p>Worker node(s)</p>
+<table>
+<thead>
+<tr>
+<th align="left">Protocol</th>
+<th align="left">Direction</th>
+<th align="left">Port Range</th>
+<th align="left">Purpose</th>
+<th align="left">Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">10250</td>
+<td align="left">Kubelet API</td>
+<td align="left">Self, Control plane</td>
+</tr>
+<tr>
+<td align="left">TCP</td>
+<td align="left">Inbound</td>
+<td align="left">30000-32767</td>
+<td align="left">NodePort Services**</td>
+<td align="left">All</td>
+</tr>
+</tbody>
+</table>
+<h3 id="安装-dockerhttpsv1-11docskubernetesiodocssetupindependentinstall-kubeadminstalling-docker"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#installing-docker">安装 docker</a></h3>
+<p>Kubernetes 官方建议 docker 使用 17.03 版本。（最新版本 docker 可以正常运行）</p>
+<p>安装 17.03 版本 docker（其他系统请查看 <a href="https://docs.docker.com/install/">guides</a>）</p>
+<p><a href="https://download.docker.com/linux/centos/7/x86_64/stable/Packages/">rpm repository</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch.rpm
+yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-17.03.2.ce-1.el7.centos.x86_64.rpm
+</code></pre></div><h3 id="安装-kubeadmkubelet-和-kubectlhttpsv1-11docskubernetesiodocssetupindependentinstall-kubeadminstalling-kubeadm-kubelet-and-kubectl"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl">安装 kubeadm、kubelet 和 kubectl</a></h3>
+<p>CentOS 上安装过程</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat <span style="color:#e6db74">&lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+</span><span style="color:#e6db74">[kubernetes]
+</span><span style="color:#e6db74">name=Kubernetes
+</span><span style="color:#e6db74">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+</span><span style="color:#e6db74">enabled=1
+</span><span style="color:#e6db74">gpgcheck=1
+</span><span style="color:#e6db74">repo_gpgcheck=1
+</span><span style="color:#e6db74">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+</span><span style="color:#e6db74">exclude=kube*
+</span><span style="color:#e6db74">EOF</span>
+setenforce 0
+yum install -y kubelet kubeadm kubectl --disableexcludes<span style="color:#f92672">=</span>kubernetes
+systemctl enable kubelet <span style="color:#f92672">&amp;&amp;</span> systemctl start kubelet
+</code></pre></div><p>setenforce 0 禁用 SELinux 以允许容器访问主机文件系统。永久禁用 <code>vim /etc/sysconfig/selinux</code> 将 <code>SELINUX=enforcing</code> 改为 <code>SELINUX=disabled</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat <span style="color:#e6db74">&lt;&lt;EOF &gt;  /etc/sysctl.d/k8s.conf
+</span><span style="color:#e6db74">net.bridge.bridge-nf-call-ip6tables = 1
+</span><span style="color:#e6db74">net.bridge.bridge-nf-call-iptables = 1
+</span><span style="color:#e6db74">EOF</span>
+sysctl --system
+</code></pre></div><p>由于 GFW 缘故需要翻墙，我使用的是 shadowsocs/v2ray + privoxy</p>
+<p>shadowsocs/v2ray &ndash; 代理软件</p>
+<p>privoxy &ndash; 桥接 HTTP 代理到 Socks5</p>
+<p>privoxy 将 <code>forward-socks5t / 127.0.0.1:1080 .</code> 加到 <code>/etc/privoxy/config</code> 中，其中 1080 为端口号。</p>
+<h3 id="配置-kubelet-使用的-cgroup-驱动httpsv1-11docskubernetesiodocssetupindependentinstall-kubeadmconfigure-cgroup-driver-used-by-kubelet-on-master-node"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/install-kubeadm/#configure-cgroup-driver-used-by-kubelet-on-master-node">配置 kubelet 使用的 cgroup 驱动</a></h3>
+<p>使用 docker 时，kubeadm 会自动检测 kubelet 的 cgroup 驱动程序，并在运行时将其设置在 <code>/var/lib/kubelet/kubeadm-flags.env</code> 中。</p>
+<p>使用其他 CRI 时，在 <code>/etc/default/kubelet</code> 文件中配置 <code>cgroup-driver</code> 值，例如：</p>
+<pre><code class="language-file" data-lang="file">KUBELET_KUBEADM_EXTRA_ARGS=--cgroup-driver=&lt;value&gt;
+</code></pre><p>记住，只在 cgroup 驱动不是 <code>cgroupfs</code> 时，进行这项工作。</p>
+<p>最后重启 <code>kubelet</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl daemon-reload
+systemctl restart kubelet
+</code></pre></div><h2 id="创建集群httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadm"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">创建集群</a></h2>
+<h3 id="初始化主节点httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadminitializing-your-master"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#initializing-your-master">初始化主节点</a></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm init &lt;args&gt;
+</code></pre></div><p>开始使用集群到准备</p>
+<ul>
+<li>
+<p>普通用户</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+</code></pre></div></li>
+<li>
+<p>root 用户（当然也可以使用普通用户的方法）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export KUBECONFIG<span style="color:#f92672">=</span>/etc/kubernetes/admin.conf
+</code></pre></div></li>
+</ul>
+<h3 id="安装-pod-网络组件httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmpod-network"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network">安装 Pod 网络组件</a></h3>
+<p>必须安装 Pod 网络组件，Pods 间才能通讯。</p>
+<p>网络必须在任何之前部署。同时，CoreDNS 也不会在网络部署好前启动。kubeadm 只支持基于容器网络接口（CNI）的网络（不支持 kubenet）。</p>
+<p>举个例子 <a href="https://docs.projectcalico.org/v3.2/getting-started/kubernetes/">Calico v3.2</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm init --pod-network-cidr<span style="color:#f92672">=</span>192.168.0.0/16
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown <span style="color:#66d9ef">$(</span>id -u<span style="color:#66d9ef">)</span>:<span style="color:#66d9ef">$(</span>id -g<span style="color:#66d9ef">)</span> $HOME/.kube/config
+kubectl apply -f https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/hosted/etcd.yaml
+kubectl apply -f https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/rbac.yaml
+kubectl apply -f https://docs.projectcalico.org/v3.2/getting-started/kubernetes/installation/hosted/calico.yaml
+kubectl get pods --all-namespaces
+kubectl taint nodes --all node-role.kubernetes.io/master-
+</code></pre></div><h3 id="添加节点httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmjoin-nodes"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#join-nodes">添加节点</a></h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm join &lt;master-ip&gt;:&lt;master-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</code></pre></div><p>如果没有 token，可以使用下面的命令从主节点上获取。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm token list
+</code></pre></div><p>默认情况下，令牌在 24 小时后过期。如果在当前令牌过期后，则可以在主节点上运行下面的命令来创建新令牌。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm token create
+</code></pre></div><p>如果没有 &ndash;discovery-token-ca-cert-hash 的值，则可以在主节点上运行下面的命令来获取。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed <span style="color:#e6db74">&#39;s/^.* //&#39;</span>
+</code></pre></div><h4 id="让非主节点控制集群可选的httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmoptional-controlling-your-cluster-from-machines-other-than-the-master"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#optional-controlling-your-cluster-from-machines-other-than-the-master">让非主节点控制集群（可选的）</a></h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">scp root@&lt;master ip&gt;:/etc/kubernetes/admin.conf .
+kubectl --kubeconfig ./admin.conf get nodes
+</code></pre></div><h4 id="代理-api-server-到-localhost可选的httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmoptional-proxying-api-server-to-localhost"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#optional-proxying-api-server-to-localhost">代理 API Server 到 localhost（可选的）</a></h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">scp root@&lt;master ip&gt;:/etc/kubernetes/admin.conf .
+kubectl --kubeconfig ./admin.conf proxy
+</code></pre></div><h3 id="销毁httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmtear-down"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#tear-down">销毁</a></h3>
+<p>node <a href="https://v1-11.docs.kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#drain">drain the node</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl drain &lt;node name&gt; --delete-local-data --force --ignore-daemonsets
+kubectl delete node &lt;node name&gt;
+</code></pre></div><p>master <a href="https://v1-11.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-reset/">kubeadm reset</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubeadm reset
+</code></pre></div><h3 id="维护集群httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmlifecycle"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#lifecycle">维护集群</a></h3>
+<p><a href="https://v1-11.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm">Instructions</a></p>
+<h3 id="探索其他插件httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmother-addons"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#other-addons">探索其他插件</a></h3>
+<p><a href="https://v1-11.docs.kubernetes.io/docs/concepts/cluster-administration/addons/">list of add-ons</a></p>
+<h3 id="扩展httpsv1-11docskubernetesiodocssetupindependentcreate-cluster-kubeadmwhats-next"><a href="https://v1-11.docs.kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#whats-next">扩展</a></h3>
+<ul>
+<li>检验集群是否运行正常 &ndash; <a href="https://github.com/heptio/sonobuoy">Sonobuoy</a></li>
+<li>kubeadm 高级用法 &ndash; <a href="https://v1-11.docs.kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm">reference</a></li>
+<li>配置日志轮换，使用 logrotate &ndash; 使用 docker 时，可以为 Docker 守护程序指定日志轮换选项，例子 <code>--log-driver=json-file --log-opt=max-size=10m --log-opt=max-file=5</code>，<a href="https://docs.docker.com/config/daemon/">for details</a>。</li>
+</ul>
+<h2 id="题外话">题外话</h2>
+<h3 id="端口被占用">端口被占用</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">netstat -apt | grep &lt;-port-&gt;
+kill -9 &lt;-PID-&gt;
+</code></pre></div><h3 id="镜像拉不下来的问题">镜像拉不下来的问题</h3>
+<p>使用 Docker Cloud 的 <a href="https://docs.docker.com/docker-cloud/builds/automated-build/">autobuild</a> 功能 build 出需要的镜像，然后 docker pull 下来 docker tag 成需要的镜像。</p>
+<p>kubeadm init 时加上 <code>--kubernetes-version=v1.11.2</code> 参数可以使用下面的命令拉取镜像。镜像需要在 kubeadm init 之前准备好。</p>
+<p>所有可能用到镜像的 Dockerfile 可以在 <a href="https://github.com/lizebang/docker-images">docker-images</a> 中找到。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull lizebang/coredns:1.1.3
+docker tag lizebang/coredns:1.1.3 k8s.gcr.io/coredns:1.1.3
+docker rmi lizebang/coredns:1.1.3
+
+docker pull lizebang/etcd-amd64:3.2.18
+docker tag lizebang/etcd-amd64:3.2.18 k8s.gcr.io/etcd-amd64:3.2.18
+docker rmi lizebang/etcd-amd64:3.2.18
+
+docker pull lizebang/kube-controller-manager-amd64:v1.11.2
+docker tag lizebang/kube-controller-manager-amd64:v1.11.2 k8s.gcr.io/kube-controller-manager-amd64:v1.11.2
+docker rmi lizebang/kube-controller-manager-amd64:v1.11.2
+
+docker pull lizebang/kube-proxy-amd64:v1.11.2
+docker tag lizebang/kube-proxy-amd64:v1.11.2 k8s.gcr.io/kube-proxy-amd64:v1.11.2
+docker rmi lizebang/kube-proxy-amd64:v1.11.2
+
+docker pull lizebang/kube-scheduler-amd64:v1.11.2
+docker tag lizebang/kube-scheduler-amd64:v1.11.2 k8s.gcr.io/kube-scheduler-amd64:v1.11.2
+docker rmi lizebang/kube-scheduler-amd64:v1.11.2
+
+docker pull lizebang/pause:3.1
+docker tag lizebang/pause:3.1 k8s.gcr.io/pause:3.1
+docker rmi lizebang/pause:3.1
+
+docker pull lizebang/kube-apiserver-amd64:v1.11.2
+docker tag lizebang/kube-apiserver-amd64:v1.11.2 k8s.gcr.io/kube-apiserver-amd64:v1.11.2
+docker rmi lizebang/kube-apiserver-amd64:v1.11.2
+</code></pre></div>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_what-is-kubernetes/" data-tooltip="什么是 Kubernetes ？">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/" data-tooltip="macOS 上编译 Y86-64 模拟器">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_what-is-kubernetes/" data-tooltip="什么是 Kubernetes ？">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/" data-tooltip="macOS 上编译 Y86-64 模拟器">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/create-cluster-kubeadm/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fcreate-cluster-kubeadm%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fcreate-cluster-kubeadm%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fcreate-cluster-kubeadm%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

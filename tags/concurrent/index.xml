@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>concurrent on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/concurrent/</link>
+    <description>Recent content in concurrent on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The Go Memory Model</title>
+      <link>https://blog.guagua.tech/2018/04/the-go-memory-model/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/04/the-go-memory-model/</guid>
+      <description>&lt;p&gt;Go 内存模型指出，在何时，能确保一个 goroutine 获取到被另一个 goroutine 修改后的同一变量的值。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

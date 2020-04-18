@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>uml on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/uml/</link>
+    <description>Recent content in uml on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/uml/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>UML 类图中的关系</title>
+      <link>https://blog.guagua.tech/2018/12/uml-class-diagram/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/12/uml-class-diagram/</guid>
+      <description>&lt;p&gt;看和画 UML 图是程序员必备的技能之一，看图、画图有助于理解、分析程序的逻辑，大大提高学习和工作的效率。今天只简单总结一下类图中的关系。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

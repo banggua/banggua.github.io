@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/
+群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes 概念 有一定的了解。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/
+群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes 概念 有一定的了解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 群集管理概述">
+<meta name="twitter:title" content="Kubernetes 群集管理概述">
+<meta property="og:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/
+群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes 概念 有一定的了解。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/
+群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes 概念 有一定的了解。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-09-05T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-09-05T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes 群集管理概述</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes 群集管理概述
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-05T00:00:00Z">
+        
+  September 5, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/</p>
+<p>群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes <a href="https://kubernetes.io/docs/concepts/">概念</a> 有一定的了解。</p>
+<h2 id="规划集群">规划集群</h2>
+<p>有关如何规划、设置以及配置 Kubernetes 集群的例子请查看指南 <a href="https://kubernetes.io/docs/setup/pick-right-solution/">选择正确的解决方案</a>。本文中列出的解决方案成为 <strong>发行版</strong>。</p>
+<p>在查看指南之前，请注意以下几点：</p>
+<ul>
+<li>你只是想要在计算机上试用 Kubernetes，还是想构建高可用性的多节点集群？请选择最适合您需求的发行版。</li>
+<li><strong>如果你要设计高可用</strong>，请了解如何配置 <a href="https://kubernetes.io/docs/concepts/cluster-administration/federation/">多区域集群</a>.</li>
+<li>你是否将使用 <strong>托管的 Kubernetes 集群</strong>（例如 Google Kubernetes Engine）或 <strong>托管自己的集群</strong>？</li>
+<li>你的群集是在 <strong>本地</strong> 还是 <strong>在云中（IaaS）</strong>？Kubernetes 不直接支持混合集群。不过，你可以设置多个群集。</li>
+<li><strong>如果你在本地配置 Kubernetes</strong>，请考虑哪种 <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">网络模型</a> 最合适。</li>
+<li>你是否会在 <strong>裸机硬件</strong> 或 <strong>虚拟机（VM）</strong> 上运行 Kubernetes？</li>
+<li>你 <strong>只想运行集群</strong>，或者你 <strong>希望积极开发 Kubernetes 项目代码</strong>？如果是后者，请选择积极开发的发行版。有些发行版本只使用二进制版本，但提供了更多种选择。</li>
+<li>熟悉运行群集所需的 <a href="https://kubernetes.io/docs/admin/cluster-components/">组件</a>。</li>
+</ul>
+<p>注意：并不是所有的发行版都得到了积极维护。请选择最新且已测试的 Kubernetes 发行版。</p>
+<h2 id="管理集群">管理集群</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/">管理集群</a> 描述了有关集群生命周期的几个主题：创建一个新集群、升级集群主节点和工作节点、执行节点维护（例如，内核升级）以及升级正在运行集群的 Kubernetes API 版本。</li>
+<li>了解如何 <a href="https://kubernetes.io/docs/concepts/nodes/node/">管理节点</a>。</li>
+<li>了解如何设置和管理共享群集的 <a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/">资源配额</a>。</li>
+</ul>
+<h2 id="保护集群">保护集群</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/cluster-administration/certificates/">证书</a> 介绍了使用不同工具生成证书的步骤。</li>
+<li><a href="https://kubernetes.io/docs/concepts/containers/container-environment-variables/">Kubernetes 容器环境</a> 介绍了 Kubernetes 节点上 Kubelet 管理容器的环境。</li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">控制对 Kubernetes API 的访问</a> 介绍了如何为用户和服务帐户设置权限。</li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">身份验证</a> 介绍了 Kubernetes 中的身份验证，包括各种身份验证选项。</li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authorization/">授权</a> 与身份验证分开，并控制 HTTP 调用的处理方式。</li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">使用许可 admission 控制器</a> 介绍了在认证和授权后拦截对 Kubernetes API 服务器的请求的插件。</li>
+<li><a href="https://kubernetes.io/docs/concepts/cluster-administration/sysctl-cluster/">在 Kubernetes 集群中使用 Sysctls</a> 介绍了管理员如何使用 <code>sysctl</code> 命令 行工具设置内核参数。</li>
+<li><a href="https://kubernetes.io/docs/tasks/debug-application-cluster/audit/">审计</a> 介绍了如何与 Kubernetes 的审计日志进行交互。</li>
+</ul>
+<h2 id="保护-kubelet">保护 kubelet</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/architecture/master-node-communication/">主节点通讯</a></li>
+<li><a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/">TLS 引导</a></li>
+<li><a href="https://kubernetes.io/docs/admin/kubelet-authentication-authorization/">kubelet 身份验证/授权</a></li>
+</ul>
+<h2 id="可选的集群服务">可选的集群服务</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">DNS 集成</a> 介绍了直接将 DNS 域名解析为 Kubernetes 服务。</li>
+<li><a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">记录日志和监控群集活动</a> 介绍了在 Kubernetes 中日志如何工作以及如何实现它。</li>
+</ul>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_manage-deployment/" data-tooltip="Kubernetes 管理资源">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/" data-tooltip="Kubernetes 证书">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_manage-deployment/" data-tooltip="Kubernetes 管理资源">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/" data-tooltip="Kubernetes 证书">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_cluster-administration-overview%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_cluster-administration-overview%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_cluster-administration-overview%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

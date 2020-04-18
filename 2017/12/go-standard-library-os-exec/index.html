@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="golang, standard-library, os/exec">
+<meta name="description" content="这一篇是 Go SDK 中 os/exec 包的解析。
+go version go1.9.2 darwin/amd64">
+
+
+<meta property="og:description" content="这一篇是 Go SDK 中 os/exec 包的解析。
+go version go1.9.2 darwin/amd64">
+<meta property="og:type" content="article">
+<meta property="og:title" content="os/exec Go 源码解析">
+<meta name="twitter:title" content="os/exec Go 源码解析">
+<meta property="og:url" content="https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="这一篇是 Go SDK 中 os/exec 包的解析。
+go version go1.9.2 darwin/amd64">
+<meta name="twitter:description" content="这一篇是 Go SDK 中 os/exec 包的解析。
+go version go1.9.2 darwin/amd64">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-12-02T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2017-12-02T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="golang">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+      <meta property="article:tag" content="standard-library">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>os/exec Go 源码解析</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      os/exec Go 源码解析
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-12-02T00:00:00Z">
+        
+  December 2, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/golang">golang</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>这一篇是 Go SDK 中 os/exec 包的解析。</p>
+<p>go version go1.9.2 darwin/amd64</p>
+<h1 id="osexec">os/exec</h1>
+<p>此讲解适用于类 Unix 系统，windows 上略有不同。</p>
+<h1 id="type-cmd">type Cmd</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Cmd</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Path</span> <span style="color:#66d9ef">string</span>
+
+    <span style="color:#a6e22e">Args</span> []<span style="color:#66d9ef">string</span>
+
+    <span style="color:#a6e22e">Env</span> []<span style="color:#66d9ef">string</span>
+
+    <span style="color:#a6e22e">Dir</span> <span style="color:#66d9ef">string</span>
+
+    <span style="color:#a6e22e">Stdin</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>
+
+    <span style="color:#a6e22e">Stdout</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>
+    <span style="color:#a6e22e">Stderr</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>
+
+    <span style="color:#a6e22e">ExtraFiles</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>
+
+    <span style="color:#a6e22e">SysProcAttr</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">syscall</span>.<span style="color:#a6e22e">SysProcAttr</span>
+
+    <span style="color:#a6e22e">Process</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Process</span>
+
+    <span style="color:#a6e22e">ProcessState</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ProcessState</span>
+
+    <span style="color:#a6e22e">ctx</span>             <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>
+    <span style="color:#a6e22e">lookPathErr</span>     <span style="color:#66d9ef">error</span>
+    <span style="color:#a6e22e">finished</span>        <span style="color:#66d9ef">bool</span>
+    <span style="color:#a6e22e">childFiles</span>      []<span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>
+    <span style="color:#a6e22e">closeAfterStart</span> []<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Closer</span>
+    <span style="color:#a6e22e">closeAfterWait</span>  []<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Closer</span>
+    <span style="color:#a6e22e">goroutine</span>       []<span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">error</span>
+    <span style="color:#a6e22e">errch</span>           <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">error</span>
+    <span style="color:#a6e22e">waitDone</span>        <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">struct</span>{}
+}
+</code></pre></div><p>Cmd 这个结构中主要包含了命令的路径、参数、标准输入输出错误输出接口等</p>
+<h2 id="commandname-string-arg-string-cmd">Command(name string, arg …string) *Cmd</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">arg</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span> {
+    <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Cmd</span>{
+        <span style="color:#a6e22e">Path</span>: <span style="color:#a6e22e">name</span>,
+        <span style="color:#a6e22e">Args</span>: append([]<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">name</span>}, <span style="color:#a6e22e">arg</span><span style="color:#f92672">...</span>),
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Base</span>(<span style="color:#a6e22e">name</span>) <span style="color:#f92672">==</span> <span style="color:#a6e22e">name</span> {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">lp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">LookPath</span>(<span style="color:#a6e22e">name</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">lookPathErr</span> = <span style="color:#a6e22e">err</span>
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Path</span> = <span style="color:#a6e22e">lp</span>
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cmd</span>
+}
+</code></pre></div><p>Command 需要两个参数，一个是命令，一个是参数。</p>
+<p>Args 用传入的 arg 进行初始化，Path 暂时被初始化成 name。先判断 filepath.Base(name) 是否和 name 相同，用于保证它是一条 Unix shells 命令，接着调用了 LookPath 这个函数，LookPath 在后面再看。LookPath 返回了真正的 Path 和一个 error。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">LookPath</span>(<span style="color:#a6e22e">file</span> <span style="color:#66d9ef">string</span>) (<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">file</span>, <span style="color:#e6db74">&#34;/&#34;</span>) {
+        <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">findExecutable</span>(<span style="color:#a6e22e">file</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">file</span>, <span style="color:#66d9ef">nil</span>
+        }
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Error</span>{<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">err</span>}
+    }
+    <span style="color:#a6e22e">path</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;PATH&#34;</span>)
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">SplitList</span>(<span style="color:#a6e22e">path</span>) {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dir</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
+            <span style="color:#a6e22e">dir</span> = <span style="color:#e6db74">&#34;.&#34;</span>
+        }
+        <span style="color:#a6e22e">path</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">file</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">findExecutable</span>(<span style="color:#a6e22e">path</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>, <span style="color:#66d9ef">nil</span>
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Error</span>{<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">ErrNotFound</span>}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">findExecutable</span>(<span style="color:#a6e22e">file</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">d</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stat</span>(<span style="color:#a6e22e">file</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">Mode</span>(); !<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">IsDir</span>() <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">m</span><span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0111</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ErrPermission</span>
+}
+</code></pre></div><p>如果 file 即 Command 中的 name 包含 &ldquo;/&quot;，就返回错误，这里是为了它是一条 Unix shells 命令。os.Getenv(&ldquo;PATH&rdquo;) 获取到 PATH，然后遍历所有的 PATH 看是否存在满足要求的可执行的文件。存在满足要求的可执行的文件立即返回路径，其他情况返回 nil 和一个未找到的 error。</p>
+<h2 id="commandcontextctx-contextcontext-name-string-arg-string-cmd">CommandContext(ctx context.Context, name string, arg …string) *Cmd</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CommandContext</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">arg</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span> {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ctx</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+        panic(<span style="color:#e6db74">&#34;nil Context&#34;</span>)
+    }
+    <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">arg</span><span style="color:#f92672">...</span>)
+    <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">ctx</span> = <span style="color:#a6e22e">ctx</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cmd</span>
+}
+</code></pre></div><p>内部调用了 Command(name, arg…)，只是给 cmd.ctx 进行了赋值。</p>
+<h2 id="c-cmd-start-error">(c *Cmd) Start() error</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>) <span style="color:#a6e22e">Start</span>() <span style="color:#66d9ef">error</span> {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lookPathErr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lookPathErr</span>
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">GOOS</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;windows&#34;</span> {
+        <span style="color:#a6e22e">lp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">lookExtensions</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Path</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Dir</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+        }
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Path</span> = <span style="color:#a6e22e">lp</span>
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Process</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;exec: already started&#34;</span>)
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">select</span> {
+        <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Err</span>()
+        <span style="color:#66d9ef">default</span>:
+        }
+    }
+
+    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">F</span> <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>, <span style="color:#66d9ef">error</span>)
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">setupFd</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> []<span style="color:#a6e22e">F</span>{(<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stdin</span>, (<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stdout</span>, (<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stderr</span>} {
+        <span style="color:#a6e22e">fd</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">setupFd</span>(<span style="color:#a6e22e">c</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+        }
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span> = append(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>, <span style="color:#a6e22e">fd</span>)
+    }
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span> = append(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ExtraFiles</span><span style="color:#f92672">...</span>)
+
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Process</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">StartProcess</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Path</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">argv</span>(), <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ProcAttr</span>{
+        <span style="color:#a6e22e">Dir</span>:   <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Dir</span>,
+        <span style="color:#a6e22e">Files</span>: <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>,
+        <span style="color:#a6e22e">Env</span>:   <span style="color:#a6e22e">dedupEnv</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">envv</span>()),
+        <span style="color:#a6e22e">Sys</span>:   <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SysProcAttr</span>,
+    })
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+    }
+
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">errch</span> = make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">error</span>, len(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">goroutine</span>))
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">fn</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">goroutine</span> {
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">fn</span> <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">error</span>) {
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">fn</span>()
+        }(<span style="color:#a6e22e">fn</span>)
+    }
+
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">waitDone</span> = make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">struct</span>{})
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+            <span style="color:#66d9ef">select</span> {
+            <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
+                <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Process</span>.<span style="color:#a6e22e">Kill</span>()
+            <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">waitDone</span>:
+            }
+        }()
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>如果 lookPathErr 不为 nil，就会释放资源然后返回。</p>
+<p>如果系统为 windows，就会调用 lookExtensions 将扩展名补充完整。</p>
+<p>如果 Process 不为 nil，就会返回错误 exec: already started。</p>
+<p>如果 ctx 不为空并且接收到了取消的指令，就会释放资源然后返回。</p>
+<p>接下来的操作可能呢会疑惑，这是干了些什么啊!!!!!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">F</span> <span style="color:#66d9ef">func</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>, <span style="color:#66d9ef">error</span>)
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">setupFd</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> []<span style="color:#a6e22e">F</span>{(<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stdin</span>, (<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stdout</span>, (<span style="color:#f92672">*</span><span style="color:#a6e22e">Cmd</span>).<span style="color:#a6e22e">stderr</span>} {
+        <span style="color:#a6e22e">fd</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">setupFd</span>(<span style="color:#a6e22e">c</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+        }
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span> = append(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>, <span style="color:#a6e22e">fd</span>)
+    }
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span> = append(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">ExtraFiles</span><span style="color:#f92672">...</span>)
+</code></pre></div><p>其实，只是调用了 Cmd 的三个方法 (c *Cmd) stdin() (f *os.File, err error)、(c *Cmd) stdout() (f *os.File, err error) 和 (c *Cmd) stderr() (f *os.File, err error)，而直接各调用他们一次代码不太美观，所以就定义了一个 type F func(*Cmd) (*os.File, error) 类型，然后遍历遍历这样类型的切片。</p>
+<p>不过，这里还有一个疑问 F 是 *Cmd 为参数并带两个返回值的类型，为什么可以使用 *Cmd 类型为接收者的方法初始化 F 类型的切片，并且可以传入一个 *Cmd 类型实例调用？</p>
+<p>事实上，在方法调用时，接收者是作为参数传入的，见下图。</p>
+<p><img src="https://blog.guagua.tech/images/2017/12/reciver.png" alt="reciver"></p>
+<p>然后，调用 os.StartProcess() 创建一个新进程。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
+    <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Process</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">StartProcess</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Path</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">argv</span>(), <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ProcAttr</span>{
+        <span style="color:#a6e22e">Dir</span>:   <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Dir</span>,
+        <span style="color:#a6e22e">Files</span>: <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">childFiles</span>,
+        <span style="color:#a6e22e">Env</span>:   <span style="color:#a6e22e">dedupEnv</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">envv</span>()),
+        <span style="color:#a6e22e">Sys</span>:   <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">SysProcAttr</span>,
+    })
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterStart</span>)
+        <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeDescriptors</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">closeAfterWait</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+    }
+</code></pre></div><p>先看传入的参数，c.argv() 判断了 c.Argv 是否为空，为空将 c.Path 作为参数。dedupEnv(c.envv()) 处理了环境属性，下面看一下到底是如何处理的环境属性。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">dedupEnv</span>(<span style="color:#a6e22e">env</span> []<span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">string</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">dedupEnvCase</span>(<span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">GOOS</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;windows&#34;</span>, <span style="color:#a6e22e">env</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">dedupEnvCase</span>(<span style="color:#a6e22e">caseInsensitive</span> <span style="color:#66d9ef">bool</span>, <span style="color:#a6e22e">env</span> []<span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">string</span> {
+    <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">string</span>, <span style="color:#ae81ff">0</span>, len(<span style="color:#a6e22e">env</span>))
+    <span style="color:#a6e22e">saw</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{} <span style="color:#75715e">// key =&gt; index into out
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">kv</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">env</span> {
+        <span style="color:#a6e22e">eq</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">kv</span>, <span style="color:#e6db74">&#34;=&#34;</span>)
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">eq</span> &lt; <span style="color:#ae81ff">0</span> {
+            <span style="color:#a6e22e">out</span> = append(<span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">kv</span>)
+            <span style="color:#66d9ef">continue</span>
+        }
+        <span style="color:#a6e22e">k</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">kv</span>[:<span style="color:#a6e22e">eq</span>]
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">caseInsensitive</span> {
+            <span style="color:#a6e22e">k</span> = <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>(<span style="color:#a6e22e">k</span>)
+        }
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dupIdx</span>, <span style="color:#a6e22e">isDup</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">saw</span>[<span style="color:#a6e22e">k</span>]; <span style="color:#a6e22e">isDup</span> {
+            <span style="color:#a6e22e">out</span>[<span style="color:#a6e22e">dupIdx</span>] = <span style="color:#a6e22e">kv</span>
+            <span style="color:#66d9ef">continue</span>
+        }
+        <span style="color:#a6e22e">saw</span>[<span style="color:#a6e22e">k</span>] = len(<span style="color:#a6e22e">out</span>)
+        <span style="color:#a6e22e">out</span> = append(<span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">kv</span>)
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">out</span>
+}
+</code></pre></div><p>dedupEnv 内部实际调用了 dedupEnvCase。dedupEnvCase 遍历了 env 切片，先找了一下是否存在 &ldquo;=&rdquo;，如果不存在就将参数放到 out 中然后进入下一次循环。如果存在就声明一个 k 将 = 前的部分存起来，若系统为 windows 将 k 转换成小写。在 map saw 中查找 k ，如果未找到，就将 k 存入 saw，并且其对应的 value 为 kv 在 out 中的索引。如果找到了，从 saw 拿到 dupIdx，而 dupIdx 是之前存入的 kv 在 out 中的索引，修改 out 中的 kv 然后进入下一次循环。</p>
+<p>os.StartProcess() 调用了 startProcess()，startProcess 中先对 attr (attr 中存有用于 StartProcess 创建新进程的属性) 进行了判断。attr != nil &amp;&amp; attr.Sys == nil &amp;&amp; attr.Dir != &quot;&rdquo; 时，调用了 Stat(attr.Dir) 检查需要的文件夹是否存在，Stat(attr.Dir) 中的调用就比较底层了，就不深究了。然后，创建了 sysattr 用于存放系统调用创建新进程需要的参数。遍历 attr.Files，将引用打开文件的文件描述符放到 sysattr。最后，系统调用创建新进程并将系统调用返回值用 newProcess() 存在一个 *Process 实例中。</p>
+<p>c.closeDescriptors(c.closeAfterStart) 因为 os.StartProcess() -&gt; startProcess() -&gt; attr.Files ，新进程已经将资源继承，所以关掉描述符释放部分资源。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/golang/">golang</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/standard-library/">standard-library</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/att-assembly-language/" data-tooltip="AT&amp;T 汇编（一）">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/11/install-matlab-on-linux/" data-tooltip="linux 安装 Matlab">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/att-assembly-language/" data-tooltip="AT&amp;T 汇编（一）">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/11/install-matlab-on-linux/" data-tooltip="linux 安装 Matlab">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2017/12/go-standard-library-os-exec/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fgo-standard-library-os-exec%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fgo-standard-library-os-exec%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fgo-standard-library-os-exec%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

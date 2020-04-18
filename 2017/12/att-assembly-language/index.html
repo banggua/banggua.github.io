@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="skill, assembly-language">
+<meta name="description" content="ATT 格式的汇编根据 AT&amp;T 命名，AT&amp;T 是运营贝尔实验室多年的公司。">
+
+
+<meta property="og:description" content="ATT 格式的汇编根据 AT&amp;T 命名，AT&amp;T 是运营贝尔实验室多年的公司。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AT&amp;T 汇编（一）">
+<meta name="twitter:title" content="AT&amp;T 汇编（一）">
+<meta property="og:url" content="https://blog.guagua.tech/2017/12/att-assembly-language/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2017/12/att-assembly-language/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="ATT 格式的汇编根据 AT&amp;T 命名，AT&amp;T 是运营贝尔实验室多年的公司。">
+<meta name="twitter:description" content="ATT 格式的汇编根据 AT&amp;T 命名，AT&amp;T 是运营贝尔实验室多年的公司。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2017-12-13T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2017-12-13T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="skill">
+    
+  
+  
+    
+      <meta property="article:tag" content="skill">
+    
+      <meta property="article:tag" content="assembly-language">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>AT&amp;T 汇编（一）</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2017/12/att-assembly-language/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      AT&amp;T 汇编（一）
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-12-13T00:00:00Z">
+        
+  December 13, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/skill">skill</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>ATT 格式的汇编根据 AT&amp;T 命名，AT&amp;T 是运营贝尔实验室多年的公司。</p>
+<p>第一部分介绍了数据格式、访问信息相关的内容。</p>
+<h1 id="数据格式">数据格式</h1>
+<p>Intel 用术语 <code>字</code> (word)表示 16 位数据类型。称 32 位数为 <code>双字</code> (double words)，称 64 位数为 <code>四字</code> (quad words)。下表给出了 C 语言基本数据类型对应的 x86-64 表示。(char * 表示指针)</p>
+<table>
+<thead>
+<tr>
+<th>C 声明</th>
+<th>Intel 数据类型</th>
+<th>汇编代码后缀</th>
+<th>大小(字节)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>字节</td>
+<td>b</td>
+<td>1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>字</td>
+<td>w</td>
+<td>2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>双字</td>
+<td>l</td>
+<td>4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>四字</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>char</td>
+<td>四字</td>
+<td>q</td>
+<td>8</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度</td>
+<td>s</td>
+<td>4</td>
+</tr>
+<tr>
+<td>double</td>
+<td>双精度</td>
+<td>l</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<p>注意：汇编代码使用后缀 <code>l</code> 来表示 4 字节整数和 8 字节双精度浮点数。这不会产生歧义，因为浮点数使用的是一组完全不同的指令和寄存器。</p>
+<h1 id="访问信息">访问信息</h1>
+<p>最初的 8086 中有 8 个 16 位的寄存器，即下表中的 %ax 到 %bp。每个寄存器都有特殊的用途，它们的名字就反映了这些不同的用途。扩展到 IA32 构架时，这些寄存器也扩展成 32 位寄存器，标号从 %eax 到 %ebp。扩展到 x86-64 后，原来的 8 个寄存器扩展成 64 位，标号从 %rax 到 %rbp。除此之外，还增加了 8 个新的寄存器，它们的标号是按照新的命名规则制定的 : 从 %r8 到 %r15。</p>
+<pre><code>63                             31              15      7      0
++-----------------------------+---------------+-------+-------+
+|%rax                         |%eax           |%ax    |%al    | 返回值
++-----------------------------+---------------+-------+-------+
+|%rbx                         |%ebx           |%bx    |%bl    | 被调用者保存
++-----------------------------+---------------+-------+-------+
+|%rcx                         |%ecx           |%cx    |%cl    | 第 4 个参数
++-----------------------------+---------------+-------+-------+
+|%rdx                         |%edx           |%dx    |%dl    | 第 3 个参数
++-----------------------------+---------------+-------+-------+
+|%rsi                         |%esi           |%si    |%sil   | 第 2 个参数
++-----------------------------+---------------+-------+-------+
+|%rdi                         |%edi           |%di    |%dil   | 第 1 个参数
++-----------------------------+---------------+-------+-------+
+|%rbp                         |%ebp           |%bp    |%bpl   | 被调用者保存
++-----------------------------+---------------+-------+-------+
+|%rsp                         |%esp           |%sp    |%spl   | 栈指针
++-----------------------------+---------------+-------+-------+
+|%r8                          |%r8d           |%r8w   |%r8b   | 第 5 个参数
++-----------------------------+---------------+-------+-------+
+|%r9                          |%r9d           |%r9w   |%r9b   | 第 6 个参数
++-----------------------------+---------------+-------+-------+
+|%r10                         |%r10d          |%r10w  |%r10b  | 调用者保存
++-----------------------------+---------------+-------+-------+
+|%r11                         |%r11d          |%r11w  |%r11b  | 调用者保存
++-----------------------------+---------------+-------+-------+
+|%r12                         |%r12d          |%r12w  |%r12b  | 被调用者保存
++-----------------------------+---------------+-------+-------+
+|%r13                         |%r13d          |%r13w  |%r13b  | 被调用者保存
++-----------------------------+---------------+-------+-------+
+|%r14                         |%r14d          |%r14w  |%r14b  | 被调用者保存
++-----------------------------+---------------+-------+-------+
+|%r15                         |%r15d          |%r15w  |%r15b  | 被调用者保存
++-----------------------------+---------------+-------+-------+
+</code></pre><p>字节级操作可以访问最低的字节，16 位操作可以访问最低的 2 个字节，32 位操作可以访问最低的 4 个字节，而 64 位操作可以访问整个寄存器。</p>
+<p>两条规则：</p>
+<p>1.生成 1 字节和 2 字节数字的指令会保持剩下的字节不变。</p>
+<p>2.生成 4 字节数字的指令会把高位 4 个字节置为 0。</p>
+<h1 id="操作数指示符">操作数指示符</h1>
+<p>各种不同的操作数的可能性被分为三种类型，分别是 立即数、寄存器 和 内存引用。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>格式</th>
+<th>操作数值</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>立即数</td>
+<td>$$I_{mm}$</td>
+<td>$I_{mm}$</td>
+<td>立即数寻址</td>
+</tr>
+<tr>
+<td>寄存器</td>
+<td>$r_{a}$</td>
+<td>$R[r_{a}]$</td>
+<td>寄存器寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$I_{mm}$</td>
+<td>$M[I_{mm}]$</td>
+<td>绝对寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$(r_{a})$</td>
+<td>$M[R[r_{a}]]$</td>
+<td>间接寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$I{mm}(r _ {b})$</td>
+<td>$M[I_{mm}+R[r _ {b}]]$</td>
+<td>(基址+偏移量)寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$(r_{b}, r_{i})$</td>
+<td>$M[R[r_{b}]+R[r_{i}]]$</td>
+<td>变址寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$I_{mm}(r_{b}, r_{i})$</td>
+<td>$M[I_{mm}+R[r_{b}]+R[r_{i}]]$</td>
+<td>变址寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$(, r_{i}, s)$</td>
+<td>$M[R[r_{i}] \ast s]$</td>
+<td>比例变址寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$I_{mm}(, r_{i}, s)$</td>
+<td>$M[I_{mm}+R[r_{i}] \ast s]$</td>
+<td>比例变址寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$(r_{b}, r_{i}, s)$</td>
+<td>$M[R[r_{b}]+R[r_{i}] \ast s]$</td>
+<td>比例变址寻址</td>
+</tr>
+<tr>
+<td>存储器</td>
+<td>$I_{mm}(r_{b}, r_{i}, s)$</td>
+<td>$M[I_{mm}+R[r_{b}]+R[r_{i}] \ast s]$</td>
+<td>比例变址寻址</td>
+</tr>
+</tbody>
+</table>
+<p>为了更好的理解三种操作数的表示，请看下面例题。</p>
+<p><code>例，假设下面的值存放在指明的内存地址和寄存器种</code></p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x100</td>
+<td>0xFF</td>
+</tr>
+<tr>
+<td>0x104</td>
+<td>0xAB</td>
+</tr>
+<tr>
+<td>0x108</td>
+<td>0x13</td>
+</tr>
+<tr>
+<td>0x10C</td>
+<td>0x11</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%rax</td>
+<td>0x100</td>
+</tr>
+<tr>
+<td>%rcx</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td>%rdx</td>
+<td>0x3</td>
+</tr>
+</tbody>
+</table>
+<p><code>填写下表，给出所示操作数的值</code></p>
+<table>
+<thead>
+<tr>
+<th>操作数</th>
+<th>值</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%rax</td>
+<td><code>0x100</code></td>
+<td><code>寄存器</code></td>
+</tr>
+<tr>
+<td>0x104</td>
+<td><code>0xAB</code></td>
+<td><code>绝对地址</code></td>
+</tr>
+<tr>
+<td>$0x108</td>
+<td><code>0x108</code></td>
+<td><code>立即数</code></td>
+</tr>
+<tr>
+<td>(%rax)</td>
+<td><code>0xFF</code></td>
+<td><code>地址 0x100</code></td>
+</tr>
+<tr>
+<td>4(%rax)</td>
+<td><code>0xAB</code></td>
+<td><code>地址 0x104</code></td>
+</tr>
+<tr>
+<td>9(%rax, %rdx)</td>
+<td><code>0x11</code></td>
+<td><code>地址 0x10C</code></td>
+</tr>
+<tr>
+<td>206(%rcx, %rdx)</td>
+<td><code>0x13</code></td>
+<td><code>地址 0x108</code></td>
+</tr>
+<tr>
+<td>0xFC(, %rcx, 4)</td>
+<td><code>0xFF</code></td>
+<td><code>地址 0x100</code></td>
+</tr>
+<tr>
+<td>(%rax, %rdx, 4)</td>
+<td><code>0x11</code></td>
+<td><code>地址 0x10C</code></td>
+</tr>
+</tbody>
+</table>
+<h1 id="数据传送指令">数据传送指令</h1>
+<p>MOV 类由四条指令组成：movb、movw、movl 和 movq。这些指令把数据从源位置复制到目的位置，不做任何变化。</p>
+<h2 id="mov-类">MOV 类</h2>
+<pre><code>+--------------+--------+--------------+
+|     指 令     |  效果  |     描 述     |
++--------------+--------+--------------+
+| MOV     S, D | D &lt;- S |     传 送     |
++--------------+--------+--------------+
+| movb         |        | 传送字节      |
+| movw         |        | 传送节        |
+| movl         |        | 传送双节      |
+| movq         |        | 传送四节      |
+| movabsq I, R |        | 传送绝对第四字 |
++--------------+--------+--------------+
+</code></pre><p>源操作数指定的值是一个立即数，存储在寄存器中或者内存中。目的操作数指定一个位置，要么是一个寄存器或者，要么是一个内存地址。x86-64 加了一条限制，传送指令的两个操作数不能都指向内存位置。将一个值从一个内存位置复制到另一个内存位置需要两条指令 &ndash; 第一条指令将源值加载到寄存器中，第二条将该寄存器值写入目的位置。大多数情况中，MOV 指令只会更新目的操作数指定的那些寄存器字节或内存位置。唯一的例外是 movl 指令以寄存器为目的时，它会把该寄存器的高位 4 字节设置为 0。造成这个例外的原因是 x86-64 采用的惯例，即任何为寄存器生成 32 位值的指令都会把该寄存器的高位分部置位 0。</p>
+<p>常规的 movq 指令指令以表示 32 位补码数字的立即数作为源操作数，然后把这个值符号扩展得到 64 位的值，放到目的位置。movabsq 指令能够以任意 64 位立即数作为源操作数，并且只能以寄存器作为目的。</p>
+<h2 id="movz-类">MOVZ 类</h2>
+<pre><code>+--------------+----------------+-------------------------+
+|     指 令     |     效  果     |          描  述          |
++--------------+----------------+-------------------------+
+| MOVZ    S, D | D &lt;- 零扩展 (S) | 以零扩展进行传送           |
++--------------+----------------+-------------------------+
+| movzbw       |                | 将做了零扩展的字节传送到字   |
+| movzwl       |                | 将做了零扩展的字节传送到双字 |
+| movzwl       |                | 将做了零扩展的字传送到双字   |
+| movzbq       |                | 将做了零扩展的字节传送到四字 |
+| movzwq       |                | 将做了零扩展的字传送到四字   |
++--------------+----------------+--------------------------+
+</code></pre><p>MOVZ 类中的指令把目的中剩余的字节填充为 0。每条命令名字的后两个字符都是大小指示符：第一个字符指定源的大小，而第二个指明目的的大小。</p>
+<p>注意：没有 movzlq 指令，由于生成 4 字节值并以寄存器作为目的的指令会把高 4 字节置为 0，所以可以用以寄存器为目的的 movl 指令来实现</p>
+<h2 id="movs-类">MOVS 类</h2>
+<pre><code>+--------------+------------------------+---------------------------+
+|     指 令     |         效  果         |           描 述            |
++--------------+------------------------+---------------------------+
+| MOVS    S, R |     R &lt;- 零扩展 (S)     | 传送字符扩展的字节           |
++--------------+------------------------+---------------------------+
+| movsbw       |                        | 将做了符号扩展的字节传送到字   |
+| movsbl       |                        | 将做了符号扩展的字节传送到双字 |
+| movswl       |                        | 将做了符号扩展的字传送到双字   |
+| movsbq       |                        | 将做了符号扩展的字节传送到四字 |
+| movswq       |                        | 将做了符号扩展的字传送到四字   |
+| movslq       |                        | 将做了符号扩展的双字传送到四字 |
+| cltq         | %rax &lt;- 符号扩展 (%eax) | 把 %eax 符号扩展到 %rax      |
++--------------+------------------------+----------------------------+
+</code></pre><p>MOVS 类中的指令通过符号扩展来填充，把源操作的最高位进行复制。每条命令名字的后两个字符都是大小指示符 : 第一个字符指定源的大小，而第二个指明目的的大小。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/skill/">skill</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/assembly-language/">assembly-language</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/hugo-support-latex/" data-tooltip="Hugo 支持 LaTeX">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/go-standard-library-os-exec/" data-tooltip="os/exec Go 源码解析">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/hugo-support-latex/" data-tooltip="Hugo 支持 LaTeX">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2017/12/go-standard-library-os-exec/" data-tooltip="os/exec Go 源码解析">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2017/12/att-assembly-language/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fatt-assembly-language%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fatt-assembly-language%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2017%2F12%2Fatt-assembly-language%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script> 
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

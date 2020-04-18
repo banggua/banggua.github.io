@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="Kubernetes Concepts Content">
+
+
+<meta property="og:description" content="Kubernetes Concepts Content">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes Concepts Content">
+<meta name="twitter:title" content="Kubernetes Concepts Content">
+<meta property="og:url" content="https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="Kubernetes Concepts Content">
+<meta name="twitter:description" content="Kubernetes Concepts Content">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-01-10T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-01-10T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes Concepts Content</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes Concepts Content
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-01-10T00:00:00Z">
+        
+  January 10, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Kubernetes Concepts Content</p>
+<h2 id="concepts">Concepts</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Concepts</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_index">kubernetes 概念</a></td>
+<td align="left">#9445</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overview">Overview</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">What is Kubernetes?</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_what-is-kubernetes">什么是 Kubernetes ？</a></td>
+<td align="left">#11399</td>
+</tr>
+<tr>
+<td align="left">Kubernetes Components</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_components">Kubernetes 组件</a></td>
+<td align="left">#8787</td>
+</tr>
+<tr>
+<td align="left">The Kubernetes API</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api">Kubernetes API</a></td>
+<td align="left">#11835</td>
+</tr>
+</tbody>
+</table>
+<h3 id="working-with-kubernetes-objects">Working with Kubernetes Objects</h3>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Understanding Kubernetes Objects</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_kubernetes-objects">Kubernetes 对象</a></td>
+<td align="left">#9954</td>
+</tr>
+<tr>
+<td align="left">Names</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_names">Kubernetes 对象名称</a></td>
+<td align="left">#10720</td>
+</tr>
+<tr>
+<td align="left">Namespaces</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_namespaces">Kubernetes 命名空间</a></td>
+<td align="left">#10720</td>
+</tr>
+<tr>
+<td align="left">Labels and Selectors</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels">Kubernetes 标签和选择器</a></td>
+<td align="left">#11719</td>
+</tr>
+<tr>
+<td align="left">Annotations</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations">Kubernetes 注解</a></td>
+<td align="left">#11719</td>
+</tr>
+<tr>
+<td align="left">Field Selectors</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors">Kubernetes 字段选择器</a></td>
+<td align="left">#9174</td>
+</tr>
+<tr>
+<td align="left">Recommended Labels</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels">Kubernetes 推荐标签</a></td>
+<td align="left">#9482</td>
+</tr>
+</tbody>
+</table>
+<h3 id="object-management-using-kubectl">Object Management Using kubectl</h3>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Kubernetes Object Management</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_overview">Kubernetes 对象管理</a></td>
+<td align="left">#11401</td>
+</tr>
+<tr>
+<td align="left">Managing Kubernetes Objects Using Imperative Commands</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command">使用命令式指令管理 Kubernetes 对象</a></td>
+<td align="left">#10982</td>
+</tr>
+<tr>
+<td align="left">Imperative Management of Kubernetes Objects Using Configuration Files</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-config">使用配置文件对 Kubernetes 对象的命令式管理</a></td>
+<td align="left">#9482</td>
+</tr>
+<tr>
+<td align="left">Declarative Management of Kubernetes Objects Using Configuration Files</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_declarative-config">使用配置文件对 Kubernetes 对象的声明式管理</a></td>
+<td align="left">#11805</td>
+</tr>
+</tbody>
+</table>
+<h2 id="kubernetes-architecture">Kubernetes Architecture</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Nodes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Master-Node communication</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Concepts Underlying the Cloud Controller Manager</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="containers">Containers</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Images</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_images">Kubernetes 镜像</a></td>
+<td align="left">#11808</td>
+</tr>
+<tr>
+<td align="left">Container Environment Variables</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-environment-variables">Kubernetes 容器环境变量</a></td>
+<td align="left">#10720</td>
+</tr>
+<tr>
+<td align="left">Runtime Class</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Container Lifecycle Hooks</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-container-lifecycle-hooks">容器生命周期的钩子</a></td>
+<td align="left">#10720</td>
+</tr>
+</tbody>
+</table>
+<h2 id="workloads">Workloads</h2>
+<h3 id="pods">Pods</h3>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Pod Overview</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-overview">Kubernetes Pod 概述</a></td>
+<td align="left">#10731</td>
+</tr>
+<tr>
+<td align="left">Pods</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod">Kubernetes Pods</a></td>
+<td align="left">#11923</td>
+</tr>
+<tr>
+<td align="left">Pod Lifecycle</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-lifecycle">Kubernetes Pod 的生命周期</a></td>
+<td align="left">#11525</td>
+</tr>
+<tr>
+<td align="left">Init Containers</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_init-containers">Kubernetes Init 容器</a></td>
+<td align="left">#10720</td>
+</tr>
+<tr>
+<td align="left">Pod Preset</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_podpreset">Kubernetes Pod Preset</a></td>
+<td align="left">#9482</td>
+</tr>
+<tr>
+<td align="left">Disruptions</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="controllers">Controllers</h3>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ReplicaSet</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ReplicationController</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Deployments</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">StatefulSets</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">DaemonSet</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Garbage Collection</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">TTL Controller for Finished Resources</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Jobs - Run to Completion</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CronJob</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="services-load-balancing-and-networking">Services, Load Balancing, and Networking</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Services</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">DNS for Services and Pods</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Connecting Applications with Services</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Ingress</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Network Policies</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Adding entries to Pod /etc/hosts with HostAliases</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="storage">Storage</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Volumes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Persistent Volumes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Volume Snapshots</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Storage Classes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Volume Snapshot Classes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Dynamic Volume Provisioning</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Node-specific Volume Limits</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Configuration Best Practices</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Managing Compute Resources for Containers</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Assigning Pods to Nodes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Taints and Tolerations</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Secrets</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Organizing Cluster Access Using kubeconfig Files</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Pod Priority and Preemption</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Scheduler Performance Tuning</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="policies">Policies</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Resource Quotas</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Pod Security Policies</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="cluster-administration">Cluster Administration</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Cluster Administration Overview</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview">Kubernetes 群集管理概述</a></td>
+<td align="left">#10248</td>
+</tr>
+<tr>
+<td align="left">Certificates</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates">Kubernetes 证书</a></td>
+<td align="left">#11075</td>
+</tr>
+<tr>
+<td align="left">Cloud Providers</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Managing Resources</td>
+<td align="left"><a href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_manage-deployment">Kubernetes 管理资源</a></td>
+<td align="left">#9482</td>
+</tr>
+<tr>
+<td align="left">Cluster Networking</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Logging Architecture</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Configuring kubelet Garbage Collection</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Federation</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Proxies in Kubernetes</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Controller manager metrics</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Installing Addons</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="extending-kubernetes">Extending Kubernetes</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Extending your Kubernetes Cluster</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Service Catalog</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="extending-the-kubernetes-api">Extending the Kubernetes API</h3>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Extending the Kubernetes API with the aggregation layer</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Custom Resources</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="compute-storage-and-networking-extensions">Compute, Storage, and Networking Extensions</h2>
+<table>
+<thead>
+<tr>
+<th align="left">source</th>
+<th align="left">translation</th>
+<th align="left">commit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Network Plugins</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Device Plugins</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/klog/" data-tooltip="klog 源码分析">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/12/uml-class-diagram/" data-tooltip="UML 类图中的关系">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/klog/" data-tooltip="klog 源码分析">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/12/uml-class-diagram/" data-tooltip="UML 类图中的关系">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/01/kubernetes-concepts/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fkubernetes-concepts%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fkubernetes-concepts%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fkubernetes-concepts%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

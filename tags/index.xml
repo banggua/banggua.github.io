@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/</link>
+    <description>Recent content in Tags on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>script</title>
+      <link>https://blog.guagua.tech/tags/script/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/script/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shell</title>
+      <link>https://blog.guagua.tech/tags/shell/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>function-pointer</title>
+      <link>https://blog.guagua.tech/tags/function-pointer/</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/function-pointer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://blog.guagua.tech/tags/golang/</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://blog.guagua.tech/tags/python/</link>
+      <pubDate>Sat, 26 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>standard-library</title>
+      <link>https://blog.guagua.tech/tags/standard-library/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/standard-library/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>temporary-address</title>
+      <link>https://blog.guagua.tech/tags/temporary-address/</link>
+      <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/temporary-address/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>concepts</title>
+      <link>https://blog.guagua.tech/tags/concepts/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/concepts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://blog.guagua.tech/tags/kubernetes/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>skill</title>
+      <link>https://blog.guagua.tech/tags/skill/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/skill/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>uml</title>
+      <link>https://blog.guagua.tech/tags/uml/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/uml/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>https://blog.guagua.tech/tags/ssh/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/ssh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
+      <link>https://blog.guagua.tech/tags/vim/</link>
+      <pubDate>Tue, 06 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dart</title>
+      <link>https://blog.guagua.tech/tags/dart/</link>
+      <pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/dart/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flutter</title>
+      <link>https://blog.guagua.tech/tags/flutter/</link>
+      <pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/flutter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dosbox</title>
+      <link>https://blog.guagua.tech/tags/dosbox/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/dosbox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mac</title>
+      <link>https://blog.guagua.tech/tags/mac/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/mac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pointer</title>
+      <link>https://blog.guagua.tech/tags/pointer/</link>
+      <pubDate>Fri, 05 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/pointer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>grpc</title>
+      <link>https://blog.guagua.tech/tags/grpc/</link>
+      <pubDate>Thu, 04 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/grpc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>grpc-gateway</title>
+      <link>https://blog.guagua.tech/tags/grpc-gateway/</link>
+      <pubDate>Thu, 04 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/grpc-gateway/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proto3</title>
+      <link>https://blog.guagua.tech/tags/proto3/</link>
+      <pubDate>Thu, 04 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/proto3/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>library</title>
+      <link>https://blog.guagua.tech/tags/library/</link>
+      <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/library/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>guide</title>
+      <link>https://blog.guagua.tech/tags/guide/</link>
+      <pubDate>Mon, 24 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/guide/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gdb</title>
+      <link>https://blog.guagua.tech/tags/gdb/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/gdb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>install</title>
+      <link>https://blog.guagua.tech/tags/install/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/install/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>awk</title>
+      <link>https://blog.guagua.tech/tags/awk/</link>
+      <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/awk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>build</title>
+      <link>https://blog.guagua.tech/tags/build/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/build/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tool</title>
+      <link>https://blog.guagua.tech/tags/tool/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/tool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>y86-64</title>
+      <link>https://blog.guagua.tech/tags/y86-64/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/y86-64/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>blog</title>
+      <link>https://blog.guagua.tech/tags/blog/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nginx</title>
+      <link>https://blog.guagua.tech/tags/nginx/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>server</title>
+      <link>https://blog.guagua.tech/tags/server/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/server/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>latex</title>
+      <link>https://blog.guagua.tech/tags/latex/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/latex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vscode</title>
+      <link>https://blog.guagua.tech/tags/vscode/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/vscode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cobra</title>
+      <link>https://blog.guagua.tech/tags/cobra/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/cobra/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wikipedia</title>
+      <link>https://blog.guagua.tech/tags/wikipedia/</link>
+      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/wikipedia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>regular-expressions</title>
+      <link>https://blog.guagua.tech/tags/regular-expressions/</link>
+      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/regular-expressions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>concurrent</title>
+      <link>https://blog.guagua.tech/tags/concurrent/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/concurrent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memory model</title>
+      <link>https://blog.guagua.tech/tags/memory-model/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/memory-model/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>chkconfig</title>
+      <link>https://blog.guagua.tech/tags/chkconfig/</link>
+      <pubDate>Wed, 21 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/chkconfig/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://blog.guagua.tech/tags/linux/</link>
+      <pubDate>Wed, 21 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>design</title>
+      <link>https://blog.guagua.tech/tags/design/</link>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/design/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>arch</title>
+      <link>https://blog.guagua.tech/tags/arch/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/arch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>slack</title>
+      <link>https://blog.guagua.tech/tags/slack/</link>
+      <pubDate>Wed, 28 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/slack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://blog.guagua.tech/tags/git/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>command</title>
+      <link>https://blog.guagua.tech/tags/command/</link>
+      <pubDate>Sun, 24 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/command/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>assembly-language</title>
+      <link>https://blog.guagua.tech/tags/assembly-language/</link>
+      <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/assembly-language/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>glide</title>
+      <link>https://blog.guagua.tech/tags/glide/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/glide/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c/cpp</title>
+      <link>https://blog.guagua.tech/tags/c/cpp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/tags/c/cpp/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

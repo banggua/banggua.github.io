@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>library on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/library/</link>
+    <description>Recent content in library on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 28 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/library/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gRPC in Go</title>
+      <link>https://blog.guagua.tech/2018/09/grpc/</link>
+      <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/grpc/</guid>
+      <description>&lt;p&gt;本文将向你介绍 gRPC 和 protocol buffers。代码示例：&lt;a href=&#34;https://github.com/lizebang/learning-grpc&#34;&gt;demo&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cobra 使用入门</title>
+      <link>https://blog.guagua.tech/2018/06/how-to-use-cobra/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/how-to-use-cobra/</guid>
+      <description>&lt;p&gt;今天我们介绍一个简化构建 CLI 应用程序的库 &amp;ndash; Cobra。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Golang 定时任务</title>
+      <link>https://blog.guagua.tech/2018/02/golang-cron/</link>
+      <pubDate>Sun, 25 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/golang-cron/</guid>
+      <description>&lt;p&gt;如何在 Golang 中添加或设置定时任务?&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

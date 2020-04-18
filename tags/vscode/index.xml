@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vscode on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/vscode/</link>
+    <description>Recent content in vscode on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 27 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LaTeX in Mac</title>
+      <link>https://blog.guagua.tech/2018/06/latex-in-mac/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/latex-in-mac/</guid>
+      <description>&lt;p&gt;LaTeX 是一个高质量的排版系统，它包含为生产技术和科学文档而设计的功能。LaTeX 是科学文件通讯和出版的事实标准。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

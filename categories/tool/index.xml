@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tool on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/categories/tool/</link>
+    <description>Recent content in tool on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/categories/tool/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>安装 DOSBox 及配置</title>
+      <link>https://blog.guagua.tech/2018/10/dosbox-in-mac/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/dosbox-in-mac/</guid>
+      <description>&lt;p&gt;由于今年开设了《IBM-PC 汇编语言程序设计》这门课，所以安装了 DOSBox，下面介绍一下安装的过程及我的配置。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Proto3 语言指南</title>
+      <link>https://blog.guagua.tech/2018/09/proto3-language-guide/</link>
+      <pubDate>Mon, 24 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/proto3-language-guide/</guid>
+      <description>&lt;p&gt;本文介绍了如何使用 protocol buffer 构建 pb 数据 &amp;ndash; 包括 &lt;code&gt;.proto&lt;/code&gt; 语法以及生成数据访问类的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>创建 slack custom bots</title>
+      <link>https://blog.guagua.tech/2018/02/slack-custom-bots/</link>
+      <pubDate>Wed, 28 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/slack-custom-bots/</guid>
+      <description>创建 slack custom bots 网址：https://my.slack.com/services/new/bot</description>
+    </item>
+    
+    <item>
+      <title>git clone 速度很慢的解决方法</title>
+      <link>https://blog.guagua.tech/2018/02/git-clone-slow/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/git-clone-slow/</guid>
+      <description>&lt;p&gt;使用 GitHub 学习、管理代码十分方便，但是有时候 git clone 速度非常慢，只有几 Kb 的速度。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo 支持 LaTeX</title>
+      <link>https://blog.guagua.tech/2017/12/hugo-support-latex/</link>
+      <pubDate>Sat, 16 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/hugo-support-latex/</guid>
+      <description>&lt;p&gt;Hugo 不支持 LaTeX，这时我们可以使用 MathJAX 和 Mmark 来让 Hugo 支持 LaTeX。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>chkconfig on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/chkconfig/</link>
+    <description>Recent content in chkconfig on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/chkconfig/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>在 Linux 设置开机启动项</title>
+      <link>https://blog.guagua.tech/2018/03/chkconfig-usage/</link>
+      <pubDate>Wed, 21 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/chkconfig-usage/</guid>
+      <description>&lt;p&gt;在服务器上怎样添加一个开机启动项呢？我们可以使用 chkconfig 来做到这一切，下面给大家介绍介绍 chkconfig 的使用方法。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

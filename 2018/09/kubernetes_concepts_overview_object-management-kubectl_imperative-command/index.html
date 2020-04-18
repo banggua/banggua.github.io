@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/
+直接使用内置于 kubectl 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/
+直接使用内置于 kubectl 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用命令式指令管理 Kubernetes 对象">
+<meta name="twitter:title" content="使用命令式指令管理 Kubernetes 对象">
+<meta property="og:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/
+直接使用内置于 kubectl 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/
+直接使用内置于 kubectl 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-09-02T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-09-02T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>使用命令式指令管理 Kubernetes 对象</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      使用命令式指令管理 Kubernetes 对象
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-02T00:00:00Z">
+        
+  September 2, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/</p>
+<p>直接使用内置于 <code>kubectl</code> 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。</p>
+<h2 id="权衡利弊">权衡利弊</h2>
+<p><code>kubectl</code> 工具支持三种对象管理的方式：</p>
+<ul>
+<li>命令式指令</li>
+<li>命令式对象配置</li>
+<li>声明式对象配置</li>
+</ul>
+<p>在 <a href="https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/">Kubernetes 对象管理</a> 中讨论了每一种对象管理方式的优缺点。</p>
+<h2 id="如何创建对象">如何创建对象</h2>
+<p><code>kubectl</code> 工具支持用于创建一些最常见对象类型的动词驱动命令。这些命令被命名为让对 Kubernetes 对象类型不熟悉的用户也认可的词。</p>
+<ul>
+<li><code>run</code>：创建一个新的 Deployment 对象，以在一个或多个 Pod 中运行容器。</li>
+<li><code>expose</code>：创建一个新的 Service 对象，以跨多个 Pod 实现流量的负载均衡。</li>
+<li><code>autoscale</code>：创建一个新的 Autoscaler 对象，以自动横行缩放如 Deployment 这样的控制器。</li>
+</ul>
+<p><code>kubectl</code> 工具也支持由对象类型驱动的创建命令。这些命令支持更多的对象类型并且它们的目的更明确，但是要求用户知道它们打算创建的对象的类型。</p>
+<ul>
+<li><code>create &lt;objecttype&gt; [&lt;subtype&gt;] &lt;instancename&gt;</code></li>
+</ul>
+<p>某些对象类型具有可以在 <code>create</code> 命令中指定的子类型。例如，Service 对象有几种子类型，包括 ClusterIP、LoadBalancer 和 NodePort。下面是创建一个带有子类型 NodePort 的 Service 的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service nodeport &lt;myservicename&gt;
+</code></pre></div><p>在前面的例子中，<code>create service nodeport</code> 命令被称为 <code>create service</code> 命令的子命令。</p>
+<p>你可以使用 <code>-h</code> 标志查找子命令支持的参数和标志：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service nodeport -h
+</code></pre></div><h2 id="如何更新对象">如何更新对象</h2>
+<p><code>kubectl</code> 命令支持某些常见更新操作的动词驱动命令。这些命令的命名为了使不熟悉 Kubernetes 对象的用户在不知道必须设置的特定字段的情况下也可以执行更新：</p>
+<ul>
+<li><code>scale</code>：通过更新控制器的副本数量横向缩放控制器来添加或移除 Pods。</li>
+<li><code>annotate</code>：给一个对象添加或移除注解。</li>
+<li><code>label</code>：给一个对象添加或移除标签。</li>
+</ul>
+<p><code>kubectl</code> 也支持由对象的某个方面驱动的更新命令。设置这方面可能会为不同的对象类型设置不同的字段：</p>
+<ul>
+<li><code>set</code>：设置对象的某个方面。</li>
+</ul>
+<blockquote>
+<p>注意：从 Kubernetes 1.5 版本开始，不是每个动词驱动的命令都有一个相关的方面驱动命令。</p>
+</blockquote>
+<p><code>kubectl</code> 工具支持这些额外的方法来直接更新实时对象，但是它们需要更好地了解 Kubernetes 对象架构。</p>
+<ul>
+<li><code>edit</code>：通过在编辑器中打开其配置直接编辑实时对象的原始配置。</li>
+<li><code>patch</code>：使用 patch 字符串直接修改实时对象的特定字段。有关 patch 字符串的详细信息，请参考 <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md#patch-operations">API 约定</a> patch 部分。</li>
+</ul>
+<h2 id="如何删除对象">如何删除对象</h2>
+<p>你可以使用 <code>delete</code> 命令从集群中删除一个对象：</p>
+<ul>
+<li><code>delete &lt;type&gt;/&lt;name&gt;</code></li>
+</ul>
+<blockquote>
+<p>注意：命令式指令和命令式对象配置都可以使用 <code>kubectl delete</code>。它们的不同是传递给命令的参数。想要 <code>kubectl delete</code> 用作命令性命令使用，请将要删除的对象作为参数。这里有一个删除名为 nginx 的 Deployment 对象的例子：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete deployment/nginx
+</code></pre></div><h2 id="如何查看对象">如何查看对象</h2>
+<p>有几个打印关于对象信息的命令：</p>
+<ul>
+<li><code>get</code>：打印所匹配对象的基本信息。使用 <code>get -h</code> 可以查看选项列表。</li>
+<li><code>describe</code>：打印所匹配对象的汇总详细信息。</li>
+<li><code>logs</code>：打印在 Pod 中运行的容器的 stdout 和 stderr。</li>
+</ul>
+<h2 id="在创建之前使用-set-命令修改对象">在创建之前使用 <code>set</code> 命令修改对象</h2>
+<p>有些对象字段没有可以在 <code>create</code> 命令中使用的标志。在这些情况下，可以在创建对象之前使用 <code>set</code> 和 <code>create</code> 的组合来指定字段的值。这是通过将 <code>create</code> 命令的输出传递到 <code>set</code> 命令，然后返回 <code>create</code> 命令来完成的。这里有一个例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service clusterip my-svc --clusterip<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;None&#34;</span> -o yaml --dry-run | kubectl set selector --local -f - <span style="color:#e6db74">&#39;environment=qa&#39;</span> -o yaml | kubectl create -f -
+</code></pre></div><p>1.<code>kubectl create service -o yaml --dry-run</code> 命令为 Service 创建配置，但将其以 YAML 格式打印到 stdout，而不是将其发送到 Kubernetes API 服务器。</p>
+<p>2.<code>kubectl set selector --local -f - -o yaml</code> 命令从 stdin 中读取配置，并将更新后的配置作为 YAML 写入 stdout。</p>
+<p>3.<code>kubectl create -f -</code> 命令使用由 stdin 提供的配置创建对象。</p>
+<h2 id="在创建之前使用---edit-修改对象">在创建之前使用 <code>--edit</code> 修改对象</h2>
+<p>你可以使用 <code>kubectl create --edit</code> 在对象创建之前进行任意的改变。这里有一个例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service clusterip my-svc --clusterip<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;None&#34;</span> -o yaml --dry-run &gt; /tmp/srv.yaml
+kubectl create --edit -f /tmp/srv.yaml
+</code></pre></div><p>1.<code>kubectl create service</code> 命令为 Service 创建配置，并将其保存到 <code>/tmp/srv.yaml</code>。</p>
+<p>2.<code>kubectl create --edit</code> 命令在创建对象之前打开配置文件进行编辑。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_overview/" data-tooltip="Kubernetes 对象管理">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/" data-tooltip="Kubernetes 字段选择器">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_overview/" data-tooltip="Kubernetes 对象管理">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/" data-tooltip="Kubernetes 字段选择器">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_object-management-kubectl_imperative-command%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_object-management-kubectl_imperative-command%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_overview_object-management-kubectl_imperative-command%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

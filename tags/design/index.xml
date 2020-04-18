@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>design on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/design/</link>
+    <description>Recent content in design on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 16 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/design/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>耦合与解耦</title>
+      <link>https://blog.guagua.tech/2018/03/couple-and-decouple/</link>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/couple-and-decouple/</guid>
+      <description>&lt;p&gt;最近维护以前写过的代码时，由于设计不合理，大量模块紧密耦合在一起导致项目维护起来十分困难。今天我们来讲一讲代码的耦合。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

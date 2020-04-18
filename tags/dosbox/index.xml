@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dosbox on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/dosbox/</link>
+    <description>Recent content in dosbox on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/dosbox/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>安装 DOSBox 及配置</title>
+      <link>https://blog.guagua.tech/2018/10/dosbox-in-mac/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/dosbox-in-mac/</guid>
+      <description>&lt;p&gt;由于今年开设了《IBM-PC 汇编语言程序设计》这门课，所以安装了 DOSBox，下面介绍一下安装的过程及我的配置。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

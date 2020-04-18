@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>standard-library on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/standard-library/</link>
+    <description>Recent content in standard-library on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/standard-library/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>flag Go 源码解析</title>
+      <link>https://blog.guagua.tech/2019/01/go-standard-library-flag/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-standard-library-flag/</guid>
+      <description>&lt;p&gt;最近看了一下 Go&amp;rsquo;s flag 的源码，在这里分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>os/exec Go 源码解析</title>
+      <link>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</link>
+      <pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</guid>
+      <description>&lt;p&gt;这一篇是 Go SDK 中 os/exec 包的解析。&lt;/p&gt;
+&lt;p&gt;go version go1.9.2 darwin/amd64&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

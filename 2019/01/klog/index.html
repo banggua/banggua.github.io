@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="glog, klog">
+<meta name="description" content="Kubernetes 中使用的 klog 其实就是 glog。这里简要地介绍一下它的功能及实现。">
+
+
+<meta property="og:description" content="Kubernetes 中使用的 klog 其实就是 glog。这里简要地介绍一下它的功能及实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="klog 源码分析">
+<meta name="twitter:title" content="klog 源码分析">
+<meta property="og:url" content="https://blog.guagua.tech/2019/01/klog/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2019/01/klog/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="Kubernetes 中使用的 klog 其实就是 glog。这里简要地介绍一下它的功能及实现。">
+<meta name="twitter:description" content="Kubernetes 中使用的 klog 其实就是 glog。这里简要地介绍一下它的功能及实现。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-01-10T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-01-10T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>klog 源码分析</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2019/01/klog/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      klog 源码分析
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-01-10T00:00:00Z">
+        
+  January 10, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Kubernetes 中使用的 klog 其实就是 <a href="https://github.com/golang/glog">glog</a>。这里简要地介绍一下它的功能及实现。</p>
+<p><a href="https://github.com/kubernetes/kubernetes/tree/release-1.13/vendor/k8s.io/klog">Code Path</a></p>
+<h2 id="功能简介">功能简介</h2>
+<p>klog 包是一个提供了 INFO/ERROR/V 日志记录的模块。它提供了函数 Info、Warning、Error、Fatel，以及诸如 Infof 的格式化版本。它还提供了由 -v 和 -vmodule=file=2 标志控制的 V-style 日志。</p>
+<p>日志先写到缓冲区中，并且周期性的使用 Flush 写入到文件中。程序在退出之前会调用 Flush 以保证写入所有日志。</p>
+<p>日志分 INFO、WARNING、ERROR 和 FATAL 这四个等级，它们的严重等级依次递增，默认等级为 ERROR。写入到高严重等级日志文件的消息也会被写入到所有严重等级比它低的日志文件中。</p>
+<h2 id="执行过程">执行过程</h2>
+<p>1.主要结构 loggingT</p>
+<p>klog 使用了一个全局的 loggingT 变量 logging。</p>
+<p><img src="https://blog.guagua.tech/images/2019/01/klog-1.svg" alt="klog-1"></p>
+<p><strong>freeList</strong>：是一个缓冲区链表，日志会先写入到这里面，加上日志头拼接好，然后写入到 syncBuffer 的 *bufio.Writer。</p>
+<p><strong>file</strong>：是用于储存日志的文件，syncBuffer 是真正有用的结构。*bufio.Writer 用于缓存日志数据，缓冲区大小初始 256k。缓冲区每隔 30 秒向文件写入一次。文件大小最大 1800M，超过 1800M 会创建新的文件。</p>
+<p>2.文件同步过程</p>
+<p><img src="https://blog.guagua.tech/images/2019/01/klog-2.svg" alt="klog-2"></p>
+<p><strong>flushDaemon</strong>：init() 函数会设置默认的日志严重等级以及 V-log 等级，然后启动 flushDaemon。每间隔 30s 刷新所有日志并尝试将其数据同步到磁盘。日志会按照严重等级递减的顺序来刷新和同步，此做法是为了保证出现错误尽量小地影响严重等级高的日志。</p>
+<p>3.写入日志过程</p>
+<p><img src="https://blog.guagua.tech/images/2019/01/klog-3.svg" alt="klog-3"></p>
+<p><strong>l.getBuffer() 与 buf.Write(&hellip;)</strong>：从 <code>l.freeList</code> 中获取到 buf 后，会按顺序写入日志头以及日志信息。日志格式如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#ae81ff">0</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">2</span>         |<span style="color:#ae81ff">3</span>         <span style="color:#ae81ff">4</span>
+<span style="color:#ae81ff">01234567</span><span style="color:#ae81ff">8901234567890123456789</span>|<span style="color:#ae81ff">01234567</span><span style="color:#ae81ff">890</span>
+<span style="color:#a6e22e">Lmmdd</span> <span style="color:#a6e22e">hh</span>:<span style="color:#a6e22e">mm</span>:<span style="color:#a6e22e">ss</span>.<span style="color:#a6e22e">uuuuuu</span> <span style="color:#a6e22e">_______</span> |<span style="color:#a6e22e">file</span>:<span style="color:#a6e22e">line</span>] <span style="color:#a6e22e">msg</span><span style="color:#f92672">...</span>
+                      <span style="color:#a6e22e">threadid</span>
+
+<span style="color:#a6e22e">前</span> <span style="color:#ae81ff">29</span> <span style="color:#a6e22e">字节固定</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">file</span> <span style="color:#a6e22e">和</span> <span style="color:#a6e22e">line</span> <span style="color:#a6e22e">不定长</span><span style="color:#960050;background-color:#1e0010">。</span>
+<span style="color:#a6e22e">L</span>                <span style="color:#a6e22e">表示日志级别</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">有</span> <span style="color:#e6db74">&#34;IWEF&#34;</span><span style="color:#960050;background-color:#1e0010">（</span><span style="color:#a6e22e">例如</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#e6db74">&#34;I&#34;</span> <span style="color:#a6e22e">表示</span> <span style="color:#a6e22e">INFO</span><span style="color:#960050;background-color:#1e0010">）</span>
+<span style="color:#a6e22e">mm</span>               <span style="color:#a6e22e">月份</span><span style="color:#960050;background-color:#1e0010">（</span><span style="color:#a6e22e">零填充</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">例如五月是</span> <span style="color:#e6db74">&#34;05&#34;</span><span style="color:#960050;background-color:#1e0010">）</span>
+<span style="color:#a6e22e">dd</span>               <span style="color:#a6e22e">日期</span><span style="color:#960050;background-color:#1e0010">（</span><span style="color:#a6e22e">零填充</span><span style="color:#960050;background-color:#1e0010">）</span>
+<span style="color:#a6e22e">hh</span>:<span style="color:#a6e22e">mm</span>:<span style="color:#a6e22e">ss</span>.<span style="color:#a6e22e">uuuuuu</span>  <span style="color:#a6e22e">以小时</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#a6e22e">分钟</span><span style="color:#960050;background-color:#1e0010">、</span><span style="color:#a6e22e">微秒表示的时间</span>
+<span style="color:#a6e22e">threadid</span>         <span style="color:#a6e22e">本应该为线程</span> <span style="color:#a6e22e">ID</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">但只能获取到进程</span> <span style="color:#a6e22e">ID</span>
+<span style="color:#a6e22e">file</span>             <span style="color:#a6e22e">文件名</span>
+<span style="color:#a6e22e">line</span>             <span style="color:#a6e22e">行号</span><span style="color:#960050;background-color:#1e0010">（</span><span style="color:#a6e22e">零填充</span><span style="color:#960050;background-color:#1e0010">）</span>
+<span style="color:#a6e22e">msg</span>              <span style="color:#a6e22e">用户提供的信息</span>
+</code></pre></div><p><strong>syncBuffer.Write(data)</strong>：将日志从 buf 写入到 syncBuffer 的 buffer 中。日志等级为 fatal 时，刷新并同步（超时时间 10s）所有日志并退出。</p>
+<p><strong>l.putBuffer(buf)</strong>：将 buf 放回 <code>l.freeList</code>，如果 buf 中的 bytes.Buffer 大小超过 256 字节，就等待 GC 回收。</p>
+<h2 id="部分代码细节">部分代码细节</h2>
+<p>1.freeList 的操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">loggingT</span>) <span style="color:#a6e22e">getBuffer</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">buffer</span> {
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeListMu</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeList</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeList</span> = <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">next</span>
+	}
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeListMu</span>.<span style="color:#a6e22e">Unlock</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">b</span> = new(<span style="color:#a6e22e">buffer</span>)
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">next</span> = <span style="color:#66d9ef">nil</span>
+		<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Reset</span>()
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">l</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">loggingT</span>) <span style="color:#a6e22e">putBuffer</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">buffer</span>) {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Len</span>() <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">256</span> {
+		<span style="color:#66d9ef">return</span>
+	}
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeListMu</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeList</span>
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeList</span> = <span style="color:#a6e22e">b</span>
+	<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">freeListMu</span>.<span style="color:#a6e22e">Unlock</span>()
+}
+</code></pre></div><p>2.高严重等级的日志也将写入到低严重等级的日志文件中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">		<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">s</span> {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">fatalLog</span>:
+			<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">file</span>[<span style="color:#a6e22e">fatalLog</span>].<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">data</span>)
+			<span style="color:#66d9ef">fallthrough</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">errorLog</span>:
+			<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">file</span>[<span style="color:#a6e22e">errorLog</span>].<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">data</span>)
+			<span style="color:#66d9ef">fallthrough</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">warningLog</span>:
+			<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">file</span>[<span style="color:#a6e22e">warningLog</span>].<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">data</span>)
+			<span style="color:#66d9ef">fallthrough</span>
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">infoLog</span>:
+			<span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">file</span>[<span style="color:#a6e22e">infoLog</span>].<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">data</span>)
+		}
+</code></pre></div><p>3.rotateFile 创建新文件时使用符号链接（<code>klog_file.go</code>）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">logDirs</span> {
+		<span style="color:#a6e22e">fname</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">name</span>)
+		<span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">fname</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">symlink</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">link</span>)
+			<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Remove</span>(<span style="color:#a6e22e">symlink</span>)
+			<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Symlink</span>(<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">symlink</span>)
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">fname</span>, <span style="color:#66d9ef">nil</span>
+		}
+		<span style="color:#a6e22e">lastErr</span> = <span style="color:#a6e22e">err</span>
+	}
+</code></pre></div>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/go-temporary-address/" data-tooltip="go temporary address">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/kubernetes-concepts/" data-tooltip="Kubernetes Concepts Content">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/go-temporary-address/" data-tooltip="go temporary address">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2019/01/kubernetes-concepts/" data-tooltip="Kubernetes Concepts Content">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2019/01/klog/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fklog%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fklog%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2019%2F01%2Fklog%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

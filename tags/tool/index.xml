@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tool on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/tool/</link>
+    <description>Recent content in tool on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/tool/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>macOS 上编译 Y86-64 模拟器</title>
+      <link>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</guid>
+      <description>&lt;p&gt;在阅读《深入理解计算机（第三版）》第四章的时候，和它配套的有一个辅助的工具需要自己编译 &amp;ndash; Y86-64 模拟器（Y86-64 Simulator）。当我在网上搜索相关教程时，只找到了在 Ubuntu 编译 Y86-64 模拟器的教程没有 macOS 下编译的教程，所以遇到了不少坑，下面一步步填坑的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>git clone 速度很慢的解决方法</title>
+      <link>https://blog.guagua.tech/2018/02/git-clone-slow/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/git-clone-slow/</guid>
+      <description>&lt;p&gt;使用 GitHub 学习、管理代码十分方便，但是有时候 git clone 速度非常慢，只有几 Kb 的速度。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo 支持 LaTeX</title>
+      <link>https://blog.guagua.tech/2017/12/hugo-support-latex/</link>
+      <pubDate>Sat, 16 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/hugo-support-latex/</guid>
+      <description>&lt;p&gt;Hugo 不支持 LaTeX，这时我们可以使用 MathJAX 和 Mmark 来让 Hugo 支持 LaTeX。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Hugo &#43; Github Pages 搭建个人博客</title>
+      <link>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</link>
+      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</guid>
+      <description>&lt;p&gt;Hugo 是一个快速灵活的静态网站生成器。Github Pages 是面向用户、组织和项目开放的公共静态页面搭建托管服务，站点可以被免费托管在 Github 上。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

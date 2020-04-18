@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes API">
+<meta name="twitter:title" content="Kubernetes API">
+<meta property="og:url" content="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-08-28T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-08-28T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes API</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes API
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-08-28T00:00:00Z">
+        
+  August 28, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/</p>
+<p>Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。</p>
+<p><a href="https://git.k8s.io/community/contributors/devel/api-conventions.md">API 约定文档</a> 中描述了总体 API 约定。</p>
+<p><a href="https://kubernetes.io/docs/reference">API 参考</a> 中描述了 API 端点，资源类型和示例。</p>
+<p><a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">控制 API 访问文档</a> 中讨论了对 API 的远程访问。</p>
+<p>Kubernetes API 还可以作为系统声明性配置架构的基础。 <a href="https://kubernetes.io/docs/reference/kubectl/overview/">kubectl</a> 命令行工具可用于创建、更新、删除和获取 API 对象。</p>
+<p>Kubernetes 还可以根据 API 资源存储其序列化状态（当前在 <a href="https://coreos.com/docs/distributed-configuration/getting-started-with-etcd/">etcd</a> 中）。</p>
+<h2 id="api-的更新">API 的更新</h2>
+<p>根据经验，任何成功的系统都需要随着新的使用场景出现或现有的使用场景发生变化的情况下进行相应的发展和调整。因此，我们希望 Kubernetes API 能够不断变化和发展。同时，我们也希望在较长一段时间内不破坏与现有客户端的兼容性。一般情况下，添加新的 API 资源和资源字段不会发生兼容性问题。但是删除现有资源或字段将必须遵循 <a href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/">API 弃用流程</a>。</p>
+<p><a href="https://git.k8s.io/community/contributors/devel/api_changes.md">API 更新文档</a> 详细说明了兼容性变更的要素以及如何变更 API 的流程。</p>
+<h2 id="openapi-和-swagger-定义">OpenAPI 和 Swagger 定义</h2>
+<p>Kubernetes 使用使用 <a href="http://swagger.io/">Swagger v1.2</a> 和 <a href="https://www.openapis.org/">OpenAPI</a> 记录完整的 API 详细信息。Kubernetes apiserver（即 “master”）提供了一个 API 接口用于获取 Swagger 1.2 Kubernetes API 规范，路径为 <code>/swaggerapi</code>。</p>
+<p>从 Kubernetes 1.10 开始，OpenAPI 规范仅由 <code>/openapi/v2</code> 提供。格式分隔（<code>/swagger.json</code>、<code>/swagger-2.0.0.json</code>、<code>/swagger-2.0.0.pb-v1</code> 和 <code>/swagger-2.0.0.pb-v1.gz</code>）已弃用，并将在 Kubernetes 1.14 中被删除。</p>
+<p>通过设置 HTTP 头信息指定请求的格式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">头信息</th>
+<th align="left">可能值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>Accept</code></td>
+<td align="left"><code>application/json</code>、<code>application/com.github.proto-openapi.spec.v2@v1.0+protobuf</code>（对于 <code>*/*</code> 默认的 content-type 为 <code>application/json</code> 或者不添加这条头信息）</td>
+</tr>
+<tr>
+<td align="left"><code>Accept-Encoding</code></td>
+<td align="left"><code>gzip</code> （不添加这条头信息是可以接受的）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>获取 OpenAPI 规范的示例：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">1.10 版本之前</th>
+<th align="left">从 Kubernetes 1.10 开始</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>GET /swagger.json</code></td>
+<td align="left"><code>GET /openapi/v2 Accept: application/json</code></td>
+</tr>
+<tr>
+<td align="left"><code>GET /swagger-2.0.0.pb-v1</code></td>
+<td align="left"><code>GET /openapi/v2 Accept: application/com.github.proto-openapi.spec.v2@v1.0+protobuf</code></td>
+</tr>
+<tr>
+<td align="left"><code>GET /swagger-2.0.0.pb-v1.gz</code></td>
+<td align="left"><code>GET /openapi/v2 Accept: application/com.github.proto-openapi.spec.v2@v1.0+protobuf Accept-Encoding: gzip</code></td>
+</tr>
+</tbody>
+</table>
+<p>Kubernetes 实现了另一种基于 Protobuf 的序列化格式，该格式主要用于集群内通信，并在<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/protobuf.md">设计方案</a> 中进行了说明，每个模式的 IDL 文件位于定义 API 对象的 Go 软件包中。</p>
+<h2 id="api-版本">API 版本</h2>
+<p>为了使删除字段或者重构资源表示更加容易，Kubernetes 支持多个 API 版本。每一个版本都在不同 API 路径下，例如 <code>/api/v1</code> 或者 <code>/apis/extensions/v1beta1</code>。</p>
+<p>我们选择在 API 级别进行版本化，而不是在资源或字段级别进行版本化，以确保 API 提供清晰，一致的系统资源和行为视图，并控制对已废止的 API 和/或 实验性 API 的访问。JSON 和 Protobuf 序列化模式遵循架构更改的相同准则 &ndash; 下面的所有描述都同时适用于这两种格式。</p>
+<p>请注意，API 版本控制和软件版本控制只有间接相关性。<a href="https://git.k8s.io/community/contributors/design-proposals/release/versioning.md">API 和发行版本建议</a> 描述了 API 版本与软件版本之间的关系。</p>
+<p>不同的 API 版本名称意味着不同级别的软件稳定性和支持程度。每个级别的标准在 <a href="https://git.k8s.io/community/contributors/devel/api_changes.md#alpha-beta-and-stable-versions">API 更新文档</a> 中有更详细的描述。 内容主要概括如下：</p>
+<ul>
+<li>
+<p>Alpha 测试版本：</p>
+<ul>
+<li>版本名称包含了 <code>alpha</code>（例如 <code>v1alpha1</code>）。</li>
+<li>可能是有缺陷的。启用该功能可能会带来隐含的问题，默认情况是关闭的。</li>
+<li>支持的功能可能在没有通知的情况下随时删除。</li>
+<li>API 的更改可能会带来兼容性问题，但是在后续的软件发布中不会有任何通知。</li>
+<li>由于 bugs 风险的增加和缺乏长期的支持，推荐在短暂的集群测试中使用。</li>
+</ul>
+</li>
+<li>
+<p>Beta 测试版本：</p>
+<ul>
+<li>版本名称包含了 <code>beta</code>（例如 <code>v2beta3</code>）。</li>
+<li>代码已经测试过。启用该功能被认为是安全的，功能默认已启用。</li>
+<li>所有已支持的功能不会被删除，细节可能会发生变化。</li>
+<li>对象的模式和/或语义可能会在后续的 beta 测试版或稳定版中以不兼容的方式进行更改。 发生这种情况时，我们将提供迁移到下一个版本的说明。 这可能需要删除、编辑和重新创建 API 对象。执行编辑操作时需要谨慎行事，这可能需要停用依赖该功能的应用程序。</li>
+<li>建议仅用于非业务关键型用途，因为后续版本中可能存在不兼容的更改。 如果您有多个可以独立升级的集群，则可以放宽此限制。</li>
+<li><strong>请尝试我们的 beta 版本功能并且给出反馈！一旦他们退出 beta 测试版，我们可能不会做出更多的改变。</strong></li>
+</ul>
+</li>
+<li>
+<p>稳定版本：</p>
+<ul>
+<li>版本名称是 <code>vX</code>，其中 <code>X</code> 是整数。</li>
+<li>功能的稳定版本将出现在许多后续版本的发行软件中。</li>
+</ul>
+</li>
+</ul>
+<h2 id="api-组">API 组</h2>
+<p>为了更容易地扩展 Kubernetes API，我们实现了 <a href="https://git.k8s.io/community/contributors/design-proposals/api-machinery/api-group.md">API 组</a>。API 组在 REST 路径和序列化对象的 <code>apiVersion</code> 字段中指定。</p>
+<p>目前有几个 API 组正在使用中：</p>
+<p>1.核心组，通常被称为遗留组，位于 REST 路径 <code>/api/v1</code> 并使用 <code>apiVersion: v1</code>。</p>
+<p>2.命名组，位于 REST 路径 <code>/apis/$GROUP_NAME/$VERSION</code>，并使用 <code>apiVersion: $GROUP_NAME/$VERSION</code>（例如 <code>apiVersion: batch/v1</code>）。在 <a href="https://kubernetes.io/docs/reference/">Kubernetes API 参考</a> 中可以看到支持的 API 组的完整列表。</p>
+<p>有以下两种方式来提供 <a href="https://kubernetes.io/docs/concepts/api-extension/custom-resources/">自定义资源</a> 对 API 进行扩展：</p>
+<p>1.<a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/extend-api-custom-resource-definitions/">CustomResourceDefinition</a> 适用于具有非常基本的 CRUD 需求的用户。</p>
+<p>2.需要完整 Kubernetes API 语义的用户可以实现自己的 apiserver，并使用 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/">聚合器</a> 为客户端提供无缝的服务。</p>
+<h2 id="启用-api-组">启用 API 组</h2>
+<p>某些资源和 API 组在默认情况下处于启用状态。它们可以通过在 apiserver 上设置 <code>--runtime-config</code> 来启用或禁用它们。 <code>--runtime-config</code> 接受逗号分隔的值。例如：设置 <code>--runtime-config=batch/v1=false</code> 可以禁用 batch/v1，设置 <code>--runtime-config=batch/v2alpha1</code> 可以启用 batch/v2alpha1。该标志接受用来描述 apiserver 运行时配置的用逗号分隔的一组键值对。</p>
+<p>重要：启用或禁用组或资源需要重新启动 apiserver 和 controller-manager 使得 <code>--runtime-config</code> 的更改生效。</p>
+<h2 id="启用组中资源">启用组中资源</h2>
+<p>DaemonSets、Deployments、HorizontalPodAutoscalers、Ingresses、Jobs 和 ReplicaSets 是默认启用的。其他扩展资源可以通过在 apiserver 上设置 <code>--runtime-config</code> 来启用。<code>--runtime-config</code> 接受逗号分隔的值。例如：要禁用 deployments 和 Ingresses，可以设置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">--runtime-config<span style="color:#f92672">=</span>extensions/v1beta1/deployments<span style="color:#f92672">=</span>false,extensions/v1beta1/ingresses<span style="color:#f92672">=</span>false
+</code></pre></div>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_names/" data-tooltip="Kubernetes 对象名称">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_kubernetes-objects/" data-tooltip="Kubernetes 对象">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_names/" data-tooltip="Kubernetes 对象名称">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_kubernetes-objects/" data-tooltip="Kubernetes 对象">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_kubernetes-api%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_kubernetes-api%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F08%2Fkubernetes_concepts_overview_kubernetes-api%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/</link>
+    <description>Recent content on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Shell Script 快速入门</title>
+      <link>https://blog.guagua.tech/2019/02/shell-script-quick-start/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/02/shell-script-quick-start/</guid>
+      <description>&lt;p&gt;Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>flag 中的 Go 函数指针</title>
+      <link>https://blog.guagua.tech/2019/01/function-pointer-in-flag/</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/function-pointer-in-flag/</guid>
+      <description>&lt;p&gt;在阅读 flag 包的代码时，看到一处对函数指针的精妙用法。在这里想和大家分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python 的正确打开方式</title>
+      <link>https://blog.guagua.tech/2019/01/python-quick-start/</link>
+      <pubDate>Sat, 26 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/python-quick-start/</guid>
+      <description>&lt;p&gt;安装环境为 macOS，依赖 Homebrew。&lt;code&gt;pyenv + pyenv-virtualenv + pipenv + vscode&lt;/code&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>flag Go 源码解析</title>
+      <link>https://blog.guagua.tech/2019/01/go-standard-library-flag/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-standard-library-flag/</guid>
+      <description>&lt;p&gt;最近看了一下 Go&amp;rsquo;s flag 的源码，在这里分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>go temporary address</title>
+      <link>https://blog.guagua.tech/2019/01/go-temporary-address/</link>
+      <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/go-temporary-address/</guid>
+      <description>&lt;p&gt;在很久之前遇到过一个很奇怪的问题，最近忆起终得答案，特记录于此。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>klog 源码分析</title>
+      <link>https://blog.guagua.tech/2019/01/klog/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/klog/</guid>
+      <description>&lt;p&gt;Kubernetes 中使用的 klog 其实就是 &lt;a href=&#34;https://github.com/golang/glog&#34;&gt;glog&lt;/a&gt;。这里简要地介绍一下它的功能及实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Concepts Content</title>
+      <link>https://blog.guagua.tech/2019/01/kubernetes-concepts/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/01/kubernetes-concepts/</guid>
+      <description>&lt;p&gt;Kubernetes Concepts Content&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>UML 类图中的关系</title>
+      <link>https://blog.guagua.tech/2018/12/uml-class-diagram/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/12/uml-class-diagram/</guid>
+      <description>&lt;p&gt;看和画 UML 图是程序员必备的技能之一，看图、画图有助于理解、分析程序的逻辑，大大提高学习和工作的效率。今天只简单总结一下类图中的关系。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SSH 连接到 VirtualBox</title>
+      <link>https://blog.guagua.tech/2018/11/ssh-to-virtualbox/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/11/ssh-to-virtualbox/</guid>
+      <description>&lt;p&gt;VirtualBox 的窗口用起来远不如 terminal 舒服，复制的命令等不能粘贴到 VirtualBox 的窗口中。所以，我就尝试了一下使用 SSH 连接到 VirtualBox，在这里与大家分享一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Vim Quick Start</title>
+      <link>https://blog.guagua.tech/2018/11/vim-quick-start/</link>
+      <pubDate>Tue, 06 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/11/vim-quick-start/</guid>
+      <description>&lt;p&gt;vim 被称为 “编辑器之神”，怎么可以不去学习一下呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Try Flutter</title>
+      <link>https://blog.guagua.tech/2018/10/try-flutter/</link>
+      <pubDate>Fri, 26 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/try-flutter/</guid>
+      <description>&lt;p&gt;今天小小的尝试了一下 &lt;a href=&#34;https://flutter.io&#34;&gt;Flutter&lt;/a&gt;，过程十分艰辛，遇到了不少坑，下面总结一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安装 DOSBox 及配置</title>
+      <link>https://blog.guagua.tech/2018/10/dosbox-in-mac/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/dosbox-in-mac/</guid>
+      <description>&lt;p&gt;由于今年开设了《IBM-PC 汇编语言程序设计》这门课，所以安装了 DOSBox，下面介绍一下安装的过程及我的配置。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>C/CPP Pointer</title>
+      <link>https://blog.guagua.tech/2018/10/c-cpp-pointer/</link>
+      <pubDate>Fri, 05 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/c-cpp-pointer/</guid>
+      <description>&lt;p&gt;本文介绍了 C/CPP 指针的规则。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gRPC Gateway</title>
+      <link>https://blog.guagua.tech/2018/10/grpc-gateway/</link>
+      <pubDate>Thu, 04 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/10/grpc-gateway/</guid>
+      <description>&lt;p&gt;本文将向你介绍 gRPC Gateway。代码示例：&lt;a href=&#34;https://github.com/lizebang/learning-grpc&#34;&gt;demo&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gRPC in Go</title>
+      <link>https://blog.guagua.tech/2018/09/grpc/</link>
+      <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/grpc/</guid>
+      <description>&lt;p&gt;本文将向你介绍 gRPC 和 protocol buffers。代码示例：&lt;a href=&#34;https://github.com/lizebang/learning-grpc&#34;&gt;demo&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Proto3 语言指南</title>
+      <link>https://blog.guagua.tech/2018/09/proto3-language-guide/</link>
+      <pubDate>Mon, 24 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/proto3-language-guide/</guid>
+      <description>&lt;p&gt;本文介绍了如何使用 protocol buffer 构建 pb 数据 &amp;ndash; 包括 &lt;code&gt;.proto&lt;/code&gt; 语法以及生成数据访问类的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gdb on macOS</title>
+      <link>https://blog.guagua.tech/2018/09/using-gdb-on-macos/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/using-gdb-on-macos/</guid>
+      <description>&lt;p&gt;gdb 无法在 macOS Mojave 上正常使用。&lt;/p&gt;
+&lt;p&gt;最近在 mac 上使用 gdb 调试程序的时候，突然发现 gdb 不能很好的运行。下面是我遇到的一些坑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Pod Preset</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_podpreset/</link>
+      <pubDate>Mon, 17 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_podpreset/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/workloads/pods/podpreset/&lt;/p&gt;
+&lt;p&gt;本文是关于 PodPresets 的概述，该对象在创建时将特定信息注入到 pod 对象中。该消息可以包含 secrets、volumes、volume mounts 以及 environment variables。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Init 容器</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_init-containers/</link>
+      <pubDate>Sat, 15 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_init-containers/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/workloads/pods/init-containers/&lt;/p&gt;
+&lt;p&gt;本文提供了 Init 容器概览，它是在应用容器之前运行的专用容器，并且包含应用镜像中没有的工具和安装脚本。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Pod 的生命周期</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-lifecycle/</link>
+      <pubDate>Fri, 14 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-lifecycle/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/&lt;/p&gt;
+&lt;p&gt;这篇介绍了 Pod 的生命周期。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Pods</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/</link>
+      <pubDate>Wed, 12 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/workloads/pods/pod/&lt;/p&gt;
+&lt;p&gt;Pod 是 Kubernetes 中可以被创建和管理的最小部署计算单元。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Pod 概述</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-overview/</link>
+      <pubDate>Mon, 10 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_workloads_pods_pod-overview/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/&lt;/p&gt;
+&lt;p&gt;本文概述了 Pod，它是 Kubernetes 对象模型中最小可部署对象。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 容器环境变量</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-environment-variables/</link>
+      <pubDate>Sun, 09 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-environment-variables/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/containers/container-environment-variables/&lt;/p&gt;
+&lt;p&gt;本文介绍了容器环境中对容器可用的资源。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>容器生命周期的钩子</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-container-lifecycle-hooks/</link>
+      <pubDate>Sun, 09 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_container-container-lifecycle-hooks/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/&lt;/p&gt;
+&lt;p&gt;本文介绍了由 kubelet 管理的容器是如何使用容器生命周期的钩子框架通过其管理的生命周期内的事件触发来运行代码的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 镜像</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_images/</link>
+      <pubDate>Sat, 08 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_containers_images/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/containers/images/&lt;/p&gt;
+&lt;p&gt;你可以构建 docker 镜像并将它推到仓库中，以供之后 Kubernetes Pod 使用。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;image&lt;/code&gt; 容器的属性支持与 &lt;code&gt;docker&lt;/code&gt; 命令相同的语法，包括私有仓库和标记。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 管理资源</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_manage-deployment/</link>
+      <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_manage-deployment/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/&lt;/p&gt;
+&lt;p&gt;你已经部署了你的应用程序并通过服务暴露它。现在干什么呢？Kubernetes 提供了许多工具帮助你管理应用程序的部署，包括缩放和升级。我们将更深入地讨论的功能包括 &lt;a href=&#34;https://kubernetes.io/docs/concepts/configuration/overview/&#34;&gt;配置文件&lt;/a&gt; 和 &lt;a href=&#34;https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/&#34;&gt;标签&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 群集管理概述</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/</link>
+      <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/&lt;/p&gt;
+&lt;p&gt;群集管理概述适用于创建或管理 Kubernetes 群集的任何人。它假定你对核心 Kubernetes &lt;a href=&#34;https://kubernetes.io/docs/concepts/&#34;&gt;概念&lt;/a&gt; 有一定的了解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 证书</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/</link>
+      <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/&lt;/p&gt;
+&lt;p&gt;使用客户端证书身份验证时，可以通过 &lt;code&gt;easyrsa&lt;/code&gt;、&lt;code&gt;openssl&lt;/code&gt; 和 &lt;code&gt;cfssl&lt;/code&gt; 手动生成证书。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用配置文件对 Kubernetes 对象的命令式管理</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-config/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-config/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-config/&lt;/p&gt;
+&lt;p&gt;通过使用 &lt;code&gt;kubectl&lt;/code&gt; 命令以及 YAML 或 JSON 格式编写的对象配置文件可以创建、更新和删除 Kubernetes 对象。本文介绍了如何使用配置文件定义和管理对象。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用配置文件对 Kubernetes 对象的声明式管理</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_declarative-config/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_declarative-config/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/&lt;/p&gt;
+&lt;p&gt;Kubernetes 对象可以通过在目录中存储多个对象配置文件来创建、更新和删除，并使用 &lt;code&gt;kubectl apply&lt;/code&gt; 按需递归创建和更新这些对象。此方法保留对实时对象所做的写入操作, 而不将更改合并回对象配置文件中。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 对象管理</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_overview/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_overview/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/&lt;/p&gt;
+&lt;p&gt;命令行工具 &lt;code&gt;kubectl&lt;/code&gt; 支持几种不同的方法来创建和管理 Kubernetes 对象。本文简单介绍了一下这几种不同的方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用命令式指令管理 Kubernetes 对象</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/</link>
+      <pubDate>Sun, 02 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-command/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/&lt;/p&gt;
+&lt;p&gt;直接使用内置于 &lt;code&gt;kubectl&lt;/code&gt; 命令行工具的命令式指令，可以快速地创建、更新和删除 Kubernetes 对象。本文介绍了任何组织这些命令，以及如何使用它们管理实时对象。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 字段选择器</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/</link>
+      <pubDate>Sat, 01 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_field-selectors/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/&lt;/p&gt;
+&lt;p&gt;字段选择器允许你根据一个或多个资源字段的值 &lt;a href=&#34;https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects&#34;&gt;选择 Kubernetes 资源&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 推荐标签</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/</link>
+      <pubDate>Sat, 01 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_common-labels/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/&lt;/p&gt;
+&lt;p&gt;你可以使用除了 kubectl 和 dashboard 之外的更多工具可视化和管理 Kubernetes 对象。一组以所有工具都能理解的方式描述对象的通用标签允许工具相互工作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 注解</title>
+      <link>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/</link>
+      <pubDate>Sat, 01 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_working-with-objects_annotations/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/&lt;/p&gt;
+&lt;p&gt;你可以使用 Kubernetes 注解将任何非标识性元数据关联到对象上。使用客户端（如工具和库）可以检索到这些元数据。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 标签和选择器</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/</link>
+      <pubDate>Fri, 31 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_labels/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/&lt;/p&gt;
+&lt;p&gt;Labels 是关联到像 Pod 这样对象上的键值对。标签旨在用于指定对用户有意义且相关对象的标识属性，但不对核心系统直接使用隐含语义。标签可用于组织和选择对象的子集。标签可以在创建时关联到对象上，也可以在之后的任何时间添加和修改。每个对象都可以定义一组键值标签。每个对象标签的 key 必须唯一。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 命名空间</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_namespaces/</link>
+      <pubDate>Thu, 30 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_namespaces/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/&lt;/p&gt;
+&lt;p&gt;Kubernetes 支持同一物理集群支撑多虚拟集群。这些虚拟集群被称为 namespaces。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 对象名称</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_names/</link>
+      <pubDate>Thu, 30 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_names/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/names/&lt;/p&gt;
+&lt;p&gt;在 Kubernetes REST API 中的所有对象都由 Name 和 UID 明确标识。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes API</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/</link>
+      <pubDate>Tue, 28 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_kubernetes-api/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/kubernetes-api/&lt;/p&gt;
+&lt;p&gt;Kubernetes 本身被分解为多个组件，这些组件通过其 API 进行交互。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 对象</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_kubernetes-objects/</link>
+      <pubDate>Tue, 28 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_working-with-objects_kubernetes-objects/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/&lt;/p&gt;
+&lt;p&gt;本文介绍了如何使用 Kubernetes API 表示 Kubernetes 对象，以及如何以 &lt;code&gt;.yaml&lt;/code&gt; 格式表达它们。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 组件</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_components/</link>
+      <pubDate>Tue, 28 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_components/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/components/&lt;/p&gt;
+&lt;p&gt;本文档概述了 Kubernetes 所需的各种二进制组件, 用于提供齐全的功能。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AWK 快速入门</title>
+      <link>https://blog.guagua.tech/2018/08/awk-quick-start/</link>
+      <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/awk-quick-start/</guid>
+      <description>&lt;p&gt;awk 是一种使用方便且表现力很强的编程语言，它可以应用在多种不同的计算与数据处理任务中。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>kubernetes 概念</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_index/</link>
+      <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_index/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/&lt;/p&gt;
+&lt;p&gt;这篇文章能帮助你了解 Kubernetes 系统的各个部分以及 Kubernetes 对集群的抽象，并帮助你更深入地了解 Kubernetes 的工作原理。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>什么是 Kubernetes ？</title>
+      <link>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_what-is-kubernetes/</link>
+      <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/kubernetes_concepts_overview_what-is-kubernetes/</guid>
+      <description>&lt;p&gt;原文：https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/&lt;/p&gt;
+&lt;p&gt;这篇文章是 Kubernetes 的概述。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 kubeadm 创建单 master 集群</title>
+      <link>https://blog.guagua.tech/2018/08/create-cluster-kubeadm/</link>
+      <pubDate>Sun, 26 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/create-cluster-kubeadm/</guid>
+      <description>&lt;p&gt;怎样使用 kubeadm 创建 Kubernetes 集群呢？请阅读下面内容。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>macOS 上编译 Y86-64 模拟器</title>
+      <link>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/build-y86-64-simulator-on-macos/</guid>
+      <description>&lt;p&gt;在阅读《深入理解计算机（第三版）》第四章的时候，和它配套的有一个辅助的工具需要自己编译 &amp;ndash; Y86-64 模拟器（Y86-64 Simulator）。当我在网上搜索相关教程时，只找到了在 Ubuntu 编译 Y86-64 模拟器的教程没有 macOS 下编译的教程，所以遇到了不少坑，下面一步步填坑的过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>把博客迁移到服务器上</title>
+      <link>https://blog.guagua.tech/2018/07/blog-to-server/</link>
+      <pubDate>Sun, 15 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/07/blog-to-server/</guid>
+      <description>&lt;p&gt;之前一直使用 GitHub Pages 托管博客，但是国内访问 GitHub 速度太慢了。恰逢腾讯云前段时间服务器做活动，便买了服务器把博客迁移到服务器上。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>LaTeX in Mac</title>
+      <link>https://blog.guagua.tech/2018/06/latex-in-mac/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/latex-in-mac/</guid>
+      <description>&lt;p&gt;LaTeX 是一个高质量的排版系统，它包含为生产技术和科学文档而设计的功能。LaTeX 是科学文件通讯和出版的事实标准。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cobra 使用入门</title>
+      <link>https://blog.guagua.tech/2018/06/how-to-use-cobra/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/06/how-to-use-cobra/</guid>
+      <description>&lt;p&gt;今天我们介绍一个简化构建 CLI 应用程序的库 &amp;ndash; Cobra。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何访问维基百科</title>
+      <link>https://blog.guagua.tech/2018/05/how-to-access-wikipedia/</link>
+      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/05/how-to-access-wikipedia/</guid>
+      <description>&lt;p&gt;维基百科目前被 GFW 通过 DNS 污染的方式封锁，怎样可以正常访问呢？&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Regular Expressions</title>
+      <link>https://blog.guagua.tech/2018/05/regular-expressions/</link>
+      <pubDate>Thu, 10 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/05/regular-expressions/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F&#34;&gt;正则表达式&lt;/a&gt; 使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Go Memory Model</title>
+      <link>https://blog.guagua.tech/2018/04/the-go-memory-model/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/04/the-go-memory-model/</guid>
+      <description>&lt;p&gt;Go 内存模型指出，在何时，能确保一个 goroutine 获取到被另一个 goroutine 修改后的同一变量的值。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在 Linux 设置开机启动项</title>
+      <link>https://blog.guagua.tech/2018/03/chkconfig-usage/</link>
+      <pubDate>Wed, 21 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/chkconfig-usage/</guid>
+      <description>&lt;p&gt;在服务器上怎样添加一个开机启动项呢？我们可以使用 chkconfig 来做到这一切，下面给大家介绍介绍 chkconfig 的使用方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ssh 的使用</title>
+      <link>https://blog.guagua.tech/2018/03/ssh-usage/</link>
+      <pubDate>Sat, 17 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/ssh-usage/</guid>
+      <description>&lt;p&gt;ssh 是每一台 Linux 电脑的标配，学习它的使用是非常有必要的！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>耦合与解耦</title>
+      <link>https://blog.guagua.tech/2018/03/couple-and-decouple/</link>
+      <pubDate>Fri, 16 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/couple-and-decouple/</guid>
+      <description>&lt;p&gt;最近维护以前写过的代码时，由于设计不合理，大量模块紧密耦合在一起导致项目维护起来十分困难。今天我们来讲一讲代码的耦合。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 deb 包在 manjaro 上安装 mongodb-compass</title>
+      <link>https://blog.guagua.tech/2018/03/install-mongodb-compass-on-manjaro/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/03/install-mongodb-compass-on-manjaro/</guid>
+      <description>&lt;p&gt;今天在 manjaro 上安装 mongodb-compass 时发现 yaourt mongodb-compass 搜到的两个库都已经无法使用了，下面我介绍一种安装方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>创建 slack custom bots</title>
+      <link>https://blog.guagua.tech/2018/02/slack-custom-bots/</link>
+      <pubDate>Wed, 28 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/slack-custom-bots/</guid>
+      <description>创建 slack custom bots 网址：https://my.slack.com/services/new/bot</description>
+    </item>
+    
+    <item>
+      <title>Golang 定时任务</title>
+      <link>https://blog.guagua.tech/2018/02/golang-cron/</link>
+      <pubDate>Sun, 25 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/golang-cron/</guid>
+      <description>&lt;p&gt;如何在 Golang 中添加或设置定时任务?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>git clone 速度很慢的解决方法</title>
+      <link>https://blog.guagua.tech/2018/02/git-clone-slow/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/git-clone-slow/</guid>
+      <description>&lt;p&gt;使用 GitHub 学习、管理代码十分方便，但是有时候 git clone 速度非常慢，只有几 Kb 的速度。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 docker registry 解决 kubernetes pull 镜像 pull 不下来的问题</title>
+      <link>https://blog.guagua.tech/2018/02/kubernetes-pull-image-error/</link>
+      <pubDate>Wed, 07 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/02/kubernetes-pull-image-error/</guid>
+      <description>&lt;p&gt;Kubernetes 默认会去 gcr.io 上拉取镜像，由于 GFW 的原因，Kubernetes 拉取镜像会失败。这时，我们可以让其拉取 docker registry 中的镜像来解决这个问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>apt、dpkg &amp;&amp; yum、rpm &amp;&amp; pacman 使用详解</title>
+      <link>https://blog.guagua.tech/2017/12/apt-dpkg-yum-rpm-pacman-usage/</link>
+      <pubDate>Sun, 24 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/apt-dpkg-yum-rpm-pacman-usage/</guid>
+      <description>&lt;p&gt;我在这里总结了一下三个比较流行的包管理器的命令，apt、dpkg、yum、rpm 和 ArchLinux 中使用的 pacman，以及 yaourt。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo 支持 LaTeX</title>
+      <link>https://blog.guagua.tech/2017/12/hugo-support-latex/</link>
+      <pubDate>Sat, 16 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/hugo-support-latex/</guid>
+      <description>&lt;p&gt;Hugo 不支持 LaTeX，这时我们可以使用 MathJAX 和 Mmark 来让 Hugo 支持 LaTeX。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AT&amp;T 汇编（一）</title>
+      <link>https://blog.guagua.tech/2017/12/att-assembly-language/</link>
+      <pubDate>Wed, 13 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/att-assembly-language/</guid>
+      <description>&lt;p&gt;ATT 格式的汇编根据 AT&amp;amp;T 命名，AT&amp;amp;T 是运营贝尔实验室多年的公司。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>os/exec Go 源码解析</title>
+      <link>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</link>
+      <pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/12/go-standard-library-os-exec/</guid>
+      <description>&lt;p&gt;这一篇是 Go SDK 中 os/exec 包的解析。&lt;/p&gt;
+&lt;p&gt;go version go1.9.2 darwin/amd64&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>linux 安装 Matlab</title>
+      <link>https://blog.guagua.tech/2017/11/install-matlab-on-linux/</link>
+      <pubDate>Wed, 29 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/install-matlab-on-linux/</guid>
+      <description>&lt;p&gt;在 Windows 和 Mac 上安装 Matlab 比较容易，而在 linux 上却并没那么简单了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>怎样使用 glide</title>
+      <link>https://blog.guagua.tech/2017/11/how-to-use-glide/</link>
+      <pubDate>Wed, 22 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/how-to-use-glide/</guid>
+      <description>&lt;p&gt;glide 是很常用的 go 包管理工具，让我们看看然后使用它。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>for range 的使用</title>
+      <link>https://blog.guagua.tech/2017/11/how-for-range-works/</link>
+      <pubDate>Sun, 05 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/how-for-range-works/</guid>
+      <description>&lt;p&gt;for range 是一个非常常用的遍历数组切片的方法，但是它有一些比较奇怪的特性，让我们了解一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Hugo &#43; Github Pages 搭建个人博客</title>
+      <link>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</link>
+      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2017/11/hugo-github-pages-personal-website/</guid>
+      <description>&lt;p&gt;Hugo 是一个快速灵活的静态网站生成器。Github Pages 是面向用户、组织和项目开放的公共静态页面搭建托管服务，站点可以被免费托管在 Github 上。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

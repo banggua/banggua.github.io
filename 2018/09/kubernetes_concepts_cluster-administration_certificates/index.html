@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.69.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Li Zebang">
+<meta name="keywords" content="kubernetes, concepts">
+<meta name="description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+使用客户端证书身份验证时，可以通过 easyrsa、openssl 和 cfssl 手动生成证书。">
+
+
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+使用客户端证书身份验证时，可以通过 easyrsa、openssl 和 cfssl 手动生成证书。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes 证书">
+<meta name="twitter:title" content="Kubernetes 证书">
+<meta property="og:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+<meta property="twitter:url" content="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+<meta property="og:site_name" content="Li Zebang&#39;s Home">
+<meta property="og:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+使用客户端证书身份验证时，可以通过 easyrsa、openssl 和 cfssl 手动生成证书。">
+<meta name="twitter:description" content="原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+使用客户端证书身份验证时，可以通过 easyrsa、openssl 和 cfssl 手动生成证书。">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2018-09-05T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2018-09-05T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="kubernetes">
+    
+  
+  
+    
+      <meta property="article:tag" content="kubernetes">
+    
+      <meta property="article:tag" content="concepts">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://blog.guagua.tech/images/cover.jpeg">
+  <meta property="twitter:image" content="https://blog.guagua.tech/images/cover.jpeg">
+
+
+
+
+  <meta property="og:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+  <meta property="twitter:image" content="https://avatars2.githubusercontent.com/u/26663453?s=460&v=4">
+
+
+    <title>Kubernetes 证书</title>
+
+    <link rel="icon" href="https://blog.guagua.tech/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://blog.guagua.tech/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://blog.guagua.tech/">Li Zebang&#39;s Home</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://blog.guagua.tech/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://blog.guagua.tech/#about">
+          <img class="sidebar-profile-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Li Zebang</h4>
+        
+          <h5 class="sidebar-profile-bio">I hear and I forget, I see and I remember, I do and I understand.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/">
+       <i class="sidebar-button-icon fa fa-lg fa-home"></i> 
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/categories">
+       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i> 
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/tags">
+       <i class="sidebar-button-icon fa fa-lg fa-tags"></i> 
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/archives">
+       <i class="sidebar-button-icon fa fa-lg fa-archive"></i> 
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/#about">
+       <i class="sidebar-button-icon fa fa-lg fa-question"></i> 
+      <span class="sidebar-button-desc">About</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://github.com/banggua"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-github"></i> 
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="https://stackoverflow.com/users/9499576/li-zebang"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i> 
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+</li>
+
+<li class="sidebar-button">
+  
+  <a class="sidebar-button-link " href="mailto:202559587@qq.com"
+    target="_blank" rel="noopener">
+     <i class="sidebar-button-icon fa fa-lg fa-envelope"></i> 
+      <span class="sidebar-button-desc">E-mail</span>
+    </a>
+</li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+<li class="sidebar-button">
+  
+    <a class="sidebar-button-link " href="https://blog.guagua.tech/index.xml">
+       <i class="sidebar-button-icon fa fa-lg fa-rss"></i> 
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+</li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/images/cover.jpeg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Kubernetes 证书
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-09-05T00:00:00Z">
+        
+  September 5, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://blog.guagua.tech/categories/kubernetes">kubernetes</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>原文：https://kubernetes.io/docs/concepts/cluster-administration/certificates/</p>
+<p>使用客户端证书身份验证时，可以通过 <code>easyrsa</code>、<code>openssl</code> 和 <code>cfssl</code> 手动生成证书。</p>
+<h2 id="证书">证书</h2>
+<h3 id="easyrsa">easyrsa</h3>
+<p><strong>easyrsa</strong> 可以手动为集群生成证书。</p>
+<p>1.下载、解压以及初始化 easyrsa3 的补丁版本。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -LO https://storage.googleapis.com/kubernetes-release/easy-rsa/easy-rsa.tar.gz
+tar xzf easy-rsa.tar.gz
+cd easy-rsa-master/easyrsa3
+./easyrsa init-pki
+</code></pre></div><p>2.生成一个 CA。（<code>--batch</code> 设置自动模式，<code>--req-cn</code> 默认使用 CN。）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./easyrsa --batch <span style="color:#e6db74">&#34;--req-cn=</span><span style="color:#e6db74">${</span>MASTER_IP<span style="color:#e6db74">}</span><span style="color:#e6db74">@`date +%s`&#34;</span> build-ca nopass
+</code></pre></div><p>3.生成服务器证书和密钥。参数 <code>--subject-alt-name</code> 设置可能访问 API 服务器的 IP 和 DNS 域名。<code>MASTER_CLUSTER_IP</code> 通常是服务 CIDR 的第一个 IP，它被指定为 API 服务器和控制器管理组件的 <code>--service-cluster-ip-range</code> 参数。参数 <code>--days</code> 被用来设置证书过期的天数。下面的例子还假定你使用 <code>cluster.local</code> 做为默认 DNS 域名。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./easyrsa --subject-alt-name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;IP:</span><span style="color:#e6db74">${</span>MASTER_IP<span style="color:#e6db74">}</span><span style="color:#e6db74">,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;IP:</span><span style="color:#e6db74">${</span>MASTER_CLUSTER_IP<span style="color:#e6db74">}</span><span style="color:#e6db74">,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;DNS:kubernetes,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;DNS:kubernetes.default,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;DNS:kubernetes.default.svc,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;DNS:kubernetes.default.svc.cluster,&#34;</span><span style="color:#ae81ff">\</span>
+<span style="color:#e6db74">&#34;DNS:kubernetes.default.svc.cluster.local&#34;</span> <span style="color:#ae81ff">\</span>
+--days<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span> <span style="color:#ae81ff">\</span>
+build-server-full server nopass
+</code></pre></div><p>4.复制 <code>pki/ca.crt</code>、<code>pki/issued/server.crt</code> 和 <code>pki/private/server.key</code> 到你的文件夹。</p>
+<p>5.在 API 服务器启动参数中添加以下参数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">--client-ca-file<span style="color:#f92672">=</span>/yourdirectory/ca.crt
+--tls-cert-file<span style="color:#f92672">=</span>/yourdirectory/server.crt
+--tls-private-key-file<span style="color:#f92672">=</span>/yourdirectory/server.key
+</code></pre></div><h3 id="openssl">openssl</h3>
+<p><strong>openssl</strong> 可以手动为集群生成证书。</p>
+<p>1.生成一个 2048bit 的 ca.key：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl genrsa -out ca.key 2048
+</code></pre></div><p>2.根据 ca.key 生成 ca.crt（使用 -days 设置证书有效时间）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -x509 -new -nodes -key ca.key -subj <span style="color:#e6db74">&#34;/CN=</span><span style="color:#e6db74">${</span>MASTER_IP<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> -days <span style="color:#ae81ff">10000</span> -out ca.crt
+</code></pre></div><p>3.生成一个 2048bit 的 server.key：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl genrsa -out server.key 2048
+</code></pre></div><p>4.创建用于生成证书签名请求（CSR）的配置文件。在保存此到文件（如 <code>csr.conf</code>）前，请务必将尖括号（如 <code>&lt;MASTER_IP&gt;</code>）标记的值替换成实际值。注意，和前面提到的一样 <code>MASTER_CLUSTER_IP</code> 是 API 服务器的服务集群 IP。下面的例子还假定使用 <code>cluster.local</code> 做为默认 DNS 域名。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">[ req ]
+default_bits = <span style="color:#ae81ff">2048</span>
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+
+[ dn ]
+C = &lt;country<span style="color:#e6db74">&gt;
+</span><span style="color:#e6db74">ST = &lt;state&gt;</span>
+L = &lt;city<span style="color:#e6db74">&gt;
+</span><span style="color:#e6db74">O = &lt;organization&gt;</span>
+OU = &lt;organization unit<span style="color:#e6db74">&gt;
+</span><span style="color:#e6db74">CN = &lt;MASTER_IP&gt;</span>
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS<span style="color:#ae81ff">.1</span> = kubernetes
+DNS<span style="color:#ae81ff">.2</span> = kubernetes.default
+DNS<span style="color:#ae81ff">.3</span> = kubernetes.default.svc
+DNS<span style="color:#ae81ff">.4</span> = kubernetes.default.svc.cluster
+DNS<span style="color:#ae81ff">.5</span> = kubernetes.default.svc.cluster.local
+IP<span style="color:#ae81ff">.1</span> = &lt;MASTER_IP<span style="color:#e6db74">&gt;
+</span><span style="color:#e6db74">IP.2 = &lt;MASTER_CLUSTER_IP&gt;</span>
+
+[ v3_ext ]
+authorityKeyIdentifier=keyid,issuer:always
+basicConstraints=CA:FALSE
+keyUsage=keyEncipherment,dataEncipherment
+extendedKeyUsage=serverAuth,clientAuth
+subjectAltName=@alt_names
+</code></pre></div><p>5.根据配置文件生成证书签名请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -new -key server.key -out server.csr -config csr.conf
+</code></pre></div><p>6.使用 ca.key、ca.crt 和 server.csr 生成服务器证书：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key <span style="color:#ae81ff">\</span>
+-CAcreateserial -out server.crt -days <span style="color:#ae81ff">10000</span> <span style="color:#ae81ff">\</span>
+-extensions v3_ext -extfile csr.conf
+</code></pre></div><p>7.查看证书：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509  -noout -text -in ./server.crt
+</code></pre></div><p>最终，添加相同的参数到 API 服务器启动参数中。</p>
+<h3 id="cfssl">cfssl</h3>
+<p><strong>cfssl</strong> 另一个用于生成证书的工具。</p>
+<p>1.下载、解压和准备命令行工具，如下所示。注意，你可能需要根据所使用的硬件体系结构和 cfssl 版本来调整下面的命令。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -L https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -o cfssl
+chmod +x cfssl
+curl -L https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -o cfssljson
+chmod +x cfssljson
+curl -L https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -o cfssl-certinfo
+chmod +x cfssl-certinfo
+</code></pre></div><p>2.创建一个用于保存文件的目录并且初始化 cfssl：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir cert
+cd cert
+../cfssl print-defaults config &gt; config.json
+../cfssl print-defaults csr &gt; csr.json
+</code></pre></div><p>3.创建一个用于生成 CA 文件的 JSON 配置文件，例如，<code>ca-config.json</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+	<span style="color:#f92672">&#34;signing&#34;</span>: {
+		<span style="color:#f92672">&#34;default&#34;</span>: {
+			<span style="color:#f92672">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>
+		},
+		<span style="color:#f92672">&#34;profiles&#34;</span>: {
+			<span style="color:#f92672">&#34;kubernetes&#34;</span>: {
+				<span style="color:#f92672">&#34;usages&#34;</span>: [<span style="color:#e6db74">&#34;signing&#34;</span>, <span style="color:#e6db74">&#34;key encipherment&#34;</span>, <span style="color:#e6db74">&#34;server auth&#34;</span>, <span style="color:#e6db74">&#34;client auth&#34;</span>],
+				<span style="color:#f92672">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>
+			}
+		}
+	}
+}
+</code></pre></div><p>4.创建一个用于 CA 证书签名请求（CSR）的 JSON 配置文件，例如，<code>ca-csr.json</code>。请确保用要使用的实际值替换用尖括号标记的值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+	<span style="color:#f92672">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;kubernetes&#34;</span>,
+	<span style="color:#f92672">&#34;key&#34;</span>: {
+		<span style="color:#f92672">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;rsa&#34;</span>,
+		<span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">2048</span>
+	},
+	<span style="color:#f92672">&#34;names&#34;</span>: [
+		{
+			<span style="color:#f92672">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;&lt;country&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;&lt;state&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;&lt;city&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;O&#34;</span>: <span style="color:#e6db74">&#34;&lt;organization&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;OU&#34;</span>: <span style="color:#e6db74">&#34;&lt;organization unit&gt;&#34;</span>
+		}
+	]
+}
+</code></pre></div><p>5.生成 CA 密钥（<code>ca-key.pem</code>）和证书（<code>ca.pem</code>）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">../cfssl gencert -initca ca-csr.json | ../cfssljson -bare ca
+</code></pre></div><p>6.创建一个 JSON 配置文件，用于生成 API 服务器的密钥和证书，如下所示。确保用要使用的实际值替换尖括号中的值。和前面提到的一样，<code>MASTER_CLUSTER_IP</code> 是 API 服务器的服务集群 IP。下面的例子也假设你使用 <code>cluster.local</code> 做为默认 DNS 域名。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+	<span style="color:#f92672">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;kubernetes&#34;</span>,
+	<span style="color:#f92672">&#34;hosts&#34;</span>: [
+		<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>,
+		<span style="color:#e6db74">&#34;&lt;MASTER_IP&gt;&#34;</span>,
+		<span style="color:#e6db74">&#34;&lt;MASTER_CLUSTER_IP&gt;&#34;</span>,
+		<span style="color:#e6db74">&#34;kubernetes&#34;</span>,
+		<span style="color:#e6db74">&#34;kubernetes.default&#34;</span>,
+		<span style="color:#e6db74">&#34;kubernetes.default.svc&#34;</span>,
+		<span style="color:#e6db74">&#34;kubernetes.default.svc.cluster&#34;</span>,
+		<span style="color:#e6db74">&#34;kubernetes.default.svc.cluster.local&#34;</span>
+	],
+	<span style="color:#f92672">&#34;key&#34;</span>: {
+		<span style="color:#f92672">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;rsa&#34;</span>,
+		<span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">2048</span>
+	},
+	<span style="color:#f92672">&#34;names&#34;</span>: [
+		{
+			<span style="color:#f92672">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;&lt;country&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;&lt;state&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;&lt;city&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;O&#34;</span>: <span style="color:#e6db74">&#34;&lt;organization&gt;&#34;</span>,
+			<span style="color:#f92672">&#34;OU&#34;</span>: <span style="color:#e6db74">&#34;&lt;organization unit&gt;&#34;</span>
+		}
+	]
+}
+</code></pre></div><p>7.生成 API 服务器所要的密钥和证书，它们默认会分别保存到文件 <code>server-key.pem</code> 和 <code>server.pem</code> 中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">../cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem <span style="color:#ae81ff">\</span>
+--config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>kubernetes <span style="color:#ae81ff">\</span>
+server-csr.json | ../cfssljson -bare server
+</code></pre></div><h2 id="分发自签名-ca-证书">分发自签名 CA 证书</h2>
+<p>客户端节点可能拒绝将自签名 CA 证书识别为有效的。对于非生产部署或在公司防火墙后面运行的部署，你可以向所有客户端分发自签名 CA 证书，并刷新本地列表以寻找有效的证书。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo cp ca.crt /usr/local/share/ca-certificates/kubernetes.crt
+$ sudo update-ca-certificates
+Updating certificates in /etc/ssl/certs...
+<span style="color:#ae81ff">1</span> added, <span style="color:#ae81ff">0</span> removed; <span style="color:#66d9ef">done</span>.
+Running hooks in /etc/ca-certificates/update.d....
+<span style="color:#66d9ef">done</span>.
+</code></pre></div><h2 id="证书-api">证书 API</h2>
+<p>你可以使用 <code>certificates.k8s.io</code> API 来提供 x509 证书以用于身份验证，参考 <a href="https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster">文档</a>。</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/kubernetes/">kubernetes</a>
+
+  <a class="tag tag--primary tag--small" href="https://blog.guagua.tech/tags/concepts/">concepts</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/" data-tooltip="Kubernetes 群集管理概述">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-config/" data-tooltip="使用配置文件对 Kubernetes 对象的命令式管理">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Li Zebang. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_cluster-administration-overview/" data-tooltip="Kubernetes 群集管理概述">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://blog.guagua.tech/2018/09/kubernetes_concepts_overview_object-management-kubectl_imperative-config/" data-tooltip="使用配置文件对 Kubernetes 对象的命令式管理">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://blog.guagua.tech/2018/09/kubernetes_concepts_cluster-administration_certificates/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_certificates%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_certificates%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Fblog.guagua.tech%2F2018%2F09%2Fkubernetes_concepts_cluster-administration_certificates%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://avatars2.githubusercontent.com/u/26663453?s=460&amp;v=4" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Li Zebang</h4>
+    
+      <div id="about-card-bio">I hear and I forget, I see and I remember, I do and I understand.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        China
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      
+      <div id="cover" style="background-image:url('https://blog.guagua.tech/images/cover.jpeg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://blog.guagua.tech/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

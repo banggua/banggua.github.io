@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shell on Li Zebang&#39;s Home</title>
+    <link>https://blog.guagua.tech/tags/shell/</link>
+    <description>Recent content in shell on Li Zebang&#39;s Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.guagua.tech/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Shell Script 快速入门</title>
+      <link>https://blog.guagua.tech/2019/02/shell-script-quick-start/</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2019/02/shell-script-quick-start/</guid>
+      <description>&lt;p&gt;Shell 是一个 C 语言编写的程序，是用户使用 Linux 的桥梁。Shell 既是一种程序命令，又是一种程序设计语言。Shell 脚本是一种为 Shell 编写的脚本程序。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AWK 快速入门</title>
+      <link>https://blog.guagua.tech/2018/08/awk-quick-start/</link>
+      <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.guagua.tech/2018/08/awk-quick-start/</guid>
+      <description>&lt;p&gt;awk 是一种使用方便且表现力很强的编程语言，它可以应用在多种不同的计算与数据处理任务中。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
